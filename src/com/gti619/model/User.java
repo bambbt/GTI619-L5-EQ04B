@@ -8,9 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 
-
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Table;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @DynamicUpdate
 @Table(appliesTo="users")
