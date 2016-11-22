@@ -48,6 +48,12 @@
 		</dependency>
  
 		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>4.2.0.RELEASE</version>
+		</dependency>
+ 
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
@@ -57,6 +63,15 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency><dependency>
+		    <groupId>org.apache.karaf.jpa</groupId>
+    		<artifactId>hibernate</artifactId>
+    		<version>4.0.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		    <version>4.3.1.RELEASE</version>
+		</dependency>
 	</dependencies>
 </project>
