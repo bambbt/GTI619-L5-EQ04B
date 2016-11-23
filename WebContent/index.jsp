@@ -13,7 +13,7 @@
 
 	<p>
       Hello <b><c:out value="${pageContext.request.remoteUser}"/></b><br>
-      Roles: <b><sec:authen tication property="principal.authorities" /></b>
+      Roles: <b><sec:authentication property="principal.authorities" /></b>
     </p>
     
     
