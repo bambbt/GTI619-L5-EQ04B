@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="com.gti619.model.Config" table="config" catalog="mydb" optimistic-lock="version">
+        <id name="idconfig" type="java.lang.Integer">
+            <column name="idconfig" />
+            <generator class="identity" />
+        </id>
+        <property name="salt" type="string">
+            <column name="salt" length="45" not-null="true" unique="true" />
+        </property>
+    </class>
+</hibernate-mapping>

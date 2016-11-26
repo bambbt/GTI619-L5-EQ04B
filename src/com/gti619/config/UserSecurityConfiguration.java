@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import com.gti619.service.CustomUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -17,17 +19,17 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		
-		auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
+		/*auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 		
 		auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
-		auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");
+		auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
 		
 		//On doit crypter le mot de passe
 		
-		
-		// Ici, on doit faire appel à la base de données 
+		auth.userDetailsService(new CustomUserDetailsService());
+		// Ici, on doit faire appel ï¿½ la base de donnï¿½es 
 		
 	}
 
