@@ -8,7 +8,7 @@
    <column name="iduser"/>
    <generator class="identity"/>
   </id>
-  <many-to-one class="Role" fetch="select" name="role">
+  <many-to-one class="com.gti619.model.Role" fetch="select" name="role">
    <column name="role_idrole" not-null="true"/>
   </many-to-one>
   <property generated="never" lazy="false" name="login" type="string">

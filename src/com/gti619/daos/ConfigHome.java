@@ -7,10 +7,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.gti619.model.Config;
 
@@ -19,22 +17,17 @@ import com.gti619.model.Config;
  * @see .Config
  * @author Hibernate Tools
  */
-
-public class ConfigHome {
+@Repository("ConfigHome")
+public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 
 	private static final Log log = LogFactory.getLog(ConfigHome.class);
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	protected Session getSession(){
-		return sessionFactory.getCurrentSession();
-	}
+	
 
 	public void persist(Config transientInstance) {
 		log.debug("persisting Config instance");
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
+			getSession().persist(transientInstance);
 			log.debug("persist successful");
 		} catch (RuntimeException re) {
 			log.error("persist failed", re);
@@ -45,7 +38,7 @@ public class ConfigHome {
 	public void attachDirty(Config instance) {
 		log.debug("attaching dirty Config instance");
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -56,7 +49,7 @@ public class ConfigHome {
 	public void attachClean(Config instance) {
 		log.debug("attaching clean Config instance");
 		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
+			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -67,7 +60,7 @@ public class ConfigHome {
 	public void delete(Config persistentInstance) {
 		log.debug("deleting Config instance");
 		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
+			getSession().delete(persistentInstance);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -78,7 +71,7 @@ public class ConfigHome {
 	public Config merge(Config detachedInstance) {
 		log.debug("merging Config instance");
 		try {
-			Config result = (Config) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Config result = (Config) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -90,7 +83,7 @@ public class ConfigHome {
 	public Config findById(java.lang.Integer id) {
 		log.debug("getting Config instance with id: " + id);
 		try {
-			Config instance = (Config) sessionFactory.getCurrentSession().get("Config", id);
+			Config instance = (Config) getSession().get("Config", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,7 +99,7 @@ public class ConfigHome {
 	public List findByExample(Config instance) {
 		log.debug("finding Config instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession().createCriteria("Config").add(Example.create(instance))
+			List results = getSession().createCriteria("Config").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

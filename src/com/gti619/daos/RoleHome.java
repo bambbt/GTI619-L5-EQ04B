@@ -7,10 +7,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.gti619.model.Role;
 
@@ -19,22 +17,16 @@ import com.gti619.model.Role;
  * @see .Role
  * @author Hibernate Tools
  */
-
-public class RoleHome {
+@Repository("RoleHome")
+public class RoleHome extends SessionFactoryHibernateDAOSupport{
 
 	private static final Log log = LogFactory.getLog(RoleHome.class);
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	protected Session getSession(){
-		return sessionFactory.getCurrentSession();
-	}
-
+	
 	public void persist(Role transientInstance) {
 		log.debug("persisting Role instance");
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
+			getSession().persist(transientInstance);
 			log.debug("persist successful");
 		} catch (RuntimeException re) {
 			log.error("persist failed", re);
@@ -45,7 +37,7 @@ public class RoleHome {
 	public void attachDirty(Role instance) {
 		log.debug("attaching dirty Role instance");
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -56,7 +48,7 @@ public class RoleHome {
 	public void attachClean(Role instance) {
 		log.debug("attaching clean Role instance");
 		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
+			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -67,7 +59,7 @@ public class RoleHome {
 	public void delete(Role persistentInstance) {
 		log.debug("deleting Role instance");
 		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
+			getSession().delete(persistentInstance);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -78,7 +70,7 @@ public class RoleHome {
 	public Role merge(Role detachedInstance) {
 		log.debug("merging Role instance");
 		try {
-			Role result = (Role) sessionFactory.getCurrentSession().merge(detachedInstance);
+			Role result = (Role) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -90,7 +82,7 @@ public class RoleHome {
 	public Role findById(java.lang.Integer id) {
 		log.debug("getting Role instance with id: " + id);
 		try {
-			Role instance = (Role) sessionFactory.getCurrentSession().get("Role", id);
+			Role instance = (Role) getSession().get("Role", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -106,7 +98,7 @@ public class RoleHome {
 	public List findByExample(Role instance) {
 		log.debug("finding Role instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession().createCriteria("Role").add(Example.create(instance))
+			List results = getSession().createCriteria("Role").add(Example.create(instance))
 					.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;

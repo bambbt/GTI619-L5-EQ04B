@@ -3,7 +3,7 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1 -->
 <hibernate-mapping>
- <class catalog="mydb"  name="com.gti619.model.Role" table="role">
+ <class catalog="mydb" name="com.gti619.model.Role" table="role">
   <id name="idrole" type="java.lang.Integer">
    <column name="idrole"/>
    <generator class="identity"/>
@@ -16,7 +16,7 @@
    <key>
     <column name="role_idrole" not-null="true"/>
    </key>
-   <one-to-many class="User"/>
+   <one-to-many class="com.gti619.model.User"/>
   </set>
  </class>
 </hibernate-mapping>

@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gti619.daos.UserHome;
 import com.gti619.model.Role;
 
+
+
+
 @Service("CustomUserDetailsService")
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(final String username) 
 			throws UsernameNotFoundException {
 
-		com.gti619.model.User user = getUserDao().findByUserName(username);
+		com.gti619.model.User user = userDao.findByUserName(username);
 		List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
 
 		return buildUserForAuthentication(user, authorities);

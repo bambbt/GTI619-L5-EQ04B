@@ -1,18 +1,13 @@
 	package com.gti619.daos;
-// default package
-// Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1
 
+	
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.gti619.model.User;
@@ -22,22 +17,16 @@ import com.gti619.model.User;
  * @see .User
  * @author Hibernate Tools
  */
-@Repository
-public class UserHome {
+@Repository("UserHome")
+public class UserHome extends SessionFactoryHibernateDAOSupport{
 
 	private static final Log log = LogFactory.getLog(UserHome.class);
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	protected Session getSession(){
-		return sessionFactory.getCurrentSession();
-	}
 
 	public void persist(User transientInstance) {
 		log.debug("persisting User instance");
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
+			getSession().persist(transientInstance);
 			log.debug("persist successful");
 		} catch (RuntimeException re) {
 			log.error("persist failed", re);
@@ -48,7 +37,7 @@ public class UserHome {
 	public void attachDirty(User instance) {
 		log.debug("attaching dirty User instance");
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -59,7 +48,7 @@ public class UserHome {
 	public void attachClean(User instance) {
 		log.debug("attaching clean User instance");
 		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
+			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -70,7 +59,7 @@ public class UserHome {
 	public void delete(User persistentInstance) {
 		log.debug("deleting User instance");
 		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
+			getSession().delete(persistentInstance);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -81,7 +70,7 @@ public class UserHome {
 	public User merge(User detachedInstance) {
 		log.debug("merging User instance");
 		try {
-			User result = (User) sessionFactory.getCurrentSession().merge(detachedInstance);
+			User result = (User) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -93,7 +82,7 @@ public class UserHome {
 	public User findById(java.lang.Integer id) {
 		log.debug("getting User instance with id: " + id);
 		try {
-			User instance = (User) sessionFactory.getCurrentSession().get("User", id);
+			User instance = (User) getSession().get("User", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -110,7 +99,7 @@ public class UserHome {
 		log.debug("finding User instance by example");
 		try {
 			@SuppressWarnings("deprecation")
-			List<?> results = sessionFactory.getCurrentSession().createCriteria("User").add(Example.create(instance))
+			List<?> results = getSession().createCriteria("User").add(Example.create(instance))
 			.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
