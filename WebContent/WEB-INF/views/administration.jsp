@@ -8,6 +8,11 @@
 		<title>Administration</title>
 		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 		 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
+		 <c:if test="${error}">
+	 		<script type="text/javascript">
+      		  msg();
+    		</script>
+		</c:if>
 </head>
 <nav class="navbar navbar-light bg-faded">
   <ul class="nav navbar-nav">
@@ -27,11 +32,8 @@
 </nav>	
 
 <body>
-<c:if test="${error}">
-<script>
-  alert("");        
-</script>
-</c:if>
+
+
 
 <h2>Administration</h2>
 <div class="container">
@@ -80,15 +82,17 @@
                         <span id="confirmMessage" class="confirmMessage"></span>
             </div>
             <div class="form-group">
-                <input class="btn btn-success" type="submit" name="submit_reg" value="Ajouter">
+                <input class="btn btn-success"  type="submit" name="submit_reg" value="Ajouter">
             </div>
+			
             </fieldset>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
 		</div>
 	</div>
 </div>
-
+<div id="snackbar"></div>
+<button onclick="msg()">Show Snackbar</button>
 <br>
 <a href="<c:url value="/logout" />">Logout</a>
 <br><br>

@@ -90,11 +90,11 @@ public class RequestController {
 			@RequestParam("userId") String userId,
 			@RequestParam("firstname") String firstname,
 			@RequestParam("lastname") String lastname,
-			@RequestParam("password") String password,
-			@RequestParam("adminPass") String adminPass) {
+			@RequestParam("password") String password) {
 		ModelAndView model = new ModelAndView();
-		String raison = "";
-		Boolean err=false;
+		String raison = "Ok";
+		Boolean err=true;
+		
 		
 		System.out.println("Reception du form en poste");
 		System.out.println("Voici les elements : "+role +"" +userId +" "+firstname+" "+lastname+" "+password );

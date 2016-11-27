@@ -41,4 +41,12 @@ messageBox.innerHTML = "N'oubliez pas le rôle de l'utilisateur"
 
 }
 
+function msg() {
+    var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+
+
 

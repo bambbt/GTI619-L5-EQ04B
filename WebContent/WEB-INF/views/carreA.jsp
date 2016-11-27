@@ -10,7 +10,7 @@
   <a class="navbar-brand" href=""></a>
   <ul class="nav navbar-nav">
   <li class="nav-item active">
-      <a href="<c:url value="/homeAdmin" />">Home</a>
+      <a href="<c:url value="/homeAdmin"/>">Home</a>
     </li>
     <li class="nav-item active">
       <a href="<c:url value="/cercle" />">Cercle</a>
