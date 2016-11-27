@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html>
 <head>
@@ -26,56 +27,63 @@
 </nav>	
 
 <body>
+<c:if test="${error}">
+<script>
+  alert("");        
+</script>
+</c:if>
+
 <h2>Administration</h2>
 <div class="container">
 	<div class="row">
         <div class="col-md-6">
-            <form action="" method="post" id="fileForm" role="form">
+            <form method="post" id="fileForm" action="<c:url value="/adduser" />"   role="form">
             <fieldset><legend class="text-center">Formulaire d'ajout un utilisateur <span class="req"><small> ( * = Obligatoire )</small></span></legend>
  			<div class="form-group">
 	          	<h4>Rôle utilisateur</h4>
 				<label class="form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="roleCarre" value="option1"> ROLE CARRE
+				  <input class="form-check-input" type="radio" name="role" id="roleCarre" value="roleCarre"> ROLE CARRE
 				</label>
 				<label class="form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="roleCercle" value="option2"> ROLE CERCLE
+				  <input class="form-check-input" type="radio" name="role" id="roleCercle" value="roleCercle"> ROLE CERCLE
 				</label>
 				<label class="form-check-inline">
-				  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="roleAdmin" value="option3"> ROLE AMNISTRATEUR
+				  <input class="form-check-input" type="radio" name="role" id="roleAdmin"  value="roleAdmin" > ROLE AMNISTRATEUR 
 				</label>
+				<div><span id="userBoxMessage" class="confirmMessage"></span></div> 
   			</div>
              <div class="form-group">
-                <label for="username"><span class="req">* </span> User name:  <small>This will be your login user name</small> </label> 
-                    <input class="form-control" type="text" name="username" id = "txt" onkeyup = "Validate(this)" placeholder="minimum 6 letters" required />  
+                <label for="username"><span class="req">* </span> Nom d'utilisateur : </label> 
+                    <input class="form-control" type="text" name="userId" id = "txt" onkeyup = "Validate(this)" placeholder="" required />  
                         <div id="errLast"></div>
             </div>
             
             <div class="form-group"> 	 
-                <label for="firstname"><span class="req">* </span> First name: </label>
+                <label for="firstname"><span class="req">* </span> Nom : </label>
                     <input class="form-control" type="text" name="firstname" id = "txt" onkeyup = "Validate(this)" required /> 
                         <div id="errFirst"></div>    
             </div>
 
             <div class="form-group">
-                <label for="lastname"><span class="req">* </span> Last name: </label> 
-                    <input class="form-control" type="text" name="lastname" id = "txt" onkeyup = "Validate(this)" placeholder="hyphen or single quote OK" required />  
+                <label for="lastname"><span class="req">* </span> Prénom : </label> 
+                    <input class="form-control" type="text" name="lastname" id = "txt" onkeyup = "Validate(this)" placeholder="" required />  
                         <div id="errLast"></div>
             </div>
            
             <div class="form-group">
-                <label for="password"><span class="req">* </span> Password: </label>
-                    <input required name="password" type="password" class="form-control inputpass" minlength="4" maxlength="16"  id="pass1" /> </p>
+                <label for="password"><span class="req">* </span> Mot de passe : </label>
+                    <input required name="password" type="password" class="form-control inputpass" minlength="4" path="pass1" maxlength="16" placeholder="Saisir le mot de passe" id="pass1" required /> </p>
 
-                <label for="password"><span class="req">* </span> Password Confirm: </label>
-                    <input required name="password" type="password" class="form-control inputpass" minlength="4" 
-                    maxlength="16" placeholder="Enter again to validate"  id="pass2" 
-                    onkeyup="checkPass(); return false;" />
+                <label for="password"><span class="req">* </span> Confirmation du mot de passe : </label>
+                    <input required name="password" type="password" class="form-control inputpass" minlength="4" maxlength="16" placeholder="Saisir de nouveau le mot de passe"  id="pass2" 
+                    onkeyup="checkPass(); return false;" required />
                         <span id="confirmMessage" class="confirmMessage"></span>
             </div>
             <div class="form-group">
                 <input class="btn btn-success" type="submit" name="submit_reg" value="Ajouter">
             </div>
             </fieldset>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
 		</div>
 	</div>

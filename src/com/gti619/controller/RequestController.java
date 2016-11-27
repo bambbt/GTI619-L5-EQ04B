@@ -17,6 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RequestController {
@@ -79,10 +82,44 @@ public class RequestController {
 		return url;
 	}
 	
+	//POST
+	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView postAddUser(
+			@RequestParam("role") String role, 
+			@RequestParam("userId") String userId,
+			@RequestParam("firstname") String firstname,
+			@RequestParam("lastname") String lastname,
+			@RequestParam("password") String password,
+			@RequestParam("adminPass") String adminPass) {
+		ModelAndView model = new ModelAndView();
+		String raison = "";
+		Boolean err=false;
+		
+		System.out.println("Reception du form en poste");
+		System.out.println("Voici les elements : "+role +"" +userId +" "+firstname+" "+lastname+" "+password );
+		//Validation du formulaire
+		
+		//1 valider le mot de passe de l'administrateur
+		
+		// Si valide, proceder à l'ajout de l'utilisateur
+		
+		
+		
+		model.setViewName("/administration");
+		model.addObject("error", err);
+		model.addObject("raison", raison);
+		return model;
+	}
+	
+	//GET
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
 	public String getAdministration() {
+		System.out.println("Administration");
 		return "administration";
 	}
+	
+
 
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

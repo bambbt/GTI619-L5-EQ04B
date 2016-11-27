@@ -25,6 +25,7 @@ public class ResolverConfig extends WebMvcConfigurerAdapter {
 
 		return viewResolver;
 	}
+	
 
 	/*
      * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...

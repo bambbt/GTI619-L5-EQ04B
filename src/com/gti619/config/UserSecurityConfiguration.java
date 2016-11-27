@@ -49,6 +49,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	  	.antMatchers("/cercleA/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/carreA/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/administration/**").access("hasRole('ADMIN')")
+	  	.antMatchers("/adduser/**").access("hasRole('ADMIN')")
 	  	.and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
 	  	.usernameParameter("ssoId").passwordParameter("password")
 	  	.and().csrf()
