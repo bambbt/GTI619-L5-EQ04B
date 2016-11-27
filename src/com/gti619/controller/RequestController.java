@@ -1,10 +1,15 @@
 package com.gti619.controller;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -15,17 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class RequestController {
+		
 	
-	
-	private NavBarController navbar;
-	
-	
-	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-	public String getHomePage(ModelMap model) {
-		model.addAttribute("user", getPrincipal());
-		return "welcome";
-	}
-
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
 		model.addAttribute("user", getPrincipal());
@@ -56,16 +52,31 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value = "/carre", method = RequestMethod.GET)
-	public String getcarre(ModelMap model) {	
-		model.addAttribute("navBar",navbar.getNavBar());
-		return "carre";
+	public String getcarre(ModelMap model) {
+		String url = "";
+		List<String> userRoles = this.getAuthorities();
+		
+		if (userRoles.contains("ROLE_CARRE")) {
+			url= "/carre";
+		} 
+		else if (userRoles.contains("ROLE_ADMIN")) {
+			url = "/carreA";
+		}
+		return url;
 	}
 	
 	@RequestMapping(value = "/cercle", method = RequestMethod.GET)
-	
 	public String getcercle(ModelMap model) {
-		model.addAttribute("navBar",navbar.getNavBar());
-		return "cercle";
+		String url = "";
+		List<String> userRoles = this.getAuthorities();
+		
+		if (userRoles.contains("ROLE_CERCLE")) {
+			url= "/cercle";
+		} 
+		else if (userRoles.contains("ROLE_ADMIN")) {
+			url = "/cercleA";
+		}
+		return url;
 	}
 	
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
@@ -85,6 +96,10 @@ public class RequestController {
 	
 	
 
+	/**
+	 * Permet de retourner le nom de l'utilisateur en question
+	 * @return
+	 */
 	private String getPrincipal(){
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -96,5 +111,22 @@ public class RequestController {
 		}
 		return userName;
 	}
-
+	
+	
+	/**
+	 * Permet de retourner les roles de l'utilisateur en question			
+	 * @return
+	 */
+	public List<String> getAuthorities(){
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
+		Collection<? extends GrantedAuthority> authorities = ((UserDetails)principal).getAuthorities();
+		List<String> roles = new ArrayList<String>();
+		for (GrantedAuthority a : authorities) {
+			roles.add(a.getAuthority());
+		}
+		
+		return roles;
+	}
+		
+	
 }

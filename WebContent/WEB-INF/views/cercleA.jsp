@@ -3,8 +3,8 @@
 <html>
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Home Admin</title>
-		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
+		<title>Cercle</title>
+	<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 </head>
 <nav class="navbar navbar-light bg-faded">
   <a class="navbar-brand" href=""></a>
@@ -22,20 +22,18 @@
       <a href="<c:url value="/administration" />">Administration</a>
     </li>
   </ul>
-</nav>	
+</nav>
 
-<body>
-<br>
-	<br>
-	<h1>Bonjour <strong> ${user}</strong></h1>
-	<br>
-	<br>
-	
-	<h2>Bienvenue dans votre espace Admin de travail</h2>
-	
-	<br>
-	<br>
-	<a href="<c:url value="/logout" />">Logout</a>
+<body>	
+<br><br>
+<div class="container">	
+ <h1>Cercle</h1>                  
+  <img src="http://preprod-img.medisite.fr/files/images/article/3/4/4/1051443/2325437-inline.png"
+   class="img-circle" alt="Cercle" width="304" height="236"></img>
+   <br>
+   <br>
+  <a href="<c:url value="/logout" />">Logout</a>
+</div>
 	
 </body>
 </html>

@@ -4,16 +4,17 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Connexion</title>
-		<link href="<c:url value='/views_css/css/bootstrap.css' />"  rel="stylesheet"></link>
-		<link href="<c:url value='/views_css/css/app.css' />" rel="stylesheet"></link>
+		<link href="<c:url value='/ressources/css/login.css' />"  rel="stylesheet"></link>
 	</head>
 
 	<body>
-		<div id="mainWrapper">
-			<div class="login-container">
-				<div class="login-card">
-					<div class="login-form">
-						<c:url var="loginUrl" value="/login" />
+	
+<div class="container">
+	<div class="login-container">
+            <div id="output"></div>
+            <div class="avatar" ></div>
+            <div class="form-box">
+               <c:url var="loginUrl" value="/login" />
 						<form action="${loginUrl}" method="post" class="form-horizontal">
 							<c:if test="${param.error != null}">
 								<div class="alert alert-danger">
@@ -27,23 +28,21 @@
 							</c:if>
 							<div class="input-group input-sm">
 								<label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
-								<input type="text" class="form-control" id="username" name="ssoId" placeholder="Enter Username" required>
+								<input type="text" class="form-control" id="username" name="ssoId" placeholder="nom d'utilisateur" required>
 							</div>
 							<div class="input-group input-sm">
 								<label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label> 
-								<input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+								<input type="password" class="form-control" id="password" name="password" placeholder="mot de passe" required>
 							</div>
 							<input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
 								
 							<div class="form-actions">
 								<input type="submit"
-									class="btn btn-block btn-primary btn-default" value="Connexion">
+									class="btn btn-info btn-block login" value="Connexion">
 							</div>
 						</form>
-					</div>
-				</div>
+            </div>
+        	</div>
 			</div>
-		</div>
-
 	</body>
 </html>

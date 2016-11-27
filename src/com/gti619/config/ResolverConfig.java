@@ -31,7 +31,10 @@ public class ResolverConfig extends WebMvcConfigurerAdapter {
      *
      */
     @Override
+
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/views_css/**").addResourceLocations("/views_css/");
+        registry.addResourceHandler("/ressources/**").addResourceLocations("/css_js/");
     }
+
+
 }

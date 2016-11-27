@@ -7,16 +7,22 @@
 		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 </head>
 <nav class="navbar navbar-light bg-faded">
-  <a class="navbar-brand" href=""></strong></a>
+  <a class="navbar-brand" href=""></a>
   <ul class="nav navbar-nav">
   <li class="nav-item active">
-      <a href="<c:url value="/homeCarre" />">Home</a>
+      <a href="<c:url value="/homeAdmin" />">Home</a>
     </li>
     <li class="nav-item active">
-      <a href="<c:url value="/carre" />">Carre</a>
+      <a href="<c:url value="/cercle" />">Cercle</a>
+    </li>
+    <li class="nav-item">
+ 		<a href="<c:url value="/carre" />">Carre</a>
+    </li>
+    <li class="nav-item">
+      <a href="<c:url value="/administration" />">Administration</a>
     </li>
   </ul>
-</nav>	
+</nav>
 
 <body>
 <br><br>

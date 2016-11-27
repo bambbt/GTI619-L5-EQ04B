@@ -19,16 +19,16 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		
-		/*auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
+		auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 		
-		auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
-		auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
+		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
+		//auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
 		
 		//On doit crypter le mot de passe
 		
-		auth.userDetailsService(new CustomUserDetailsService());
+		//auth.userDetailsService(new CustomUserDetailsService());
 		// Ici, on doit faire appel � la base de donn�es 
 		
 	}
@@ -39,13 +39,15 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	  http.authorizeRequests()
-	  	.antMatchers("/", "/home").access("hasRole('USER')")
+		http.authorizeRequests()
+		.antMatchers("/", "/home").access("hasRole('USER')")
 	  	.antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/homeCarre/**").access("hasRole('CARRE')")
 	  	.antMatchers("/homeCercle/**").access("hasRole('CERCLE')")
-	  	.antMatchers("/cercle/**").access("hasRole('ADMIN') or hasRole('CERCLE')")
-	  	.antMatchers("/carre/**").access("hasRole('ADMIN') or hasRole('CARRE')")
+	  	.antMatchers("/cercle/**").access("hasRole('CERCLE') or hasRole('ADMIN')")
+	  	.antMatchers("/carre/**").access("hasRole('CARRE') or hasRole('ADMIN')")
+	  	.antMatchers("/cercleA/**").access("hasRole('ADMIN')")
+	  	.antMatchers("/carreA/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/administration/**").access("hasRole('ADMIN')")
 	  	.and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
 	  	.usernameParameter("ssoId").passwordParameter("password")
