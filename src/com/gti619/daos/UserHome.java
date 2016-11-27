@@ -1,4 +1,4 @@
-package com.gti619.daos;
+	package com.gti619.daos;
 // default package
 // Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1
 
@@ -11,9 +11,9 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.gti619.model.User;
 
@@ -22,24 +22,16 @@ import com.gti619.model.User;
  * @see .User
  * @author Hibernate Tools
  */
-
+@Repository
 public class UserHome {
 
 	private static final Log log = LogFactory.getLog(UserHome.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
-	protected SessionFactory getSessionFactory() {
-		try {
-			Configuration configuration = new Configuration().configure("resource/hibernate.cfg.xml");
-			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-			applySettings(configuration.getProperties());
-			SessionFactory factory = configuration.buildSessionFactory(builder.build());
-			return factory;
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
+	protected Session getSession(){
+		return sessionFactory.getCurrentSession();
 	}
 
 	public void persist(User transientInstance) {
@@ -119,7 +111,7 @@ public class UserHome {
 		try {
 			@SuppressWarnings("deprecation")
 			List<?> results = sessionFactory.getCurrentSession().createCriteria("User").add(Example.create(instance))
-					.list();
+			.list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {
@@ -128,23 +120,14 @@ public class UserHome {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	public User findByUserName(String username) {
 
 		List<User> users = new ArrayList<User>();
 
-		Session session= null;
-		Transaction tx= null;
-		
-		session= getSessionFactory().openSession();
-		tx = session.beginTransaction();
-		
-		users = session.createQuery("from User where login=?")
-			.setParameter(0, username).list();
-		
-		tx.commit();
-		
-		session.close();
+		users = getSession().createQuery("from User where login=?")
+				.setParameter(0, username).list();
+
 		if (users.size() > 0) {
 			return users.get(0);
 		} else {

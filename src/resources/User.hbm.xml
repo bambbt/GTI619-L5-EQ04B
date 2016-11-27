@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+ <class catalog="mydb" name="com.gti619.model.User" table="user">
+  <id name="iduser" type="java.lang.Integer">
+   <column name="iduser"/>
+   <generator class="identity"/>
+  </id>
+  <many-to-one class="Role" fetch="select" name="role">
+   <column name="role_idrole" not-null="true"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="login" type="string">
+   <column length="45" name="login" unique="true"/>
+  </property>
+  <property generated="never" lazy="false" name="mdp" type="string">
+   <column length="45" name="mdp"/>
+  </property>
+ </class>
+</hibernate-mapping>

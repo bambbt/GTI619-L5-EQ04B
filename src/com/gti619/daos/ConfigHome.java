@@ -7,10 +7,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gti619.model.Config;
 
@@ -24,19 +24,11 @@ public class ConfigHome {
 
 	private static final Log log = LogFactory.getLog(ConfigHome.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
-	protected SessionFactory getSessionFactory() {
-		try {
-			Configuration configuration = new Configuration().configure("resource/hibernate.cfg.xml");
-			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-					applySettings(configuration.getProperties());
-			SessionFactory factory = configuration.buildSessionFactory(builder.build());
-			return factory;
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
+	protected Session getSession(){
+		return sessionFactory.getCurrentSession();
 	}
 
 	public void persist(Config transientInstance) {

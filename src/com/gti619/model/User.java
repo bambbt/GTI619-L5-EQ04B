@@ -1,4 +1,5 @@
 package com.gti619.model;
+
 // default package
 // Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1
 
@@ -8,6 +9,7 @@ package com.gti619.model;
 public class User implements java.io.Serializable {
 
 	private Integer iduser;
+	
 	private Role role;
 	private String login;
 	private String mdp;
