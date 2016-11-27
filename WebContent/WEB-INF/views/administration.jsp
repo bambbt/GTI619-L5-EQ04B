@@ -1,18 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
+<link href="/ressources/toastr/build/toastr.css" rel="stylesheet"/>
 <html>
 <head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Administration</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 		 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
-		 <c:if test="${error}">
-	 		<script type="text/javascript">
-      		  msg();
-    		</script>
-		</c:if>
+		
 </head>
 <nav class="navbar navbar-light bg-faded">
   <ul class="nav navbar-nav">
@@ -32,6 +28,9 @@
 </nav>	
 
 <body>
+
+
+
 
 
 
@@ -81,6 +80,12 @@
                     onkeyup="checkPass(); return false;" required />
                         <span id="confirmMessage" class="confirmMessage"></span>
             </div>
+            
+              <div class="form-group">
+                <label for="password"><span class="req">* </span> (Approbation) Mot de passe Administrateur : </label>
+                    <input required name="paswdAdmin" type="paswdAdmin" class="form-control inputpass" minlength="4" path="paswdAdmin" maxlength="16" placeholder="Valider l'ajout avec votre mot de passe admnistrateur" id="paswdAdmin" required /> </p>
+            </div>
+            
             <div class="form-group">
                 <input class="btn btn-success"  type="submit" name="submit_reg" value="Ajouter">
             </div>
@@ -91,9 +96,8 @@
 		</div>
 	</div>
 </div>
-<div id="snackbar"></div>
-<button onclick="msg()">Show Snackbar</button>
-<br>
+<div  id="snackbar"></div>
+
 <a href="<c:url value="/logout" />">Logout</a>
 <br><br>
 

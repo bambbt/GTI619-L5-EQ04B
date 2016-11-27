@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class RequestController {
+public class GetController {
 		
 	
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
@@ -80,36 +80,6 @@ public class RequestController {
 			url = "/cercleA";
 		}
 		return url;
-	}
-	
-	//POST
-	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView postAddUser(
-			@RequestParam("role") String role, 
-			@RequestParam("userId") String userId,
-			@RequestParam("firstname") String firstname,
-			@RequestParam("lastname") String lastname,
-			@RequestParam("password") String password) {
-		ModelAndView model = new ModelAndView();
-		String raison = "Ok";
-		Boolean err=true;
-		
-		
-		System.out.println("Reception du form en poste");
-		System.out.println("Voici les elements : "+role +"" +userId +" "+firstname+" "+lastname+" "+password );
-		//Validation du formulaire
-		
-		//1 valider le mot de passe de l'administrateur
-		
-		// Si valide, proceder à l'ajout de l'utilisateur
-		
-		
-		
-		model.setViewName("/administration");
-		model.addObject("error", err);
-		model.addObject("raison", raison);
-		return model;
 	}
 	
 	//GET
