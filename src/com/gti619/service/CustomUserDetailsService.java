@@ -44,7 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	// org.springframework.security.core.userdetails.User
 	private User buildUserForAuthentication(com.gti619.model.User user, 
 			List<GrantedAuthority> authorities) {
-		return new User(user.getEmail(), 
+		return new User(user.getLogin(), 
 				user.getMdp(), true, 
 				true, true, true, authorities);
 	}
@@ -54,19 +54,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
 		// Build user's authorities
-		setAuths.add(new SimpleGrantedAuthority(role.getNom()));
+		setAuths.add(new SimpleGrantedAuthority("ROLE_"+role.getNom()));
 
 		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 
 		return Result;
-	}
-
-	public UserHome getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserHome userDao) {
-		this.userDao = userDao;
 	}
 
 }

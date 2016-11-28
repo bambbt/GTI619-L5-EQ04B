@@ -12,6 +12,7 @@ import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
+import com.gti619.model.Role;
 import com.gti619.model.User;
 
 /**
@@ -115,16 +116,23 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 	@SuppressWarnings("unchecked")
 	public User findByUserName(String username) {
 
-		List<User> users = new ArrayList<User>();
+		List<Object[]> users = new ArrayList<Object[]>();
 
-		users = getSession().createQuery("from User where login=?")
+		users = getSession().createQuery("from User u, Role r  where login=? and  u.role=r")
 				.setParameter(0, username).list();
+		log.debug("find by Username successful, result size: " + users.size());
 
 		if (users.size() > 0) {
-			return users.get(0);
+			
+			User user = (User) users.get(0)[0];
+			Role r = (Role) users.get(0)[1];
+			user.setRole(r);
+			return user;
 		} else {
 			return null;
 		}
+		
+		
 
 	}
 }

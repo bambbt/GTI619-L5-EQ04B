@@ -1,6 +1,6 @@
 package com.gti619.model;
 // default package
-// Generated Nov 28, 2016 1:56:39 PM by Hibernate Tools 5.1.0.Beta1
+// Generated Nov 28, 2016 4:33:27 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +15,8 @@ public class User implements java.io.Serializable {
 	private String email;
 	private String mdp;
 	private String name;
-	private String FName;
-	private Boolean isLocked;
+	private String login;
+	private Integer isLocked;
 	private String salt;
 	private Set oldPasswords = new HashSet(0);
 
@@ -27,13 +27,13 @@ public class User implements java.io.Serializable {
 		this.role = role;
 	}
 
-	public User(Role role, String email, String mdp, String name, String FName, Boolean isLocked, String salt,
+	public User(Role role, String email, String mdp, String name, String login, Integer isLocked, String salt,
 			Set oldPasswords) {
 		this.role = role;
 		this.email = email;
 		this.mdp = mdp;
 		this.name = name;
-		this.FName = FName;
+		this.login = login;
 		this.isLocked = isLocked;
 		this.salt = salt;
 		this.oldPasswords = oldPasswords;
@@ -79,19 +79,19 @@ public class User implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public String getFName() {
-		return this.FName;
+	public String getLogin() {
+		return this.login;
 	}
 
-	public void setFName(String FName) {
-		this.FName = FName;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
-	public Boolean getIsLocked() {
+	public Integer getIsLocked() {
 		return this.isLocked;
 	}
 
-	public void setIsLocked(Boolean isLocked) {
+	public void setIsLocked(Integer isLocked) {
 		this.isLocked = isLocked;
 	}
 
