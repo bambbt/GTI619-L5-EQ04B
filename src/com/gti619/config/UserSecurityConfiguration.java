@@ -1,13 +1,13 @@
 package com.gti619.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import com.gti619.service.CustomUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -15,20 +15,25 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	CustomSuccessHandler customSuccessHandler;
+	
+	 @Autowired
+	 @Qualifier("customUserDetailsService")
+	 UserDetailsService userDetailsService;
+	 
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		
 		//auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		//auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
-		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+		//auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 		
 		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
 		//auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
 		
 		//On doit crypter le mot de passe
 		
-		//auth.userDetailsService(new CustomUserDetailsService());
+		auth.userDetailsService(userDetailsService);
 		// Ici, on doit faire appel � la base de donnees 
 		
 	}

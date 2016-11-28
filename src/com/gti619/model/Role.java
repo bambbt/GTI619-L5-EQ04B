@@ -1,6 +1,5 @@
 package com.gti619.model;
-// default package
-// Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1
+
 
 import java.util.HashSet;
 import java.util.Set;

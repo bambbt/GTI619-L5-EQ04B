@@ -4,6 +4,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
@@ -18,6 +20,7 @@ import com.gti619.model.User;
  * @author Hibernate Tools
  */
 @Repository("UserHome")
+@Transactional
 public class UserHome extends SessionFactoryHibernateDAOSupport{
 
 	private static final Log log = LogFactory.getLog(UserHome.class);

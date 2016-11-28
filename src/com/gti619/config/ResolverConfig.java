@@ -1,11 +1,10 @@
 package com.gti619.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -15,16 +14,15 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = "com.gti619")
 public class ResolverConfig extends WebMvcConfigurerAdapter {
 	
-	@Bean(name="app")
-	public ViewResolver viewResolver() {
-		
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-
-		return viewResolver;
-	}
+	
+	 public void configureViewResolvers(ViewResolverRegistry registry) {
+		 
+	        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+	        viewResolver.setViewClass(JstlView.class);
+	        viewResolver.setPrefix("/WEB-INF/views/");
+	        viewResolver.setSuffix(".jsp");
+	        registry.viewResolver(viewResolver);
+	    }
 	
 
 	/*

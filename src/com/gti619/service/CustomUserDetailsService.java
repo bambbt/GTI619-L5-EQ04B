@@ -21,13 +21,13 @@ import com.gti619.model.Role;
 
 
 
-@Service("CustomUserDetailsService")
-@Transactional
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private UserHome userDao ;
 
+	
 	@Override
 	public UserDetails loadUserByUsername(final String username) 
 			throws UsernameNotFoundException {

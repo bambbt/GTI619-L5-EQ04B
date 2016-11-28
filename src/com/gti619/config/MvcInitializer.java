@@ -3,25 +3,25 @@ package com.gti619.config;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
- * Permet d'initialiser l'appel à la racine dès le lancement de l'app.
+ * Permet d'initialiser l'appel ï¿½ la racine dï¿½s le lancement de l'app.
  * @author i7ais
  *
  */
 public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { ResolverConfig.class };
-	}
- 
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return null;
-	}
- 
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] { "/" };
-	}
+	   @Override
+	    protected Class<?>[] getRootConfigClasses() {
+	        return new Class[] { ResolverConfig.class };
+	    }
+	  
+	    @Override
+	    protected Class<?>[] getServletConfigClasses() {
+	        return null;
+	    }
+	  
+	    @Override
+	    protected String[] getServletMappings() {
+	        return new String[] { "/" };
+	    }
 
 }
