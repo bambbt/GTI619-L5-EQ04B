@@ -54,5 +54,37 @@ public class PostController {
 			model.addObject("raison", raison);
 			return model;
 		}
+		
+		
+		
+		//POST
+				@RequestMapping(value = "/changePasswd", method = RequestMethod.POST)
+				@ResponseBody
+				public ModelAndView postChangePasswd(
+						@RequestParam("username") String username,
+						@RequestParam("oldPass") String oldPass,
+						@RequestParam("password") String password){
+					ModelAndView model = new ModelAndView();
+					String raison = "Ok";
+					Boolean err=true;
+					
+					
+					System.out.println("Reception du form en poste");
+					System.out.println("Voici les elements : "+username+" "+oldPass+" "+password );
+					//Validation du formulaire
+					
+					//1 Vérifier si l'ancien mot de passe concorde
+					
+					// Si valide, vérifier que le nouveau mdp n'a pas déja été utiliser
+					
+					// Si valide on procède à la mise a jour du mdp
+					
+					
+					
+					model.setViewName("/changePasswd");
+					model.addObject("error", err);
+					model.addObject("raison", raison);
+					return model;
+				}
 	
 }
