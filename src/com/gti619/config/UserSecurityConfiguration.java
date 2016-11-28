@@ -3,6 +3,8 @@ package com.gti619.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
+@PropertySource(value = { "classpath:resources/application.properties" })
 public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -20,13 +23,16 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 @Qualifier("customUserDetailsService")
 	 UserDetailsService userDetailsService;
 	 
+	 @Autowired
+	 private Environment environment;
+	 
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		
 		//auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		//auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
-		//auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+		auth.inMemoryAuthentication().withUser("admin").password( environment.getRequiredProperty("jdbc.password")).roles("ADMIN");
 		
 		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
 		//auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/

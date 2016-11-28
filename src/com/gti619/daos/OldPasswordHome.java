@@ -1,31 +1,35 @@
 package com.gti619.daos;
 // default package
-// Generated Nov 26, 2016 12:48:25 PM by Hibernate Tools 5.1.0.Beta1
+// Generated Nov 28, 2016 1:39:03 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.util.List;
+import javax.naming.InitialContext;
+import javax.transaction.Transactional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
-import com.gti619.model.Config;
+import com.gti619.model.OldPassword;
 
 /**
- * Home object for domain model class Config.
- * @see .Config
+ * Home object for domain model class OldPassword.
+ * @see .OldPassword
  * @author Hibernate Tools
  */
-@Repository("ConfigHome")
-public class ConfigHome extends SessionFactoryHibernateDAOSupport{
+@Repository("OldPasswordHome")
+@Transactional
+public class OldPasswordHome extends SessionFactoryHibernateDAOSupport{
 
-	private static final Log log = LogFactory.getLog(ConfigHome.class);
+	private static final Log log = LogFactory.getLog(OldPasswordHome.class);
 
-	
 
-	public void persist(Config transientInstance) {
-		log.debug("persisting Config instance");
+
+	public void persist(OldPassword transientInstance) {
+		log.debug("persisting OldPassword instance");
 		try {
 			getSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -35,8 +39,8 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void attachDirty(Config instance) {
-		log.debug("attaching dirty Config instance");
+	public void attachDirty(OldPassword instance) {
+		log.debug("attaching dirty OldPassword instance");
 		try {
 			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -46,8 +50,8 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void attachClean(Config instance) {
-		log.debug("attaching clean Config instance");
+	public void attachClean(OldPassword instance) {
+		log.debug("attaching clean OldPassword instance");
 		try {
 			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -57,8 +61,8 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void delete(Config persistentInstance) {
-		log.debug("deleting Config instance");
+	public void delete(OldPassword persistentInstance) {
+		log.debug("deleting OldPassword instance");
 		try {
 			getSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -68,10 +72,10 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public Config merge(Config detachedInstance) {
-		log.debug("merging Config instance");
+	public OldPassword merge(OldPassword detachedInstance) {
+		log.debug("merging OldPassword instance");
 		try {
-			Config result = (Config) getSession().merge(detachedInstance);
+			OldPassword result = (OldPassword) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -80,10 +84,10 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public Config findById(java.lang.Integer id) {
-		log.debug("getting Config instance with id: " + id);
+	public OldPassword findById(java.lang.Integer id) {
+		log.debug("getting OldPassword instance with id: " + id);
 		try {
-			Config instance = (Config) getSession().get("Config", id);
+			OldPassword instance = (OldPassword) getSession().get("OldPassword", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -96,11 +100,11 @@ public class ConfigHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public List findByExample(Config instance) {
-		log.debug("finding Config instance by example");
+	public List findByExample(OldPassword instance) {
+		log.debug("finding OldPassword instance by example");
 		try {
-			List results = getSession().createCriteria("Config").add(Example.create(instance))
-					.list();
+			List results = getSession().createCriteria("OldPassword")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

@@ -13,21 +13,22 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
-import com.gti619.model.Role;
+import com.gti619.model.SecurityConfig;
 
 /**
- * Home object for domain model class Role.
- * @see .Role
+ * Home object for domain model class SecurityConfig.
+ * @see .SecurityConfig
  * @author Hibernate Tools
  */
-@Repository("RoleHome")
+
+@Repository("SecurityConfigHome")
 @Transactional
-public class RoleHome extends SessionFactoryHibernateDAOSupport{
+public class SecurityConfigHome extends SessionFactoryHibernateDAOSupport{
 
-	private static final Log log = LogFactory.getLog(RoleHome.class);
+	private static final Log log = LogFactory.getLog(SecurityConfigHome.class);
 
-	public void persist(Role transientInstance) {
-		log.debug("persisting Role instance");
+	public void persist(SecurityConfig transientInstance) {
+		log.debug("persisting SecurityConfig instance");
 		try {
 			getSession().persist(transientInstance);
 			log.debug("persist successful");
@@ -37,8 +38,8 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void attachDirty(Role instance) {
-		log.debug("attaching dirty Role instance");
+	public void attachDirty(SecurityConfig instance) {
+		log.debug("attaching dirty SecurityConfig instance");
 		try {
 			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -48,8 +49,8 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void attachClean(Role instance) {
-		log.debug("attaching clean Role instance");
+	public void attachClean(SecurityConfig instance) {
+		log.debug("attaching clean SecurityConfig instance");
 		try {
 			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
@@ -59,8 +60,8 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public void delete(Role persistentInstance) {
-		log.debug("deleting Role instance");
+	public void delete(SecurityConfig persistentInstance) {
+		log.debug("deleting SecurityConfig instance");
 		try {
 			getSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -70,10 +71,10 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public Role merge(Role detachedInstance) {
-		log.debug("merging Role instance");
+	public SecurityConfig merge(SecurityConfig detachedInstance) {
+		log.debug("merging SecurityConfig instance");
 		try {
-			Role result = (Role) getSession().merge(detachedInstance);
+			SecurityConfig result = (SecurityConfig) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -82,10 +83,10 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public Role findById(java.lang.Integer id) {
-		log.debug("getting Role instance with id: " + id);
+	public SecurityConfig findById(java.lang.Integer id) {
+		log.debug("getting SecurityConfig instance with id: " + id);
 		try {
-			Role instance = (Role) getSession().get("Role", id);
+			SecurityConfig instance = (SecurityConfig) getSession().get("SecurityConfig", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -98,11 +99,11 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 		}
 	}
 
-	public List findByExample(Role instance) {
-		log.debug("finding Role instance by example");
+	public List findByExample(SecurityConfig instance) {
+		log.debug("finding SecurityConfig instance by example");
 		try {
-			List results = getSession().createCriteria("Role").add(Example.create(instance))
-					.list();
+			List results = getSession().createCriteria("SecurityConfig")
+					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {

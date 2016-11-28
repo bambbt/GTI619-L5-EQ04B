@@ -13,8 +13,5 @@
   <property name="format_sql">true</property>
   <property name="use_sql_comments">true</property>
   <property name="hbm2ddl.auto">validate</property>
-  <mapping resource="resources/Config.hbm.xml"/>	  
-  <mapping resource="resources/User.hbm.xml"/>
-  <mapping resource="resources/Role.hbm.xml "/>
  </session-factory>
 </hibernate-configuration>

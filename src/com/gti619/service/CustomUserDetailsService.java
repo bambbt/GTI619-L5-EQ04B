@@ -44,7 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	// org.springframework.security.core.userdetails.User
 	private User buildUserForAuthentication(com.gti619.model.User user, 
 			List<GrantedAuthority> authorities) {
-		return new User(user.getLogin(), 
+		return new User(user.getEmail(), 
 				user.getMdp(), true, 
 				true, true, true, authorities);
 	}

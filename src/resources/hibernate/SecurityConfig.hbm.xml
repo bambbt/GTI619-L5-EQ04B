@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 28, 2016 1:56:39 PM by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="com.gti619.model.SecurityConfig" table="securityConfig" catalog="mydb" optimistic-lock="version">
+        <id name="idconfig" type="java.lang.Integer">
+            <column name="idconfig" />
+            <generator class="identity" />
+        </id>
+        <property name="nbTentativesMax" type="int">
+            <column name="nb_tentatives_max" not-null="true" />
+        </property>
+        <property name="authenticationTimeout" type="java.lang.Integer">
+            <column name="authentication_timeout">
+                <comment>Temps en minutes.</comment>
+            </column>
+        </property>
+        <property name="nbOldPasswordToSave" type="java.lang.Integer">
+            <column name="nb_old_password_to_save" />
+        </property>
+        <property name="hashFuncVersion" type="string">
+            <column name="hash_func_version" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>
