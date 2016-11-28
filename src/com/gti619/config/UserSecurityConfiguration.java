@@ -21,15 +21,15 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		//auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		//auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
-		//auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 		
 		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
 		//auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
 		
 		//On doit crypter le mot de passe
 		
-		auth.userDetailsService(new CustomUserDetailsService());
-		// Ici, on doit faire appel � la base de donn�es 
+		//auth.userDetailsService(new CustomUserDetailsService());
+		// Ici, on doit faire appel � la base de donnees 
 		
 	}
 
