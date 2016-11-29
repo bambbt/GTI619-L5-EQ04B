@@ -37,6 +37,11 @@ function login(txt) {
     txt.value = txt.value.replace(/[^a-zA-Z0-9-'\n\r.]+/g, '');
 }
 
+
+function nom(txt) {
+    txt.value = txt.value.replace(/[^a-zA-Z0-9- '\n\r.]+/g, '');
+}
+
 function validateRole(){
 
 var messageBox = document.getElementById('userBoxMessage');

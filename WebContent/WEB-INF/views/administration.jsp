@@ -7,9 +7,12 @@
 <head>
 <title>Administration</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link href="<c:url value='/ressources/css/bootstrap.css' />"
-	rel="stylesheet"></link>
+<link href="<c:url value='/ressources/css/bootstrap.css' />" rel="stylesheet"/>
+<link href="<c:url value='/ressources/js/toastr/build/toastr.css' />" rel="stylesheet"/>
 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
+<script src="<c:url value="/ressources/js/jquery-3.1.1.min.js" />"></script>
+<script src="<c:url value="/ressources/js/toastr/toastr.js" />"></script>
+
 </head>
 <nav class="navbar navbar-light bg-faded">
 	<ul class="nav navbar-nav">
@@ -29,7 +32,7 @@
     </li>
 	</ul>
 </nav>
-<body>
+<body onload="toto()">
       
 <h4>Administration : Formulaire d'ajout un utilisateur </h4>
 	<div class="container">
@@ -74,9 +77,9 @@
 						
 											 
 						<div class="form-group">
-							<label for="firstname"><span class="req">* </span> Nom & Prenom :
+							<label for="completeName"><span class="req">* </span> Nom & Prenom :
 							</label> <input class="form-control" type="text" name="completeName"
-								id="txt" onkeyup="Validate(this)" placeholder="NomPrenom" />
+								id="txt" onkeyup="nom(this)" placeholder="NomPrenom" />
 							<div id="errFirst"></div>
 						</div>
 
@@ -125,8 +128,13 @@
 	<br>
 	
 <script type="text/javascript">
+
+function toto(){
+	toastr.info('Are you the 6 fingered man?');
+}
+
 function pop(txt) {
-    var x = document.getElementById("snackbar")
+    var x = document.getElementById("snackbar");
     x.className = "show";
     setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
 }
