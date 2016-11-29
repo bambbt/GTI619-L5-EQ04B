@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes
 public class GetController {
 		
 	
@@ -92,15 +94,27 @@ public class GetController {
 		if (auth != null){    
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
+		SecurityContextHolder.clearContext();
 		return "redirect:/login?logout";
 	}
 	
 	//GET
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
-		System.out.println("changePasswd");		
+		System.out.println("changePasswd");	
+		model.addAttribute("username", getPrincipal());
 		return "changePasswd";
 	}
+	
+	
+	
+	//GET
+		@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
+		public String getAdminLog(ModelMap model) {
+			System.out.println("adminLog");	
+			//model.addAttribute("log",);
+			return "adminLog";
+		}
 	
 	//GET
 		@RequestMapping(value = "/myHome", method = RequestMethod.GET)

@@ -3,7 +3,7 @@
 <html>
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Home Admin</title>
+		<title>Log</title>
 		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 </head>
 <nav class="navbar navbar-light bg-faded">
@@ -20,7 +20,7 @@
     <li class="nav-item">
       <a href="<c:url value="/administration" />">Administration</a>
     </li>
-   <li class="nav-item">
+    <li class="nav-item">
       <a href="<c:url value="/adminLog" />">Log</a>
     </li>
       <li class="nav-item">
@@ -30,15 +30,8 @@
 </nav>		
 
 <body>
-<br>
-	<br>
-	<h1>Bonjour <strong> ${user}</strong></h1>
-	<br>
-	<br>
+	<h2>Consultation des LOG</h2>
 	
-	<h2>Bienvenue dans votre espace Admin de travail</h2>
-	
-	<br>
 	<br>
 	<a href="<c:url value="/logout" />">Logout</a>
 	

@@ -19,8 +19,11 @@
     </li>
     <li class="nav-item">
       <a href="<c:url value="/administration" />">Administration</a>
+     </li>
+      <li class="nav-item">
+      <a href="<c:url value="/adminLog" />">Log</a>
     </li>
-     <li class="nav-item">
+      <li class="nav-item">
       <a href="<c:url value="/changePasswd" />">Mon Compte</a>
     </li>
   </ul>
