@@ -122,6 +122,7 @@
 
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
+	
 <script type="text/javascript">
 function pop(){
 	
