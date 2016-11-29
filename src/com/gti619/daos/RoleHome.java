@@ -2,6 +2,7 @@ package com.gti619.daos;
 // default package
 // Generated Nov 28, 2016 1:39:03 PM by Hibernate Tools 5.1.0.Beta1
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
 import com.gti619.model.Role;
+import com.gti619.model.User;
 
 /**
  * Home object for domain model class Role.
@@ -109,5 +111,21 @@ public class RoleHome extends SessionFactoryHibernateDAOSupport{
 			log.error("find by example failed", re);
 			throw re;
 		}
+	}
+
+	public Role findByName(String strRole) {
+
+		Role role;
+
+		role = (Role) getSession().createQuery("from Role where nom=?")
+				.setParameter(0, strRole).list().get(0);
+		log.debug("find by Username successful, result size: " + role.getNom());
+
+		if (role !=null) {
+			return role;
+		} else {
+			return null;
+		}
+
 	}
 }

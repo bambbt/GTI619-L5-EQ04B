@@ -39,13 +39,13 @@
 						<div class="form-group">
 							<label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role" id="roleCarre"
-								value="roleCarre"> ROLE CARRE
+								value="CARRE"> ROLE CARRE
 							</label> <label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role"
-								id="roleCercle" value="roleCercle"> ROLE CERCLE
+								id="roleCercle" value="CERCLE"> ROLE CERCLE
 							</label> <label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role" id="roleAdmin"
-								value="roleAdmin"> ROLE AMNISTRATEUR
+								value="ADMIN"> ROLE AMNISTRATEUR
 							</label>
 							<div>
 								<span id="userBoxMessage" class="confirmMessage"></span>
@@ -83,7 +83,7 @@
 							</p>
 
 							<label for="password"><span class="req">* </span>
-								Confirmation du mot de passe : </label> <input required name="password"
+								Confirmation du mot de passe : </label> <input required name="passwordAgain"
 								type="password" class="form-control inputpass" minlength="6"
 								maxlength="16" placeholder="Saisir de nouveau le mot de passe"
 								id="pass2" onkeyup="checkPass(); return false;" required /> <span
