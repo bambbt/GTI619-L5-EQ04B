@@ -7,13 +7,15 @@
 		<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 </head>
 <nav class="navbar navbar-light bg-faded">
-  <a class="navbar-brand" href=""></a>
   <ul class="nav navbar-nav">
   <li class="nav-item active">
       <a href="<c:url value="/homeCercle" />">Home</a>
     </li>
     <li class="nav-item active">
       <a href="<c:url value="/cercle" />">Cercle</a>
+    </li>
+     <li class="nav-item">
+      <a href="<c:url value="/changePasswd" />">Mon Compte</a>
     </li>
   </ul>
 </nav>	

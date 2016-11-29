@@ -98,25 +98,28 @@ public class GetController {
 	//GET
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
-		System.out.println("changePasswd");
-		
-		//model.addAttribute("navBar", );
-		model.addAttribute("username", getPrincipal());
-		
-		String role = getRole();
-		if(role.equals("ROLE_CARRE")){
-			model.addAttribute("navBar", navAdmin);
-		}
-		else if(role.equals("ROLE_CERCLE")){
-			model.addAttribute("navBar",navAdmin );
-		}
-		else if(role.equals("ROLE_ADMIN")){
-			model.addAttribute("navBar",navAdmin );
-		}
-		
+		System.out.println("changePasswd");		
 		return "changePasswd";
 	}
 	
+	//GET
+		@RequestMapping(value = "/myHome", method = RequestMethod.GET)
+		public String getmyHome() {
+			System.out.println("myHome");	
+			String url = "";
+			List<String> userRoles = this.getAuthorities();
+			
+			if (userRoles.contains("ROLE_CERCLE")) {
+				url= "/homeCercle";
+			} 
+			else if (userRoles.contains("ROLE_CARRE")) {
+				url = "/homeCarre";
+			}
+			else if (userRoles.contains("ROLE_ADMIN")) {
+				url = "/homeAdmin";
+			}
+			return url;
+		}
 	
 
 	/**
@@ -161,26 +164,5 @@ public class GetController {
 		
 		return roles.get(0);
 	}
-		
-	String navAdmin = 
-	"<nav class=\"navbar navbar-light bg-faded\">"+ "\n" +
-	  "<ul class=\"nav navbar-nav\">"+ "\n" +
-	  "<li class=\"nav-item active\">"+ "\n" +
-	      "<a href=\"<c:url value=\"/homeAdmin\" />\">Home</a>"+ "\n" +
-	    "</li>"+ "\n" +
-	    "<li class=\"nav-item active\">"+ "\n" +
-	      "<a href=\"<c:url value=\"/cercle\" />\">Cercle</a>"+ "\n" +
-	    "</li>"+ "\n" +
-	    "<li class=\"nav-item\">"+ "\n" +
-	 		"<a href=\"<c:url value=\"/carre\" />\">Carre</a>"+ "\n" +
-	 	"</li>"+ "\n" +
-	    "<li class=\"nav-item\">"+ "\n" +
-	      "<a href=\"<c:url value=\"/administration\" />\">Administration</a>"+ "\n" +
-	   "</li>"+ "\n" +
-	      "<li class=\"nav-item\">"+ "\n" +
-	      "<a href=\"<c:url value=\"/changePasswd\" />\">Mon Compte</a>"+ "\n" +
-	    "</li>"+ "\n" +
-	  "</ul>"+ "\n" +
-	"</nav>";	
 	
 }
