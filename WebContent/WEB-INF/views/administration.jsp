@@ -32,8 +32,10 @@
     </li>
 	</ul>
 </nav>
-<body onload="toto()">
-      
+<body onload="pop()">
+
+ <input type="hidden" id="raison" name="raison" value="${raison}"></input>	 
+ <input type="hidden" id="error" name="error" value="${error}"></input>	    
 <h4>Administration : Formulaire d'ajout un utilisateur </h4>
 	<div class="container">
 		<div class="row">
@@ -121,22 +123,25 @@
 			</div>
 		</div>
 	</div>
-	<div id="snackbar"></div>
 
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
-	<br>
 	
 <script type="text/javascript">
-
-function toto(){
-	toastr.info('Are you the 6 fingered man?');
-}
-
-function pop(txt) {
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
+function pop(){
+	
+	var erreur = document.getElementById("error").value
+	var raison = document.getElementById("raison").value
+	
+	if(erreur ==""){
+		toastr.info("Espace de'administration");
+	}
+	else if(erreur== "false"){
+		toastr.success("Succes"+raison)
+	}
+	else if(erreur=="true"){
+		toastr.error('Erreur'+raison);
+	}
 }
 </script> 
 </body>
