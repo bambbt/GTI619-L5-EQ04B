@@ -10,7 +10,6 @@
 <link href="<c:url value='/ressources/css/bootstrap.css' />"
 	rel="stylesheet"></link>
 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
-
 </head>
 <nav class="navbar navbar-light bg-faded">
 	<ul class="nav navbar-nav">
@@ -24,27 +23,20 @@
 		</li>
 	</ul>
 </nav>
-
 <body>
-
-
-
-
-
-
-	<h2>Administration</h2>
+      
+<h4>Administration : Formulaire d'ajout un utilisateur </h4>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
 				<form method="post" id="fileForm"
-					action="<c:url value="/adduser" />" role="form">
+					action="<c:url value="/adduser" />" name="formAddUser" role="form">
 					<fieldset>
 						<legend class="text-center">
-							Formulaire d'ajout un utilisateur <span class="req"><small>
+							<span class="req"><small>
 									( * = Obligatoire )</small></span>
 						</legend>
 						<div class="form-group">
-							<h4>Rôle utilisateur</h4>
 							<label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role" id="roleCarre"
 								value="roleCarre"> ROLE CARRE
@@ -62,22 +54,23 @@
 						<div class="form-group">
 							<label for="username"><span class="req">* </span> 
 								Login : </label> <input class="form-control" type="text"
-								name="login" id="txt" onkeyup="Validate(this)" placeholder=""
+								name="login" id="txt" onkeyup="Validate(this)" placeholder="Inscrire le login"
 								required />
 							<div id="errLast"></div>
 						</div>
 						<div class="form-group">
-							<label for="mail"><span class="req">* </span> 
-								Email </label> <input class="form-control" type="text"
-								name="mail" id="txt" onkeyup="Validate(this)" placeholder=""
+							<label for="mail"><span class="email">* </span> 
+								Email </label> <input class="form-control" type="email"
+								name="mail" id="mail"  placeholder="element@element.com"
 								required />
-							<div id="errLast"></div>
+							<span id="confirmMail" class="confirmMessage"></span>
 						</div>
-
+						
+											 
 						<div class="form-group">
 							<label for="firstname"><span class="req">* </span> Nom & Prenom :
 							</label> <input class="form-control" type="text" name="completeName"
-								id="txt" onkeyup="Validate(this)" required />
+								id="txt" onkeyup="Validate(this)" placeholder="NomPrenom" />
 							<div id="errFirst"></div>
 						</div>
 
@@ -124,6 +117,13 @@
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
 	<br>
-
+	
+<script type="text/javascript">
+function pop(txt) {
+    var x = document.getElementById("snackbar")
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
+}
+</script> 
 </body>
 </html>

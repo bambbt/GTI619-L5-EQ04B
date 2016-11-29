@@ -11,7 +11,7 @@ function checkPass()
     
     if(pass1 == null || pass2 ==null){
     	pass1.style.backgroundColor = rouge;
-    	pass1.style.backgroundColor = rouge;	   
+    	pass2.style.backgroundColor = rouge;	   
         message.innerHTML = "N'oubliez pas de saisir le mot de passe de l'utilisateur"
     }
     if(pass1.value == pass2.value){

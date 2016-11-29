@@ -28,10 +28,10 @@ public class PostController {
 			@RequestParam("mail") String mail,
 			@RequestParam("password") String password,
 			@RequestParam("paswdAdmin") String adminPass){
+		
 		ModelAndView model = new ModelAndView();
 		String raison = "Ok";
 		Boolean err=true;
-
 
 		System.out.println("Reception du form en poste");
 		System.out.println("I am "+getPrincipal());
@@ -43,9 +43,8 @@ public class PostController {
 		if(userService.validatePasswd(getPrincipal(), adminPass))
 			userService.addUser(role,login,completeName,mail,password);
 		else
-			raison = "Mauvais mot de passe.";
+			raison = "Erreur d'authentification Admin \n" +"Mauvais mot de passe.";
 		// Si valide, proceder � l'ajout de l'utilisateur
-
 
 
 		model.setViewName("/administration");
