@@ -50,6 +50,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+	
 		http.authorizeRequests()
 		.antMatchers("/", "/home").access("hasRole('USER')")
 	  	.antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")
@@ -60,6 +61,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	  	.antMatchers("/cercleA/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/carreA/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/administration/**").access("hasRole('ADMIN')")
+	  	.antMatchers("/adminLog/**").access("hasRole('ADMIN')")
 	  	.antMatchers("/adduser/**").access("hasRole('ADMIN')")
 	  	.and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
 	  	.usernameParameter("ssoId").passwordParameter("password")

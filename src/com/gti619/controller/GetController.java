@@ -22,6 +22,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class GetController {
 		
 	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String getloginPage() {
+		return "login";
+	}
+	
+	@RequestMapping(value = "/forgetPass", method = RequestMethod.GET)
+	public String getforgetPass() {
+		return "forgetPass";
+	}
+	
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
 		model.addAttribute("user", getPrincipal());
@@ -46,10 +56,7 @@ public class GetController {
 		return "denied";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String getloginPage() {
-		return "login";
-	}
+
 	
 	@RequestMapping(value = "/carre", method = RequestMethod.GET)
 	public String getcarre(ModelMap model) {

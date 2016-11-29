@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Connexion</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link href="<c:url value='/ressources/css/login.css' />"  rel="stylesheet"></link>
 	</head>
 
@@ -14,6 +14,7 @@
             <div id="output"></div>
             <div class="avatar" ></div>
             <div class="form-box">
+            
                <c:url var="loginUrl" value="/login" />
 						<form action="${loginUrl}" method="post" class="form-horizontal">
 							<c:if test="${param.error != null}">
@@ -41,6 +42,7 @@
 									class="btn btn-info btn-block login" value="Connexion">
 							</div>
 						</form>
+						<a href="<c:url value="/forgetPass" />">Mot de passe oublié ?</a>
             </div>
         	</div>
 			</div>
