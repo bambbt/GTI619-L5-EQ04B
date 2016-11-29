@@ -81,7 +81,9 @@ public class GetController {
 	
 	//GET
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
-	public String getAdministration() {
+	public String getAdministration(ModelMap model) {
+		model.addAttribute("notif", false);
+
 		System.out.println("Administration");
 		return "administration";
 	}

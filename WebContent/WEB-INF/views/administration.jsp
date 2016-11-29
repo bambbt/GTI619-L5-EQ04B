@@ -7,8 +7,10 @@
 <head>
 <title>Administration</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link href="<c:url value='/ressources/css/bootstrap.css' />" rel="stylesheet"/>
-<link href="<c:url value='/ressources/js/toastr/build/toastr.css' />" rel="stylesheet"/>
+<link href="<c:url value='/ressources/css/bootstrap.css' />"
+	rel="stylesheet" />
+<link href="<c:url value='/ressources/js/toastr/build/toastr.css' />"
+	rel="stylesheet" />
 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
 <script src="<c:url value="/ressources/js/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/ressources/js/toastr/toastr.js" />"></script>
@@ -24,17 +26,15 @@
 		</li>
 		<li class="nav-item"><a href="<c:url value="/administration" />">Administration</a>
 		</li>
-	  <li class="nav-item">
-      <a href="<c:url value="/adminLog" />">Log</a>
-    </li>
-      <li class="nav-item">
-      <a href="<c:url value="/changePasswd" />">Mon Compte</a>
-    </li>
+		<li class="nav-item"><a href="<c:url value="/adminLog" />">Log</a>
+		</li>
+		<li class="nav-item"><a href="<c:url value="/changePasswd" />">Mon
+				Compte</a></li>
 	</ul>
 </nav>
-<body onload="toto()">
-      
-<h4>Administration : Formulaire d'ajout un utilisateur </h4>
+<body onload="notification()">
+
+	<h4>Administration : Formulaire d'ajout un utilisateur</h4>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
@@ -42,13 +42,12 @@
 					action="<c:url value="/adduser" />" name="formAddUser" role="form">
 					<fieldset>
 						<legend class="text-center">
-							<span class="req"><small>
-									( * = Obligatoire )</small></span>
+							<span class="req"><small> ( * = Obligatoire )</small></span>
 						</legend>
 						<div class="form-group">
 							<label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role" id="roleCarre"
-								value="CARRE"> ROLE CARRE
+								value="CARRE" checked> ROLE CARRE
 							</label> <label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role"
 								id="roleCercle" value="CERCLE"> ROLE CERCLE
@@ -61,52 +60,48 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="username"><span class="req">* </span> 
-								Login : </label> <input class="form-control" type="text"
-								name="login" id="txt" onkeyup="login(this)" placeholder="Inscrire le login"
-								required />
+							<label for="login"><span class="req">* </span> Login : </label> <input
+								class="form-control" type="text" name="login" id="txt"
+								onkeyup="login(this)" placeholder="Inscrire le login" required />
 							<div id="errLast"></div>
 						</div>
 						<div class="form-group">
-							<label for="mail"><span class="email">* </span> 
-								Email </label> <input class="form-control" type="email"
-								name="mail" id="mail"  placeholder="element@element.com"
-								required />
-							<span id="confirmMail" class="confirmMessage"></span>
+							<label for="mail"><span class="email">* </span> Email </label> <input
+								class="form-control" type="email" name="mail" id="mail"
+								placeholder="element@element.com" required /> <span
+								id="confirmMail" class="confirmMessage"></span>
 						</div>
-						
-											 
+
+
 						<div class="form-group">
-							<label for="completeName"><span class="req">* </span> Nom & Prenom :
-							</label> <input class="form-control" type="text" name="completeName"
-								id="txt" onkeyup="nom(this)" placeholder="NomPrenom" />
+							<label for="completeName"><span class="req">* </span> Nom
+								&amp; Prenom : </label> <input class="form-control" type="text"
+								name="completeName" id="txt" onkeyup="nom(this)"
+								placeholder="NomPrenom" />
 							<div id="errFirst"></div>
 						</div>
 
 						<div class="form-group">
 							<label for="password"><span class="req">* </span> Mot de
 								passe : </label> <input required name="password" type="password"
-								class="form-control inputpass" minlength="6" path="pass1"
-								maxlength="16" placeholder="Saisir le mot de passe" id="pass1"
-								required />
-							</p>
-
-							<label for="password"><span class="req">* </span>
-								Confirmation du mot de passe : </label> <input required name="passwordAgain"
-								type="password" class="form-control inputpass" minlength="6"
-								maxlength="16" placeholder="Saisir de nouveau le mot de passe"
-								id="pass2" onkeyup="checkPass(); return false;" required /> <span
+								class="form-control inputpass" id="pass1" maxlength="16"
+								placeholder="Saisir le mot de passe" id="pass1" required /> <label
+								for="passwordAgain"><span class="req">* </span>
+								Confirmation du mot de passe : </label> <input required
+								name="passwordAgain" type="password"
+								class="form-control inputpass" maxlength="16"
+								placeholder="Saisir de nouveau le mot de passe" id="pass2"
+								onkeyup="checkPass(); return false;" required /> <span
 								id="confirmMessage" class="confirmMessage"></span>
 						</div>
 
 						<div class="form-group">
-							<label for="password"><span class="req">* </span>
+							<label for="paswdAdmin"><span class="req">* </span>
 								(Approbation) Mot de passe Administrateur : </label> <input required
 								name="paswdAdmin" type="password" class="form-control inputpass"
-								minlength="6	" path="paswdAdmin" maxlength="16"
+								id="paswdAdmin" maxlength="16"
 								placeholder="Valider l'ajout avec votre mot de passe admnistrateur"
 								id="paswdAdmin" required />
-							</p>
 						</div>
 
 						<div class="form-group">
@@ -126,18 +121,20 @@
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
 	<br>
-	
-<script type="text/javascript">
 
-function toto(){
-	toastr.info('Are you the 6 fingered man?');
-}
+	<script type="text/javascript">
 
-function pop(txt) {
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
-}
-</script> 
+	function notification(){
+		if(${notif}){
+			toastr.info('${raison}');
+		}
+	}
+
+	function pop(txt) {
+    	var x = document.getElementById("snackbar");
+    	x.className = "show";
+    	setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
+	}
+	</script>
 </body>
 </html>
