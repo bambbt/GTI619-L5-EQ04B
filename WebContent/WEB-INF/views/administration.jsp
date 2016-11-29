@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label for="username"><span class="req">* </span> 
 								Login : </label> <input class="form-control" type="text"
-								name="login" id="txt" onkeyup="Validate(this)" placeholder="Inscrire le login"
+								name="login" id="txt" onkeyup="login(this)" placeholder="Inscrire le login"
 								required />
 							<div id="errLast"></div>
 						</div>
