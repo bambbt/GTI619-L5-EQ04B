@@ -23,20 +23,20 @@
             <form method="post" id="fileForm" action="<c:url value="/changePasswd" />" >
             <fieldset><legend class="text-center">Modifier votre mot de passe <span class="req"><small> ( * = Obligatoire )</small></span></legend>
  			
-                <label for="username"><span class="req"></span> Nom d'utilisateur : <string>${username}</strong></label> 
+                <label for="username"><span class="req"></span> Nom d'utilisateur : <strong>${username}</strong></label> 
             
                <div class="form-group">
                 <label for="password"><span class="req">* </span> Ancien mot de passe : </label>
-                    <input required name="oldPass" type="password" class="form-control inputpass" minlength="4" path="oldPass" maxlength="16" placeholder="Inscrire l'ancien mot de passe" id="oldPass" required /> 
+                    <input required name="oldPass" type="password" class="form-control inputpass"  id="oldPass" maxlength="16" placeholder="Inscrire l'ancien mot de passe" id="oldPass" required /> 
             	</div>
 
                       
             <div class="form-group">
                 <label for="password"><span class="req">* </span> Nouveau mot de passe : </label>
-                    <input required name="password" type="password" class="form-control inputpass" minlength="4" path="pass1" maxlength="16" placeholder="Saisir le mot de passe" id="pass1" required /> 
+                    <input required name="password" type="password" class="form-control inputpass"  id="pass1" maxlength="16" placeholder="Saisir le mot de passe" id="pass1" required /> 
 
                 <label for="password"><span class="req">* </span> Confirmation du nouveau mot de passe : </label>
-                    <input required name="passwordAgain" type="password" class="form-control inputpass" minlength="4" maxlength="16" placeholder="Saisir de nouveau le mot de passe"  id="pass2" 
+                    <input required name="passwordAgain" type="password" class="form-control inputpass"  maxlength="16" placeholder="Saisir de nouveau le mot de passe"  id="pass2" 
                     onkeyup="checkPass(); return false;" required />
                         <span id="confirmMessage" class="confirmMessage"></span>
             </div>

@@ -140,7 +140,7 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 	public String getSalt(String login) {
 		String salt;
 
-		salt = (String) getSession().createQuery("from User uwhere login=?")
+		salt = (String) getSession().createQuery("from User u where login= ? ")
 				.setParameter(0, login).list().get(0);
 		log.debug("find salt by Username successful, result size: " + salt);
 
@@ -155,7 +155,7 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 	public int lookForSamePass(String login, String passHash) {
 		List<OldPassword> oldpass = new ArrayList<OldPassword>();
 
-		oldpass = getSession().createQuery("from OldPassword o, User where oldPassword like ? and  o.user.login = ?")
+		oldpass = getSession().createQuery("from OldPassword o where oldPassword like ? and  o.user.login = ?")
 				.setParameter(0, passHash).setParameter(1,login).list();
 		log.debug("find by Username successful, result size: " + oldpass.size());
 

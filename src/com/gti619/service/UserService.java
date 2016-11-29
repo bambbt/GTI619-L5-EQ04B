@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,11 @@ public class UserService {
 	@Autowired
 	private RoleHome roleDao;
 	@Autowired
+	@Qualifier("oldPasswordService")
 	private OldPasswordService oldPassService;
 	@Autowired
-	private ConfigService configService;
+	@Qualifier("securityConfigService")
+	private SecurityConfigService configService;
 
 	public boolean validatePasswd(String username, String userPass) {
 		User user = userDao.findByUserName(username);
@@ -101,7 +104,7 @@ public class UserService {
 
 		int nbPassMax = configService.getNboldPassMax();
 
-		if(oldPassService.getNbOldpass(login) < nbPasMax){
+		if(oldPassService.getNbOldpass(login) < nbPassMax){
 			OldPassword oldPassword = new OldPassword();
 			oldPassword.setOldPassword(user.getMdp());
 			oldPassword.setUser(user);
@@ -112,6 +115,7 @@ public class UserService {
 			OldPassword oldPassword2 = oldPassService.getPlusvieux(login);
 			oldPassword2.setDate(new Date());
 			oldPassword2.setOldPassword(user.getMdp());
+			oldPassService.persist(oldPassword2);
 		}
 
 
@@ -120,14 +124,6 @@ public class UserService {
 		user.setSalt(strSalt);
 		
 		userDao.persist(user);
-
-
-
-
-
-
-
-
 	}
 
 

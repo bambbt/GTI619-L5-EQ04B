@@ -1,8 +1,10 @@
 package com.gti619.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +18,7 @@ import com.gti619.service.UserService;
 public class PostController {
 
 	@Autowired
+	@Qualifier("userService")
 	private UserService userService;
 
 	//POST
@@ -64,16 +67,15 @@ public class PostController {
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView postChangePasswd(
-			@RequestParam("username") String username,
 			@RequestParam("oldPass") String oldPass,
 			@RequestParam("password") String password){
 		ModelAndView model = new ModelAndView();
 		String raison = "Ok";
-		String err=true;
+		String err="true";
 
 
 		System.out.println("Reception du form en poste");
-		System.out.println("Voici les elements : "+username+" "+oldPass+" "+password );
+		System.out.println("Voici les elements : "+getPrincipal()+" "+oldPass+" "+password );
 		//Validation du formulaire
 
 

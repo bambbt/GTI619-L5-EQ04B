@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.gti619.daos.SecurityConfigHome;
 
-@Service("configService")
-public class ConfigService {
+@Service("securityConfigService")
+public class SecurityConfigService {
 	@Autowired
 	private SecurityConfigHome configDao;
 
 	public int getNboldPassMax() {
-		return configDao.getNbOldPassMax();
+		return configDao.getConfig().getNbOldPasswordToSave();
 	}
 
 }
