@@ -32,9 +32,12 @@
 				Compte</a></li>
 	</ul>
 </nav>
-<body onload="notification()">
+<body onload="pop()">
 
-	<h4>Administration : Formulaire d'ajout un utilisateur</h4>
+ <input type="hidden" id="raison" name="raison" value="${raison}"></input>	 
+ <input type="hidden" id="error" name="error" value="${error}"></input>	    
+<h4>Administration : Formulaire d'ajout un utilisateur </h4>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
@@ -116,25 +119,25 @@
 			</div>
 		</div>
 	</div>
-	<div id="snackbar"></div>
 
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
-	<br>
-
-	<script type="text/javascript">
-
-	function notification(){
-		if(${notif}){
-			toastr.info('${raison}');
-		}
+<script type="text/javascript">
+function pop(){
+	
+	var erreur = document.getElementById("error").value
+	var raison = document.getElementById("raison").value
+	
+	if(erreur ==""){
+		toastr.info("Espace de'administration");
 	}
-
-	function pop(txt) {
-    	var x = document.getElementById("snackbar");
-    	x.className = "show";
-    	setTimeout(function(){ x.className = x.className.replace("show", txt); }, 3000);
+	else if(erreur== "false"){
+		toastr.success("Succes"+raison)
 	}
-	</script>
+	else if(erreur=="true"){
+		toastr.error('Erreur'+raison);
+	}
+}
+</script> 
 </body>
 </html>
