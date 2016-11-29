@@ -133,10 +133,10 @@ function pop(){
 		toastr.info("Espace de'administration");
 	}
 	else if(erreur== "false"){
-		toastr.success("Succes"+raison)
+		toastr.success("Succes : "+raison)
 	}
 	else if(erreur=="true"){
-		toastr.error('Erreur'+raison);
+		toastr.error('Erreur: '+raison);
 	}
 }
 </script> 

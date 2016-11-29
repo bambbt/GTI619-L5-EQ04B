@@ -30,7 +30,8 @@ public class PostController {
 			@RequestParam("paswdAdmin") String adminPass){
 		
 		ModelAndView model = new ModelAndView();
-		String raison = "Succes !!";
+		String raison = "";
+		String err = "true";
 
 		System.out.println("Reception du form en poste");
 		System.out.println("I am "+getPrincipal());
@@ -42,14 +43,17 @@ public class PostController {
 		if(userService.validatePasswd(getPrincipal(), adminPass)){
 			// Si valide, proceder � l'ajout de l'utilisateur
 			userService.addUser(role,login,completeName,mail,password);
+			err="false";
+			raison = login +"est ajouté";
 		}
 		else{
-			raison = "Erreur d'authentification Admin " +"Mauvais mot de passe.";
+			raison = " Authentification Admin, mauvais mot de passe.";
+			err="true";
 		}
 
 
 		model.setViewName("/administration");
-		model.addObject("notif", true);
+		model.addObject("error",err);
 		model.addObject("raison", raison);
 		return model;
 	}
