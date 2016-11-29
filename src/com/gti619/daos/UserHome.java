@@ -12,6 +12,7 @@ import org.hibernate.LockMode;
 import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
+import com.gti619.model.OldPassword;
 import com.gti619.model.Role;
 import com.gti619.model.User;
 
@@ -135,4 +136,31 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 		
 
 	}
+
+	public String getSalt(String login) {
+		String salt;
+
+		salt = (String) getSession().createQuery("from User uwhere login=?")
+				.setParameter(0, login).list().get(0);
+		log.debug("find salt by Username successful, result size: " + salt);
+
+		if (salt !=null) {
+			
+			return salt;
+		} else {
+			return null;
+		}
+	}
+
+	public int lookForSamePass(String login, String passHash) {
+		List<OldPassword> oldpass = new ArrayList<OldPassword>();
+
+		oldpass = getSession().createQuery("from OldPassword o, User where oldPassword like ? and  o.user.login = ?")
+				.setParameter(0, passHash).setParameter(1,login).list();
+		log.debug("find by Username successful, result size: " + oldpass.size());
+
+		return oldpass.size();
+	}
+
+	
 }

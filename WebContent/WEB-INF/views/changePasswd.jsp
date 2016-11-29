@@ -27,16 +27,16 @@
             
                <div class="form-group">
                 <label for="password"><span class="req">* </span> Ancien mot de passe : </label>
-                    <input required name="oldPass" type="oldPass" class="form-control inputpass" minlength="4" path="oldPass" maxlength="16" placeholder="Inscrire l'ancien mot de passe" id="oldPass" required /> </p>
+                    <input required name="oldPass" type="password" class="form-control inputpass" minlength="4" path="oldPass" maxlength="16" placeholder="Inscrire l'ancien mot de passe" id="oldPass" required /> 
             	</div>
 
                       
             <div class="form-group">
                 <label for="password"><span class="req">* </span> Nouveau mot de passe : </label>
-                    <input required name="password" type="password" class="form-control inputpass" minlength="4" path="pass1" maxlength="16" placeholder="Saisir le mot de passe" id="pass1" required /> </p>
+                    <input required name="password" type="password" class="form-control inputpass" minlength="4" path="pass1" maxlength="16" placeholder="Saisir le mot de passe" id="pass1" required /> 
 
                 <label for="password"><span class="req">* </span> Confirmation du nouveau mot de passe : </label>
-                    <input required name="password" type="password" class="form-control inputpass" minlength="4" maxlength="16" placeholder="Saisir de nouveau le mot de passe"  id="pass2" 
+                    <input required name="passwordAgain" type="password" class="form-control inputpass" minlength="4" maxlength="16" placeholder="Saisir de nouveau le mot de passe"  id="pass2" 
                     onkeyup="checkPass(); return false;" required />
                         <span id="confirmMessage" class="confirmMessage"></span>
             </div>

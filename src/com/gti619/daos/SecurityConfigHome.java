@@ -111,4 +111,10 @@ public class SecurityConfigHome extends SessionFactoryHibernateDAOSupport{
 			throw re;
 		}
 	}
+
+	public SecurityConfig getConfig() {
+		
+		
+		return (SecurityConfig) getSession().createQuery("from SecurityConfig").list().get(0);
+	}
 }

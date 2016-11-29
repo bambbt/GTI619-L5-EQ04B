@@ -28,7 +28,7 @@ public class PostController {
 			@RequestParam("mail") String mail,
 			@RequestParam("password") String password,
 			@RequestParam("paswdAdmin") String adminPass){
-		
+
 		ModelAndView model = new ModelAndView();
 		String raison = "";
 		String err = "true";
@@ -38,13 +38,13 @@ public class PostController {
 		System.out.println("Voici les elements : "+role +"" +login +" "+completeName+" "+mail+" "+password+" "+adminPass );
 
 		//Validation du formulaire
-		
+
 		//1 valider le mot de passe de l'administrateur
 		if(userService.validatePasswd(getPrincipal(), adminPass)){
 			// Si valide, proceder � l'ajout de l'utilisateur
 			userService.addUser(role,login,completeName,mail,password);
 			err="false";
-			raison = login +"est ajouté";
+			raison = login +" est ajouté";
 		}
 		else{
 			raison = " Authentification Admin, mauvais mot de passe.";
@@ -69,18 +69,33 @@ public class PostController {
 			@RequestParam("password") String password){
 		ModelAndView model = new ModelAndView();
 		String raison = "Ok";
-		Boolean err=true;
+		String err=true;
 
 
 		System.out.println("Reception du form en poste");
 		System.out.println("Voici les elements : "+username+" "+oldPass+" "+password );
 		//Validation du formulaire
 
-		//1 V�rifier si l'ancien mot de passe concorde
 
-		// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser
+
+
 
 		// Si valide on proc�de � la mise a jour du mdp
+
+		//1 V�rifier si l'ancien mot de passe concorde
+		if(userService.validatePasswd(getPrincipal(), oldPass)){
+			// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
+			if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
+				userService.changePassword(getPrincipal(),password);
+				err="false";
+				raison = " Mot de passe changé";
+			}
+		}
+		else{
+			raison = " Authentification Admin, mauvais mot de passe.";
+			err="true";
+		}
+
 
 
 
