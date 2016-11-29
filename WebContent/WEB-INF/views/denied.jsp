@@ -7,7 +7,7 @@
 	<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 </head>
 <body>
-
+<h1>ATTENTION</h1>
 <div class="alert alert-danger" role="alert">
 <h1><strong>Desolé, ${user}!</strong></h1> <br>
    <a href="#" class="alert-link"> Vous n'avez pas accès à cette page </a><br>

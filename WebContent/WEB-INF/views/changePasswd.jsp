@@ -8,7 +8,14 @@
 	<link href="<c:url value='/ressources/css/bootstrap.css' />"  rel="stylesheet"></link>
 
 </head>
-${navBar}
+<nav class="navbar navbar-light bg-faded">
+  <ul class="nav navbar-nav">
+  <li class="nav-item active">
+      <a href="<c:url value="/myHome" />">Home</a>
+    </li>
+  </ul>
+</nav>	
+
 <body>
 <div class="container">
 	<div class="row">
