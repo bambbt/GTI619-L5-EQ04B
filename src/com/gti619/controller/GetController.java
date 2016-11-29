@@ -32,6 +32,13 @@ public class GetController {
 		return "forgetPass";
 	}
 	
+	@RequestMapping(value = "/setNewPass", method = RequestMethod.GET)
+	public String getSetNewPAss() {
+		return "setNewPass";
+	}
+	
+	
+	
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
 		model.addAttribute("user", getPrincipal());

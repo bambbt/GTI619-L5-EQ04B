@@ -99,13 +99,97 @@ public class PostController {
 		}
 
 
-
-
 		model.setViewName("/changePasswd");
 		model.addObject("error", err);
 		model.addObject("raison", raison);
 		return model;
 	}
+	
+	
+	
+	
+	/**
+	 * Permet de verifier le formulaire de recovery de mdp
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
+		@RequestMapping(value = "/forgetPass", method = RequestMethod.POST)
+		@ResponseBody
+		public ModelAndView postForgetPass(
+				@RequestParam("ssiId") String username){
+			
+			
+			ModelAndView model = new ModelAndView();
+			String raison = "Ok";
+			String err="true";
+			System.out.println("Reception du form de recovery MDP en post");
+			System.out.println("Voici les elements : " + username);
+
+			//Valider si l'utilisateur existe
+			if(userService.isValideUser(username)){
+				// générer un id de recovery aléatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
+				
+		
+				//Redirection de l'utilisateur vers la page setNewPass
+				model.setViewName("/setNewPass");
+				model.addObject("user", username);
+			}
+			else{
+				raison = "Oups! Le compte utilisateur n'existe pas";
+				err="true";
+				model.setViewName("/forgetPass");
+				model.addObject("error", err);
+				model.addObject("user", username);
+			}
+			return model;
+		}
+		
+		
+		/**
+		 * Permet de verifier le formulaire de recovery de mdp
+		 * @param oldPass
+		 * @param password
+		 * @return
+		 */
+			@RequestMapping(value = "/setNewPass", method = RequestMethod.POST)
+			@ResponseBody
+			public ModelAndView postSetNewPass(
+					@RequestParam("ssoId") String username,
+					@RequestParam("recovery") String recovery_id,
+					@RequestParam("newPass") String pass){
+				
+				ModelAndView model = new ModelAndView();
+				String raison = "Ok";
+				String err="true";
+				
+				System.out.println("Reception du form de setNewPass en post");
+				System.out.println("Voici les elements : " + username +" "+recovery_id+" "+pass);
+
+				//Valider si l'utilisateur existe
+				if(userService.recoveryValide(username, recovery_id)){
+				
+					// Si le duo usermame recovery_id est valide setter le nouveau MDP
+					
+			
+					//Redirection de l'utilisateur vers la page setNewPass
+					raison = "Cool! Votre mot de passe a été réinitialisé";
+					err="false";
+					model.setViewName("/login");
+					model.addObject("error", err);
+					model.addObject("user", username);
+				}
+				else{
+					raison = "Oups! Problème lors de la réinitialisation";
+					err="true";
+					model.setViewName("/setNewPass");
+					model.addObject("error", err);
+					model.addObject("user", username);
+				}
+				
+				return model;
+			}
+			
 
 	/*	
 	 * Permet de retourner le nom de l'utilisateur en question
