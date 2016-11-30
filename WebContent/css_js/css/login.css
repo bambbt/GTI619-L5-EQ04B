@@ -1,9 +1,4 @@
-body{background: #eee url(http://subtlepatterns.com/patterns/sativa.png);}
-html,body{
-    position: relative;
-    height: 100%;
-}
-
+/* Source du Css pour la page login, recovery pass : http://bootsnipp.com/snippets/featured/login-form-layered */
 .login-container{
     position: relative;
     width: 300px;

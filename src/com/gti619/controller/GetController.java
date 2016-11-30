@@ -129,7 +129,8 @@ public class GetController {
 		@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 		public String getAdminLog(ModelMap model) {
 			System.out.println("adminLog");	
-			//model.addAttribute("log",);
+			model.addAttribute("log_connexion", "Console");
+			model.addAttribute("log_securite", "Console");
 			return "adminLog";
 		}
 	
