@@ -1,13 +1,13 @@
-package com.gti619.service;
+package com.gti619.service;	
 
 import java.security.SecureRandom;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.gti619.config.PasswordEncoder;
 import com.gti619.daos.RoleHome;
 import com.gti619.daos.UserHome;
 import com.gti619.model.OldPassword;
@@ -47,10 +47,16 @@ public class UserService {
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+password;
 
-		BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
+		
 
 		//encodage du password
-		String passHash = passEncoder.encode(mixedPass);
+		String passHash = null;
+		try {
+			passHash = PasswordEncoder.MD5encrypt(mixedPass);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 		User user = new User();
@@ -65,22 +71,22 @@ public class UserService {
 		userDao.persist(user);
 	}
 
-	public boolean oldPasswordCheckUsed(String principal, String password) {
+	public boolean oldPasswordCheckUsed(String principal, String password) throws Exception {
 
-		String strSalt = userDao.getSalt(principal);
+		String strSalt = userDao.findByUserName(principal).getSalt();
 
 		String mixedPass = strSalt+password;
 
-		BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
+		
 
 		//encodage du password
-		String passHash = passEncoder.encode(mixedPass);
+		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
 
 
 		return (userDao.lookForSamePass(principal,passHash) > 1);
 	}
 
-	public void changePassword(String login, String password) {
+	public void changePassword(String login, String password) throws Exception {
 
 		//Creation du salt
 		SecureRandom random = new SecureRandom();
@@ -91,10 +97,9 @@ public class UserService {
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+password;
 
-		BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
-
 		//encodage du password
-		String passHash = passEncoder.encode(mixedPass);
+		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
+
 
 
 
@@ -124,6 +129,12 @@ public class UserService {
 		user.setSalt(strSalt);
 		
 		userDao.persist(user);
+	}
+	
+	
+	
+	public User findBylogin (String login){
+		return userDao.findByUserName(login);
 	}
 
 
