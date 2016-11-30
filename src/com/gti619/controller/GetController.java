@@ -28,7 +28,8 @@ public class GetController {
 	}
 	
 	@RequestMapping(value = "/forgetPass", method = RequestMethod.GET)
-	public String getforgetPass() {
+	public String getforgetPass(ModelMap model) {
+		model.addAttribute("error", false);
 		return "forgetPass";
 	}
 	

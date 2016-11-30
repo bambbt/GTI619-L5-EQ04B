@@ -12,23 +12,25 @@
 <div class="container">
 	<div class="login-container">
               <div class="form-box">
-            
-               <c:url var="logForgPass" value="/login" />
-               
-						<form action="${logForgPass}" method="post" class="form-horizontal">
-							<c:if test="${error = false}">
+              
+              <form method="post" id="fileForm"
+					action="<c:url value="/forgetPass" />" name="newPassformValideUser" role="form" class="form-horizontal">
+						
+							<span class="req">Recovery</span>
+							<c:if test="${error}">
 								<div class="alert alert-danger">
-									<p>Erreur : Problème avec l'utilisateur renseigné.</p>
+									<p>${raison}</p>
 								</div>
 							</c:if>
-							
+							<br>
+							<br>
 							
 							<div class="input-group input-sm">
 								<label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
 								<input type="text" class="form-control" id="username" name="ssoId" 
 								placeholder="nom d'utilisateur" value="${user}" required>
 							</div>
-							
+								<input type="hidden" name="${_csrf.parameterName}" 	value="${_csrf.token}" />
 														
 							<div class="form-actions">
 								<input type="submit"

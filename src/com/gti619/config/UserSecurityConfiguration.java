@@ -30,8 +30,8 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		
-		//auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
-		//auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
+		auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
+		auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
 		auth.inMemoryAuthentication().withUser("admin").password( environment.getRequiredProperty("jdbc.password")).roles("ADMIN");
 		
 		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
@@ -44,13 +44,11 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 	}
 
-	
 	/**
 	 * C'est ici que l'on def les restrictions.
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	
 		http.authorizeRequests()
 		.antMatchers("/", "/home").access("hasRole('USER')")
 	  	.antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")

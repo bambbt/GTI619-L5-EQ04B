@@ -117,7 +117,7 @@ public class PostController {
 		@RequestMapping(value = "/forgetPass", method = RequestMethod.POST)
 		@ResponseBody
 		public ModelAndView postForgetPass(
-				@RequestParam("ssiId") String username){
+				@RequestParam("ssoId") String username){
 			
 			
 			ModelAndView model = new ModelAndView();
@@ -126,7 +126,11 @@ public class PostController {
 			System.out.println("Reception du form de recovery MDP en post");
 			System.out.println("Voici les elements : " + username);
 
-			//Valider si l'utilisateur existe
+			model.setViewName("/setNewPass");
+			model.addObject("user", username);
+				
+			/**
+			 * //Valider si l'utilisateur existe
 			if(userService.isValideUser(username)){
 				// générer un id de recovery aléatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
 				
@@ -142,6 +146,8 @@ public class PostController {
 				model.addObject("error", err);
 				model.addObject("user", username);
 			}
+			
+			 */
 			return model;
 		}
 		
