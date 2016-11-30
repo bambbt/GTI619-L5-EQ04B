@@ -119,8 +119,9 @@ public class OldPasswordHome extends SessionFactoryHibernateDAOSupport{
 	}
 
 	public List<OldPassword> getOldPasswords(String login) {
-		User user = userDao.findByUserName(login);
-		return (List<OldPassword>) user.getOldPasswords();
+		List<OldPassword> oldPasswords = userDao.getOldPasswords(login);
+		
+		return oldPasswords;
 	}
 
 	public OldPassword getOldestPassword(String login) {

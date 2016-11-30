@@ -29,8 +29,25 @@ public class UserService {
 	private SecurityConfigService configService;
 
 	public boolean validatePasswd(String username, String userPass) {
+		
+		String strSalt = userDao.findByUserName(username).getSalt();
+
+		//ajout du sel au le mot de pass
+		String mixedPass = strSalt+userPass;
+
+		
+
+		//encodage du password
+		String passHash = null;
+		try {
+			passHash = PasswordEncoder.MD5encrypt(mixedPass);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		User user = userDao.findByUserName(username);
-		if(user.getMdp().contentEquals(userPass))
+		if(user.getMdp().contentEquals(passHash))
 			return true;
 		else
 			return false;
@@ -122,7 +139,7 @@ public class UserService {
 		user.setMdp(passHash);
 		user.setSalt(strSalt);
 		
-		userDao.persist(user);
+		userDao.attachDirty(user);
 	}
 	
 	

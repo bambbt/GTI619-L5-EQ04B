@@ -147,5 +147,15 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 		return oldpass.size();
 	}
 
+	public List<OldPassword> getOldPasswords(String login) {
+		List<OldPassword> oldpass = new ArrayList<OldPassword>();
+
+		oldpass = getSession().createQuery("from OldPassword o where o.user.login = ?")
+				.setParameter(0, login).list();
+		log.debug("find by Username successful, result size: " + oldpass.size());
+
+		return oldpass;
+	}
+
 	
 }

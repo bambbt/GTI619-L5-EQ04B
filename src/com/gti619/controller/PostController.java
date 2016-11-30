@@ -87,10 +87,15 @@ public class PostController {
 		//1 Vï¿½rifier si l'ancien mot de passe concorde
 		if(userService.validatePasswd(getPrincipal(), oldPass)){
 			// Si valide, vï¿½rifier que le nouveau mdp n'a pas dï¿½ja ï¿½tï¿½ utiliser	// Si valide, proceder ï¿½ l'ajout de l'utilisateur
-			if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
-				userService.changePassword(getPrincipal(),password);
-				err="false";
-				raison = " Mot de passe changÃ©";
+			try {
+				if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
+					userService.changePassword(getPrincipal(),password);
+					err="false";
+					raison = " Mot de passe changÃ©";
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		else{
@@ -132,7 +137,7 @@ public class PostController {
 			/**
 			 * //Valider si l'utilisateur existe
 			if(userService.isValideUser(username)){
-				// générer un id de recovery aléatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
+				// gï¿½nï¿½rer un id de recovery alï¿½atoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
 				
 		
 				//Redirection de l'utilisateur vers la page setNewPass
@@ -179,14 +184,14 @@ public class PostController {
 					
 			
 					//Redirection de l'utilisateur vers la page setNewPass
-					raison = "Cool! Votre mot de passe a été réinitialisé";
+					raison = "Cool! Votre mot de passe a ï¿½tï¿½ rï¿½initialisï¿½";
 					err="false";
 					model.setViewName("/login");
 					model.addObject("error", err);
 					model.addObject("user", username);
 				}
 				else{
-					raison = "Oups! Problème lors de la réinitialisation";
+					raison = "Oups! Problï¿½me lors de la rï¿½initialisation";
 					err="true";
 					model.setViewName("/setNewPass");
 					model.addObject("error", err);
