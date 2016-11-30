@@ -22,5 +22,8 @@
         <property name="hashFuncVersion" type="string">
             <column name="hash_func_version" length="45" />
         </property>
+        <property name="idrecovery" type="string">
+            <column name="id_recovery" length="10" />
+        </property>
     </class>
 </hibernate-mapping>

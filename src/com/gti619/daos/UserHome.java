@@ -146,8 +146,6 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 				size++;		
 		}
 
-		
-
 		return size;
 	}
 
@@ -161,5 +159,39 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 		return oldpass;
 	}
 
+	
+
+	/**
+	 * Methode qui permet de valider un compte exite dans la base de donnée
+	 * Celle-ci est utilisation pour valider l'utilisateur dans le processus de recovery de mdp
+	 * @param login
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean checkIfUsernameExist(String login) {
+		try{
+			boolean b;
+			List<Object[]> users = new ArrayList<Object[]>();
+			users = getSession().createQuery("from User  where login=?")
+					.setParameter(0,login).list();
+			if(users.size()==0){
+				System.out.println("Erreur = Tentive incorrect de recovery de mot de passe avec l'utilisateur");
+				log.debug(" Erreur = Tentive incorrect de recovery de mot de passe avec l'utilisateur : "+login);
+			 b=false;
+			}
+			else{
+				System.out.println("Succes = Recovery de mot de passe avec l'utilisateur");
+				log.debug("Succes = Recovery de mot de passe avec l'utilisateur : "+login);
+				 b=true;
+			}
+			return b;
+		}
+		catch(Exception e){
+			log.debug("Methode checkIfUsernameExist (UserHome) Exception : "+e.toString());
+			return false;
+		}
+	}
+	
+	
 	
 }

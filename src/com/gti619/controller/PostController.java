@@ -47,7 +47,7 @@ public class PostController {
 			// Si valide, proceder ï¿½ l'ajout de l'utilisateur
 			userService.addUser(role,login,completeName,mail,password);
 			err="false";
-			raison = login +" est ajoutÃ©";
+			raison = login +" est ajoute";
 		}
 		else{
 			raison = " Authentification Admin, mauvais mot de passe.";
@@ -91,10 +91,10 @@ public class PostController {
 				if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
 					userService.changePassword(getPrincipal(),password);
 					err="false";
-					raison = " Mot de passe changÃ©";
+					raison = " Mot de passe change";
 				}else{
 					err="true";
-					raison = " Mot de passe dÃ©jÃ  utilisÃ©";
+					raison = " Mot de passe deja  utilise";
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -102,7 +102,7 @@ public class PostController {
 			}
 		}
 		else{
-			raison = " Votre mot de passe est Ã©ronnÃ©";
+			raison = " Votre mot de passe est eronne";
 			err="true";
 		}
 
@@ -121,31 +121,29 @@ public class PostController {
 	 * @param oldPass
 	 * @param password
 	 * @return
+	 * @throws Exception 
 	 */
 		@RequestMapping(value = "/forgetPass", method = RequestMethod.POST)
 		@ResponseBody
 		public ModelAndView postForgetPass(
-				@RequestParam("ssoId") String username){
-			
-			
+				@RequestParam("uid") String username) throws Exception{
 			ModelAndView model = new ModelAndView();
 			String raison = "Ok";
 			String err="true";
-			System.out.println("Reception du form de recovery MDP en post");
-			System.out.println("Voici les elements : " + username);
-
-			model.setViewName("/setNewPass");
-			model.addObject("user", username);
-				
-			/**
-			 * //Valider si l'utilisateur existe
-			if(userService.isValideUser(username)){
-				// gï¿½nï¿½rer un id de recovery alï¿½atoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
-				
-		
-				//Redirection de l'utilisateur vers la page setNewPass
-				model.setViewName("/setNewPass");
-				model.addObject("user", username);
+			System.out.println("JE VIENS DE RECEVOIR LE FORMULAIRE "+username);
+			String notification = "Votre compte est en cours de reinitialisation. Un Pin secret a été envoyé sur votre @ courriel.";
+			
+							
+			if(username.length()<20){
+				//Valider si l'utilisateur existe
+				if(userService.userExist(username)){
+					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
+					//userService.setRecoveryId(username);
+					//Redirection de l'utilisateur vers la page setNewPass
+					model.addObject("notif", notification);
+					model.addObject("user", username);
+					model.setViewName("/setNewPass");
+				}
 			}
 			else{
 				raison = "Oups! Le compte utilisateur n'existe pas";
@@ -153,9 +151,9 @@ public class PostController {
 				model.setViewName("/forgetPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
+				model.addObject("explain", "Votre compte utilisateur est en cours de reinitialisation. Un Pin secret a été envoyé sur votre adresse courriel. ");
+
 			}
-			
-			 */
 			return model;
 		}
 		
@@ -187,14 +185,14 @@ public class PostController {
 					
 			
 					//Redirection de l'utilisateur vers la page setNewPass
-					raison = "Cool! Votre mot de passe a ï¿½tï¿½ rï¿½initialisï¿½";
+					raison = "Cool! Votre mot de passe a ete reinitialise";
 					err="false";
 					model.setViewName("/login");
 					model.addObject("error", err);
 					model.addObject("user", username);
 				}
 				else{
-					raison = "Oups! Problï¿½me lors de la rï¿½initialisation";
+					raison = "Oups! Probleme lors de la reinitialisation";
 					err="true";
 					model.setViewName("/setNewPass");
 					model.addObject("error", err);
@@ -205,6 +203,7 @@ public class PostController {
 			}
 			
 
+			
 	/*	
 	 * Permet de retourner le nom de l'utilisateur en question
 	 * @return

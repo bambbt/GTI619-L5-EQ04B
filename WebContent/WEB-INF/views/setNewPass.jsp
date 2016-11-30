@@ -11,15 +11,13 @@
 		<script src="<c:url value="/ressources/js/toastr/toastr.js" />"></script>
 	</head>
 
-<body onload="pop()">
-	
+<body onload="popInfo2()">
+<input type="hidden" id="exp" name="explain" value="${notif}"></input>
 <div class="container">
 	<div class="login-container">
               <div class="form-box">
-            
-               <c:url var="logForgPass" value="/login" />
-               
-						<form action="${logSetNewPass}" method="post" class="form-horizontal">
+          <form method="post" id="fileForm"
+					action="<c:url value="/setNewPass" />" name="newPassformValideUser" role="form" class="form-horizontal">
 							<span class="req">Mettez à jour votre mot de passe</span>
 							<c:if test="${error}">
 								<div class="alert alert-danger">
@@ -31,7 +29,7 @@
 							
 							<div class="input-group input-sm">
 								<label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
-								<input type="text" class="form-control" id="username" name="ssoId" 
+								<input type="text" class="form-control" id="username" name="uid" 
 								placeholder="nom d'utilisateur" value=${user} disabled  required>
 							</div>
 							<br>
@@ -53,18 +51,16 @@
 								<input 	name="passwordAgain" type="password"
 								class="form-control inputpass" maxlength="16"
 								placeholder="Confirmer mot de passe" id="pass2"
-								onkeyup="checkPass(); return false;" required /> <span
+								onkeyup="validationMDP()" required /> <span
 								id="confirmMessage" class="confirmMessage"></span>
 						</div>
 							<br>
 							<input type="hidden" name="${_csrf.parameterName}" 	value="${_csrf.token}" />				
 							<div class="form-actions">
-								<input type="submit"
-									class="btn btn-info btn-block login" value="Confirmer ">
+								<input type="submit" class="btn btn-info btn-block login" value="Confirmer ">
 							</div>
-							
+								
 						</form>
-						
             </div>
         	</div>
 			</div>

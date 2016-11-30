@@ -1,20 +1,19 @@
-function pop(){
+function popInfo1(){
+	toastr.info("Notification : Veuillez indiquer votre nom d'utilisateur");
+}
+
+function popInfo2(){
 	
-	var erreur = document.getElementById("error").value
-	var raison = document.getElementById("raison").value
+	var explain = document.getElementById("exp").value
 	
-	if(erreur ==""){
-		toastr.info("Espace de'administration");
-	}
-	else if(erreur== "false"){
-		toastr.success("Succes : "+raison)
-	}
-	else if(erreur=="true"){
-		toastr.error('Erreur: '+raison);
+	if(explain != ""){
+		toastr.info("Notification : " +explain);
 	}
 }
 
-function checkPass()
+
+
+function validationMDP()
 {
     var pass1 = document.getElementById('pass1');
     var pass2 = document.getElementById('pass2');
@@ -28,16 +27,19 @@ function checkPass()
     	pass1.style.backgroundColor = rouge;
     	pass2.style.backgroundColor = rouge;	   
         message.innerHTML = "N'oubliez pas de saisir le mot de passe de l'utilisateur"
+        	return false;
     }
     if(pass1.value == pass2.value){
     	pass1.style.backgroundColor = vert;
         pass2.style.backgroundColor = vert;
         message.style.color = vert;
         message.innerHTML = "Bien! Les mots de passe concordent"
+        	return true;
     }else{
         pass2.style.backgroundColor = rouge;
         pass1.style.backgroundColor = rouge;
         message.style.color = rouge;
         message.innerHTML = "Les mots de passe ne concordent pas!"
+        	return false;
     }
 }

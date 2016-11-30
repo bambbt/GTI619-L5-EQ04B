@@ -33,8 +33,6 @@ public class UserService {
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+userPass;
 
-
-
 		//encodage du password
 		String passHash = null;
 		try {
@@ -130,6 +128,20 @@ public class UserService {
 
 	public User findBylogin (String login){
 		return userDao.findByUserName(login);
+	}
+	
+	
+	
+	/**
+	 * Permet de vérifier si un utilisateur est présent dans la base de donnée
+	 * lors de la demande de recovery mdp
+	 * @param principal
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean userExist(String login) throws Exception {
+
+		return (userDao.checkIfUsernameExist(login));
 	}
 
 
