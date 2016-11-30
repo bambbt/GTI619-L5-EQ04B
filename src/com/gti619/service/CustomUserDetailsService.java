@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throws UsernameNotFoundException {
 
 		com.gti619.model.User user = userDao.findByUserName(username);
+				
 		List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
-
+		
 		return buildUserForAuthentication(user, authorities);
 
 
@@ -43,7 +45,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	// Converts com.gti619.model.User user to
 	// org.springframework.security.core.userdetails.User
 	private User buildUserForAuthentication(com.gti619.model.User user, 
-			List<GrantedAuthority> authorities) {
+			List<GrantedAuthority> authorities) {	
+		
 		return new User(user.getLogin(), 
 				user.getMdp(), true, 
 				true, true, true, authorities);
