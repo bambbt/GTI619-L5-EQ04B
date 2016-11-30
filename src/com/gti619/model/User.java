@@ -19,7 +19,8 @@ public class User implements java.io.Serializable {
 	private Integer isLocked;
 	private String salt;
 	private Set oldPasswords = new HashSet(0);
-
+	private Integer recoveryid;
+	
 	public User() {
 	}
 
@@ -37,6 +38,7 @@ public class User implements java.io.Serializable {
 		this.isLocked = isLocked;
 		this.salt = salt;
 		this.oldPasswords = oldPasswords;
+		this.recoveryid=0;
 	}
 
 	public Integer getIduser() {
@@ -75,6 +77,16 @@ public class User implements java.io.Serializable {
 		return this.name;
 	}
 
+
+	
+	public Integer getRecoveryid() {
+		return recoveryid;
+	}
+
+	public void setRecoveryid(Integer recoveryid) {
+		this.recoveryid = recoveryid;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -110,5 +122,7 @@ public class User implements java.io.Serializable {
 	public void setOldPasswords(Set oldPasswords) {
 		this.oldPasswords = oldPasswords;
 	}
+	
+
 
 }

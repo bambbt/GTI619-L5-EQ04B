@@ -2,7 +2,7 @@ package com.gti619.service;
 
 import java.security.SecureRandom;
 import java.util.Date;
-
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -139,11 +139,24 @@ public class UserService {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean userExist(String login) throws Exception {
+	public boolean userExist(String login) {
 
 		return (userDao.checkIfUsernameExist(login));
 	}
+	
+	
 
+	/**
+	 * Permet de générer un id recovery aleatoire et au compte utilisateur
+	 * @param principal
+	 * @return
+	 * @throws Exception
+	 */
+	public void setRecoveryId(String login) {
+		
+		userDao.setRecoveryId(login,new SecureRandom().nextInt(999999999));
+		
+	}
 
 
 }

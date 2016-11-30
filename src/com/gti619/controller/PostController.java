@@ -44,7 +44,7 @@ public class PostController {
 
 		//1 valider le mot de passe de l'administrateur
 		if(userService.validatePasswd(getPrincipal(), adminPass)){
-			// Si valide, proceder � l'ajout de l'utilisateur
+			// Si valide, proceder a l'ajout de l'utilisateur
 			userService.addUser(role,login,completeName,mail,password);
 			err="false";
 			raison = login +" est ajoute";
@@ -138,7 +138,7 @@ public class PostController {
 				//Valider si l'utilisateur existe
 				if(userService.userExist(username)){
 					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
-					//userService.setRecoveryId(username);
+					userService.setRecoveryId(username);
 					//Redirection de l'utilisateur vers la page setNewPass
 					model.addObject("notif", notification);
 					model.addObject("user", username);
@@ -179,7 +179,7 @@ public class PostController {
 				System.out.println("Voici les elements : " + username +" "+recovery_id+" "+pass);
 
 				//Valider si l'utilisateur existe
-				if(userService.recoveryValide(username, recovery_id)){
+				if(userService.recoveryValide(username)){
 				
 					// Si le duo usermame recovery_id est valide setter le nouveau MDP
 					

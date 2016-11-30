@@ -193,5 +193,27 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 	}
 	
 	
+	/**
+	 * Permet de setter l'id de recovery du compte utilisateur dans la bd
+	 * @param login
+	 * @param id
+	 */
+	@SuppressWarnings("unchecked")
+	public void setRecoveryId(String login, int id){
+		
+		System.out.println("Execution de la requete d'ajout du recovery id dans la bd valeur : "+log+" "+id);
+		@SuppressWarnings("unused")
+		List<Object[]> users = new ArrayList<Object[]>();
+		users = getSession().createQuery("from User  where login=?")
+				.setParameter(0,login).list();
+						
+			User user = (User) users.get(0)[0];
+			Role r = (Role) users.get(0)[1];
+			user.setRole(r);
+			
+		
+			getSession().createQuery("update User set recoveryid =?  where login=?").setParameter(0,id).setParameter(1, log);
+
+	}
 	
 }

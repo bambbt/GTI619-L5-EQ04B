@@ -31,6 +31,9 @@
         <property name="salt" type="string">
             <column name="salt" length="100" />
         </property>
+         <property name="recoveryid" type="int">
+            <column name="recovery_id" length="10" />
+        </property>
         <set name="oldPasswords" table="old_password" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="user_iduser" />
