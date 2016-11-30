@@ -133,7 +133,7 @@ public class UserService {
 	
 	
 	/**
-	 * Permet de vérifier si un utilisateur est présent dans la base de donnée
+	 * Permet de vï¿½rifier si un utilisateur est prï¿½sent dans la base de donnï¿½e
 	 * lors de la demande de recovery mdp
 	 * @param principal
 	 * @return
@@ -147,14 +147,18 @@ public class UserService {
 	
 
 	/**
-	 * Permet de générer un id recovery aleatoire et au compte utilisateur
+	 * Permet de gï¿½nï¿½rer un id recovery aleatoire et au compte utilisateur
 	 * @param principal
 	 * @return
 	 * @throws Exception
 	 */
 	public void setRecoveryId(String login) {
 		
-		userDao.setRecoveryId(login,new SecureRandom().nextInt(999999999));
+		User user = userDao.findByUserName(login);
+		
+		user.setRecoveryid(new SecureRandom().nextInt(999999999));
+		
+		userDao.attachDirty(user);
 		
 	}
 
