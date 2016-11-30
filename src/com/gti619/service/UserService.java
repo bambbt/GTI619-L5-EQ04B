@@ -24,18 +24,16 @@ public class UserService {
 	@Autowired
 	@Qualifier("oldPasswordService")
 	private OldPasswordService oldPassService;
-	@Autowired
-	@Qualifier("securityConfigService")
-	private SecurityConfigService configService;
+	
 
 	public boolean validatePasswd(String username, String userPass) {
-		
+
 		String strSalt = userDao.findByUserName(username).getSalt();
 
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+userPass;
 
-		
+
 
 		//encodage du password
 		String passHash = null;
@@ -45,7 +43,7 @@ public class UserService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		User user = userDao.findByUserName(username);
 		if(user.getMdp().contentEquals(passHash))
 			return true;
@@ -64,7 +62,7 @@ public class UserService {
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+password;
 
-		
+
 
 		//encodage du password
 		String passHash = null;
@@ -86,6 +84,9 @@ public class UserService {
 		Role role= roleDao.findByName(strRole);
 		user.setRole(role);
 		userDao.persist(user);
+
+
+		oldPassService.saveOldPass(user);
 	}
 
 	public boolean oldPasswordCheckUsed(String principal, String password) throws Exception {
@@ -94,56 +95,39 @@ public class UserService {
 
 		String mixedPass = strSalt+password;
 
-		
 
 		//encodage du password
 		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
 
 
-		return (userDao.lookForSamePass(principal,passHash) > 1);
+		return (userDao.lookForSamePass(principal,passHash) > 0);
 	}
 
 	public void changePassword(String login, String password) throws Exception {
 
-		//Creation du salt
-		SecureRandom random = new SecureRandom();
-		int salt = random.nextInt();
-
-		String strSalt = Integer.toString(salt);
+		//
+		String strSalt = userDao.findByUserName(login).getSalt();
 
 		//ajout du sel au le mot de pass
 		String mixedPass = strSalt+password;
 
 		//encodage du password
 		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
-		
+
 		User user = userDao.findByUserName(login);
-		int nbPassMax = configService.getNboldPassMax();
-
-		if(oldPassService.getNbOldpass(login) < nbPassMax){
-			OldPassword oldPassword = new OldPassword();
-			oldPassword.setOldPassword(user.getMdp());
-			oldPassword.setUser(user);
-			oldPassword.setDate(new Date());
-			oldPassService.persist(oldPassword);
-		}
-		else{
-			OldPassword oldPassword2 = oldPassService.getPlusvieux(login);
-			oldPassword2.setDate(new Date());
-			oldPassword2.setOldPassword(user.getMdp());
-			oldPassService.persist(oldPassword2);
-		}
-
-
-
-		user.setMdp(passHash);
-		user.setSalt(strSalt);
 		
+		
+		
+		oldPassService.saveOldPass(user);		
+		user.setMdp(passHash);
+		
+		oldPassService.saveOldPass(user);
+
 		userDao.attachDirty(user);
 	}
-	
-	
-	
+
+
+
 	public User findBylogin (String login){
 		return userDao.findByUserName(login);
 	}

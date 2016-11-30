@@ -2,7 +2,6 @@
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<link href="/ressources/toastr/build/toastr.css" rel="stylesheet" />
 <html>
 <head>
 <title>Administration</title>
@@ -34,9 +33,9 @@
 </nav>
 <body onload="pop()">
 
- <input type="hidden" id="raison" name="raison" value="${raison}"></input>	 
- <input type="hidden" id="error" name="error" value="${error}"></input>	    
-<h4>Administration : Formulaire d'ajout un utilisateur </h4>
+	<input type="hidden" id="raison" name="raison" value="${raison}"></input>
+	<input type="hidden" id="error" name="error" value="${error}"></input>
+	<h4>Administration : Formulaire d'ajout un utilisateur</h4>
 
 	<div class="container">
 		<div class="row">
@@ -122,8 +121,8 @@
 
 	<a href="<c:url value="/logout" />">Logout</a>
 	<br>
-	
-<script type="text/javascript">
+
+	<script type="text/javascript">
 function pop(){
 	
 	var erreur = document.getElementById("error").value
@@ -139,6 +138,6 @@ function pop(){
 		toastr.error('Erreur: '+raison);
 	}
 }
-</script> 
+</script>
 </body>
 </html>

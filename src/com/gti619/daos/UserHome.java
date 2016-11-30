@@ -137,14 +137,18 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public int lookForSamePass(String login, String passHash) {
-		List<OldPassword> oldpass = new ArrayList<OldPassword>();
+		List<OldPassword> oldpass = getOldPasswords(login);
+		int size=0;
+		for (OldPassword oldPassword : oldpass) {
+			if(oldPassword.getOldPassword().contentEquals(passHash))
+				size++;		
+		}
 
-		oldpass = getSession().createQuery("from OldPassword o where oldPassword like ? and  o.user.login = ?")
-				.setParameter(0, passHash).setParameter(1,login).list();
-		log.debug("find by Username successful, result size: " + oldpass.size());
+		
 
-		return oldpass.size();
+		return size;
 	}
 
 	public List<OldPassword> getOldPasswords(String login) {

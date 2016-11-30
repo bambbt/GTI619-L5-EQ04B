@@ -92,6 +92,9 @@ public class PostController {
 					userService.changePassword(getPrincipal(),password);
 					err="false";
 					raison = " Mot de passe changé";
+				}else{
+					err="true";
+					raison = " Mot de passe déjà utilisé";
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -99,7 +102,7 @@ public class PostController {
 			}
 		}
 		else{
-			raison = " Authentification Admin, mauvais mot de passe.";
+			raison = " Votre mot de passe est éronné";
 			err="true";
 		}
 

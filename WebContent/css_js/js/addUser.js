@@ -24,7 +24,8 @@ function checkPass()
         pass1.style.backgroundColor = rouge;
         message.style.color = rouge;
         message.innerHTML = "Les mots de passe ne concordent pas!"
-    }
+    }  
+    
 } 
 
 //Validation du texte
