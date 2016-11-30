@@ -99,14 +99,8 @@ public class UserService {
 
 		//encodage du password
 		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
-
-
-
-
+		
 		User user = userDao.findByUserName(login);
-
-
-
 		int nbPassMax = configService.getNboldPassMax();
 
 		if(oldPassService.getNbOldpass(login) < nbPassMax){
