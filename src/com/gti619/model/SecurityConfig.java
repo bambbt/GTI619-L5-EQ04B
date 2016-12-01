@@ -12,6 +12,7 @@ public class SecurityConfig implements java.io.Serializable {
 	private Integer authenticationTimeout;
 	private Integer nbOldPasswordToSave;
 	private String hashFuncVersion;
+	private String passRegex;
 
 	public SecurityConfig() {
 	}
@@ -66,6 +67,14 @@ public class SecurityConfig implements java.io.Serializable {
 
 	public void setHashFuncVersion(String hashFuncVersion) {
 		this.hashFuncVersion = hashFuncVersion;
+	}
+
+	public String getPassRegex() {
+		return passRegex;
+	}
+
+	public void setPassRegex(String passRegex) {
+		this.passRegex = passRegex;
 	}
 
 }

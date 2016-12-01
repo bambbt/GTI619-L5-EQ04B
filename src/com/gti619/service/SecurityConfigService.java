@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gti619.daos.SecurityConfigHome;
+import com.gti619.model.SecurityConfig;
 
 @Service("securityConfigService")
 public class SecurityConfigService {
@@ -17,6 +18,18 @@ public class SecurityConfigService {
 	public int getNbTentativeCoMax() {
 		return configDao.getConfig().getNbTentativesMax();
 		
+	}
+
+	public void setPolitiquePassword(String regex) {
+		SecurityConfig config = configDao.getConfig();
+		config.setPassRegex(regex);
+		configDao.attachDirty(config);
+	}
+
+	public void setTentativeCoMax(int nbtentative) {
+		SecurityConfig config = configDao.getConfig();
+		config.setNbTentativesMax(nbtentative);
+		configDao.attachDirty(config);		
 	}
 	
 	

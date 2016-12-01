@@ -2,6 +2,7 @@ package com.gti619.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gti619.service.SecurityConfigService;
 import com.gti619.service.UserService;
 
 @Controller
@@ -185,15 +187,15 @@ public class PostController {
 
 				// Si le duo usermame recovery_id est valide setter le nouveau MDP
 				userService.changePassword(username,pass);
-				
-				
+
+
 				raison = "Cool! Votre mot de passe a ete reinitialise";
 				err="false";
 				model.setViewName("/login");
 				model.addObject("error", err);
 				model.addObject("user", username);
 				//Redirection de l'utilisateur vers la page setNewPass
-				
+
 			}else{
 				raison = "Ce mot de passe a déjà été utilisé";
 				err="true";
@@ -215,9 +217,9 @@ public class PostController {
 		return model;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Permet de verifier le formulaire permettant la mise a jour du regex mdp
 	 * @param oldPass
@@ -229,25 +231,35 @@ public class PostController {
 	public ModelAndView postRegexPass(
 			@RequestParam("regex") String regex,
 			@RequestParam("paswdAdmin") String adminPass){
-		
+
 		ModelAndView model = new ModelAndView();
 		String raison = "Ok";
 		String err="true";
-		
+
 		//Validation du mdp administreur
-		
-		//Si valide, mettre en place le regex dans la base de donnee
-		// raison = feedBack positif
-		
-		//Si non valide, inialiser la raison
-		
+
+		if(userService.validatePasswd(getPrincipal(), adminPass)){
+
+			//Si valide, mettre en place le regex dans la base de donnee
+			// raison = feedBack positif
+			userService.savePolitiquePassword(regex);
+			err="false";
+			raison="Politique des mots de passe modifié.";
+
+		}else{
+
+			//Si non valide, inialiser la raison
+			err="true";
+			raison = "Mot de passe non valide";
+
+		}
 		model.addObject("error", err);
 		model.addObject("raison", raison);
 		return model;
 	};
-	
-	
-	
+
+
+
 	/**
 	 * Permet de verifier le formulaire permettant de setter le nombre de tentative maximale avant de bloquer un compte utilisateur
 	 * @param oldPass
@@ -259,26 +271,38 @@ public class PostController {
 	public ModelAndView postAdminTentativeMax(
 			@RequestParam("nb") String nbtentative,
 			@RequestParam("paswdAdmin") String adminPass){
-		
+
 		ModelAndView model = new ModelAndView();
 		String raison = "Ok";
 		String err="true";
-		
+
 		//Validation du mdp administreur
-		
-		//Si valide, mettre en place le nombre de tentative dans la bd
-		// raison = feedBack positif
-		
-		//Si non valide, inialiser la raison
-		
+
+		if(userService.validatePasswd(getPrincipal(), adminPass)){
+
+			//Si valide, mettre en place le regex dans la base de donnee
+			// raison = feedBack positif
+			int nbTentativeMax = Integer.parseInt(nbtentative);
+			userService.setTentativeCoMax(nbTentativeMax);
+			err="false";
+			raison="Politique de tentatives modifié.";
+
+		}else{
+
+			//Si non valide, inialiser la raison
+			err="true";
+			raison = "Mot de passe non valide";
+
+		}
+
 		model.addObject("error", err);
 		model.addObject("raison", raison);
 		return model;
 	};
-	
-	
+
+
 	/**
-	 * Permet de verifier le formulaire permettant de r�active un compte
+	 * Permet de verifier le formulaire permettant de r�active un compte
 	 * @param oldPass
 	 * @param password
 	 * @return
@@ -289,22 +313,32 @@ public class PostController {
 			@RequestParam("login") String login,
 			@RequestParam("newPass") String newPass,
 			@RequestParam("adminPass") String adminPass){
-		
+
 		ModelAndView model = new ModelAndView();
 		String raison = "true";
 		String err="true";
-		
+
 		//Validation du mdp administreur
-		
-		//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
-		
-		
-		// Reactive le compte, Mettre a jour le mdp, nb tentative = 0 (attention si un compte est bloqu�, on ne peut utiliser Mot de passe perdu)
-		
-			// raison = feedBack positif
-		
-		//Si non valide, inialiser la raison
-		
+		if(userService.validatePasswd(getPrincipal(), adminPass)){
+			//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
+			if(userService.oldPasswordCheckUsed(login, newPass)){
+
+				// Reactive le compte, Mettre a jour le mdp, nb tentative = 0 (attention si un compte est bloqu�, on ne peut utiliser Mot de passe perdu)
+				userService.reactiveAccount(login);
+				
+				userService.changePassword(login, newPass);
+				// raison = feedBack positif
+				err="false";
+				raison="Compte "+login+ "réactivé";
+			}else{
+				err="true";
+				raison="Mot de passe dèjà utilisé";
+			}
+		}else{
+			//Si non valide, inialiser la raison
+			err="true";
+			raison="Mot de passe invalider";
+		}
 		model.addObject("error", err);
 		model.addObject("raison", raison);
 		return model;
