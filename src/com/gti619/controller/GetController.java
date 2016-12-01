@@ -1,4 +1,8 @@
 package com.gti619.controller;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -6,10 +10,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,11 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.gti619.config.CustomAuthenticationProvider;
 import com.gti619.model.User;
 
 @Controller
 @SessionAttributes
 public class GetController {
+	
+	private Log logDeConnexion = LogFactory.getLog(CustomAuthenticationProvider.class);
+	
 		
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -134,7 +143,7 @@ public class GetController {
 					userList.add(user);
 				
 					System.out.println("getReactiveAccount");
-					System.out.println("Attention, il faut récupérer la liste des utilisateurs");
+					System.out.println("Attention, il faut rï¿½cupï¿½rer la liste des utilisateurs");
 					model.addAttribute("error", "");
 					model.addAttribute("userList", userList);
 					return "reactiveAccount";
@@ -165,7 +174,35 @@ public class GetController {
 		@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 		public String getAdminLog(ModelMap model) {
 			System.out.println("adminLog");	
-			model.addAttribute("log_connexion", "Console");
+			
+			// Create a stream to hold the output
+			BufferedReader br = null;
+			String everything = null;
+			try {
+				br = new BufferedReader(new FileReader("/tmp/logCo.log"));
+			    StringBuilder sb = new StringBuilder();
+			    String line = br.readLine();
+
+			    while (line != null) {
+			        sb.append(line);
+			        sb.append(System.lineSeparator());
+			        line = br.readLine();
+			    }
+			    everything = sb.toString();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+			    
+					try {
+						br.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+			}
+			model.addAttribute("log_connexion",everything);
 			model.addAttribute("log_securite", "Console");
 			return "adminLog";
 		}
@@ -179,16 +216,9 @@ public class GetController {
 	 * Permet de retourner le nom de l'utilisateur en question
 	 * @return
 	 */
-	private String getPrincipal(){
-		String userName = null;
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		if (principal instanceof UserDetails) {
-			userName = ((UserDetails)principal).getUsername();
-		} else {
-			userName = principal.toString();
-		}
-		return userName;
+	private String getPrincipal(){		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		return principal.toString();
 	}
 	
 	
@@ -197,27 +227,13 @@ public class GetController {
 	 * @return
 	 */
 	public List<String> getAuthorities(){
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
-		Collection<? extends GrantedAuthority> authorities = ((UserDetails)principal).getAuthorities();
+		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();	
 		List<String> roles = new ArrayList<String>();
 		for (GrantedAuthority a : authorities) {
 			roles.add(a.getAuthority());
-		}
-		
+		}		
 		return roles;
 	}
-	
-	public String getRole(){
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
-		Collection<? extends GrantedAuthority> authorities = ((UserDetails)principal).getAuthorities();
-		List<String> roles = new ArrayList<String>();
-		for (GrantedAuthority a : authorities) {
-			roles.add(a.getAuthority());
-		}
-		
-		return roles.get(0);
-	}
-	
 	
 	/*
 	 * 

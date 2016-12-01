@@ -1,7 +1,10 @@
 package com.gti619.config;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -34,15 +37,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Qualifier("customUserDetailsService")
 	private UserDetailsService userDetailsService;
 
-	private Log log = LogFactory.getLog(CustomAuthenticationProvider.class);
+	private static final Logger log = Logger.getLogger(CustomAuthenticationProvider.class);
+	
 
 
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
-			log.debug("Authentification raté");
-			System.out.println("Authentification raté");
+			log.debug(new Date()+" => Tentative de connexxion avec un utilisateur inexistant.");			
 			throw new BadCredentialsException("Bad credentials");
 		}
 
@@ -59,25 +62,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		String passHash;
 		try {
 			passHash = PasswordEncoder.MD5encrypt(mixedPass);
-
-			System.out.println(passHash );
-
-			System.out.println(userDetails.getPassword());
+			
 			if (!passHash.contentEquals(userDetails.getPassword())) {
-				log.debug("Authentification raté");
 
 				User user = userService.findBylogin(presentedLogin);
 				int nbTentativeCoMax = configService.getNbTentativeCoMax();
 				if(user.getNbTentativeCo()<nbTentativeCoMax){
 					user.setNbTentativeCo(user.getNbTentativeCo()+1);
-
+					log.debug(new Date()+"=> "+user.getNbTentativeCo()+" tentative(s) de l'utilisateur "+presentedLogin+" avec un mauvais mot de passe.");
 				}else{
 					user.setIsLocked(1);
+					log.debug(new Date()+"=> Suite à "+nbTentativeCoMax+" tentatives sans succès de l'utilisateur "+presentedLogin+", le compte est bloqué.");
 				}
 				userService.attachDirty(user);
 				return null;
 			}
-
+			log.debug(new Date()+"=> L'utilisateur "+presentedLogin+" est connecté avec succés.");
 			return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword(),userDetails.getAuthorities());			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
