@@ -29,7 +29,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			System.out.println("Can't redirect");
 			return;
 		}
-
+		request.getSession().setMaxInactiveInterval(10);
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 
