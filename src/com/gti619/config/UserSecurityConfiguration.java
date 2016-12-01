@@ -77,7 +77,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.sessionManagement()
 	    .sessionFixation().migrateSession();
 		
-		
+
 		// Les droits selon les vues
 		http.authorizeRequests()
 		.antMatchers("/", "/home").access("hasRole('USER')")
