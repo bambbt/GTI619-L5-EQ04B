@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.gti619.model.User;
+
 @Controller
 @SessionAttributes
 public class GetController {
@@ -103,6 +105,40 @@ public class GetController {
 		return "administration";
 	}
 	
+	//GET
+		@RequestMapping(value = "/regexPass", method = RequestMethod.GET)
+		public String getRegexPass(ModelMap model) {
+			System.out.println("regexPass");
+
+			model.addAttribute("error", "");
+			return "regexPass";
+		}
+		
+		//GET
+		@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.GET)
+		public String getAdminTentativeMax(ModelMap model) {
+			System.out.println("getAdminTentativeMax");
+			model.addAttribute("error", "");
+			return "adminTentativeMax";
+		}
+		
+		
+		//GET
+				@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
+				public String getReactiveAccount(ModelMap model) {
+					ArrayList<User> userList = new ArrayList<User>();
+					User user = new User();
+					user.setIduser(1000);
+					user.setLogin("Test en dur");
+					user.setIsLocked(1);
+					userList.add(user);
+				
+					System.out.println("getReactiveAccount");
+					System.out.println("Attention, il faut récupérer la liste des utilisateurs");
+					model.addAttribute("error", "");
+					model.addAttribute("userList", userList);
+					return "reactiveAccount";
+				}
 
 
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -134,24 +170,9 @@ public class GetController {
 			return "adminLog";
 		}
 	
-	//GET
-		@RequestMapping(value = "/myHome", method = RequestMethod.GET)
-		public String getmyHome() {
-			System.out.println("myHome");	
-			String url = "";
-			List<String> userRoles = this.getAuthorities();
-			
-			if (userRoles.contains("ROLE_CERCLE")) {
-				url= "/homeCercle";
-			} 
-			else if (userRoles.contains("ROLE_CARRE")) {
-				url = "/homeCarre";
-			}
-			else if (userRoles.contains("ROLE_ADMIN")) {
-				url = "/homeAdmin";
-			}
-			return url;
-		}
+	
+		
+		
 	
 
 	/**
@@ -196,5 +217,28 @@ public class GetController {
 		
 		return roles.get(0);
 	}
+	
+	
+	/*
+	 * 
+	 * //GET
+		@RequestMapping(value = "/myHome", method = RequestMethod.GET)
+		public String getmyHome() {
+			System.out.println("myHome");	
+			String url = "";
+			String userRole = getRole();
+			System.out.println(userRole);	
+			if (userRole.equals("ROLE_CERCLE")) {
+				url= "/homeCercle";
+			} 
+			else if (userRole.equals("ROLE_CARRE")) {
+				url = "/homeCarre";
+			}
+			else if (userRole.equals("ROLE_ADMIN")) {
+				url = "/homeAdmin";
+			}
+			return url;
+		}
+	 */
 	
 }

@@ -215,6 +215,100 @@ public class PostController {
 		return model;
 	}
 
+	
+	
+	
+	/**
+	 * Permet de verifier le formulaire permettant la mise a jour du regex mdp
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/regexPass", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView postRegexPass(
+			@RequestParam("regex") String regex,
+			@RequestParam("paswdAdmin") String adminPass){
+		
+		ModelAndView model = new ModelAndView();
+		String raison = "Ok";
+		String err="true";
+		
+		//Validation du mdp administreur
+		
+		//Si valide, mettre en place le regex dans la base de donnee
+		// raison = feedBack positif
+		
+		//Si non valide, inialiser la raison
+		
+		model.addObject("error", err);
+		model.addObject("raison", raison);
+		return model;
+	};
+	
+	
+	
+	/**
+	 * Permet de verifier le formulaire permettant de setter le nombre de tentative maximale avant de bloquer un compte utilisateur
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView postAdminTentativeMax(
+			@RequestParam("nb") String nbtentative,
+			@RequestParam("paswdAdmin") String adminPass){
+		
+		ModelAndView model = new ModelAndView();
+		String raison = "Ok";
+		String err="true";
+		
+		//Validation du mdp administreur
+		
+		//Si valide, mettre en place le nombre de tentative dans la bd
+		// raison = feedBack positif
+		
+		//Si non valide, inialiser la raison
+		
+		model.addObject("error", err);
+		model.addObject("raison", raison);
+		return model;
+	};
+	
+	
+	/**
+	 * Permet de verifier le formulaire permettant de réactive un compte
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/reactiveAccount", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView postReactiveAccount(
+			@RequestParam("login") String login,
+			@RequestParam("newPass") String newPass,
+			@RequestParam("adminPass") String adminPass){
+		
+		ModelAndView model = new ModelAndView();
+		String raison = "true";
+		String err="true";
+		
+		//Validation du mdp administreur
+		
+		//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
+		
+		
+		// Reactive le compte, Mettre a jour le mdp, nb tentative = 0 (attention si un compte est bloqué, on ne peut utiliser Mot de passe perdu)
+		
+			// raison = feedBack positif
+		
+		//Si non valide, inialiser la raison
+		
+		model.addObject("error", err);
+		model.addObject("raison", raison);
+		return model;
+	};
 
 
 	/*	
