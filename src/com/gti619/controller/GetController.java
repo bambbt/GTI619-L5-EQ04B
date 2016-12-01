@@ -17,12 +17,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import com.gti619.config.CustomAuthenticationProvider;
 import com.gti619.model.User;
@@ -66,6 +68,15 @@ public class GetController {
 	@RequestMapping(value = "/homeCarre", method = RequestMethod.GET)
 	public String getHomeCarre(ModelMap model) {
 		model.addAttribute("user", getPrincipal());
+		
+		RequestContextHolder.currentRequestAttributes().setAttribute("mon test", "test", 1);
+		System.out.println(RequestContextHolder.currentRequestAttributes().getAttributeNames(1));
+		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
+		model.addAttribute("user", getPrincipal());
+		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
+		
+		model.addAttribute("user", getPrincipal());
+		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
 		return "homeCarre";
 	}
 	
@@ -218,8 +229,8 @@ public class GetController {
 	 * @return
 	 */
 	private String getPrincipal(){		
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
-		return principal.toString();
+		UserDetails principal = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		return principal.getUsername();
 	}
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,10 +45,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		//auth.inMemoryAuthentication().withUser("user1").password("cercle").roles("CERCLE");
 		//auth.inMemoryAuthentication().withUser("user2").password("carre").roles("CARRE");
-		//auth.inMemoryAuthentication().withUser("admin").password( environment.getRequiredProperty("jdbc.password")).roles("ADMIN");
-
-		//auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
-		//auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");*/
+		//auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 
 		//On doit crypter le mot de passe
 		
@@ -63,6 +61,24 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
+
+		// Gestion de la session
+		http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+		//Nb session
+		http.sessionManagement().maximumSessions(1);
+	
+		
+		http.sessionManagement()
+	    .invalidSessionUrl("/logout");
+		
+		// protection contre certaines attaques
+		//
+		http.sessionManagement()
+	    .sessionFixation().migrateSession();
+		
+		
+		// Les droits selon les vues
 		http.authorizeRequests()
 		.antMatchers("/", "/home").access("hasRole('USER')")
 		.antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")
