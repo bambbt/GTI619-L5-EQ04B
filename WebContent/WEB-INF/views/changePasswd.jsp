@@ -23,6 +23,7 @@
 <nav class="navbar navbar-light bg-faded">
 	<ul class="nav navbar-nav">
 		<li class="nav-item"><a href="<c:url value="/myHome" />">Home</a></li>
+		<li class="nav-item"><a href="<c:url value="/logout" />">Logout</a></li>
 	</ul>
 </nav>
 
@@ -79,7 +80,7 @@
 			</div>
 		</div>
 	</div>
-	<a href="<c:url value="/logout" />">Logout</a>
+	
 
 	<script type="text/javascript">
 		function pop() {

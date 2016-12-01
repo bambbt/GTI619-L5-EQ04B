@@ -20,6 +20,7 @@
 		<li class="nav-item"><a href="<c:url value="/regexPass" />">Gestion Complexite MDP</a></li>
 		<li class="nav-item"><a href="<c:url value="/adminLog" />">Log</a></li>
 		<li class="nav-item"><a href="<c:url value="/changePasswd" />">Changer Mon Mot de passe</a></li>
+		<li class="nav-item"><a href="<c:url value="/logout" />">Logout</a></li>
   </ul>
 </nav>		
 
@@ -34,7 +35,7 @@
 	
 	<br>
 	<br>
-	<a href="<c:url value="/logout" />">Logout</a>
+	
 	
 </body>
 </html>

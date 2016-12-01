@@ -31,6 +31,7 @@
 			<li class="nav-item"><a href="<c:url value="/adminLog" />">Log</a></li>
 			<li class="nav-item"><a href="<c:url value="/changePasswd" />">Changer
 					Mon Mot de passe</a></li>
+					<li class="nav-item"><a href="<c:url value="/logout" />">Logout</a></li>
 		</ul>
 	</nav>
 
@@ -41,6 +42,6 @@
 	<p class="bg-primary">Affichage des logs de connexion</p>
 	<textarea name="consoleC" id="consoleC" class="form-control" rows="100">${log_connexion}</textarea>
 	<br>
-	<a href="<c:url value="/logout" />">Logout</a>
+	
 </body>
 </html>

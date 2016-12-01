@@ -37,6 +37,7 @@
 		<li class="nav-item"><a href="<c:url value="/adminLog" />">Log</a></li>
 		<li class="nav-item"><a href="<c:url value="/changePasswd" />">Changer
 				Mon Mot de passe</a></li>
+		<li class="nav-item"><a href="<c:url value="/logout" />">Logout</a></li>
 	</ul>
 </nav>
 <body onload="pop()">
@@ -89,12 +90,11 @@
 						<div class="form-group">
 							<label for="password"><span class="req">* </span> Mot de
 								passe provisoire : </label> <input required name="newPass"
-								type="password" class="form-control inputpass" 
-								maxlength="16" placeholder="Saisir le mot de passe" id="pass1"
-								required /> 
-								<label for="passwordAgain"><span
-								class="req">* </span> Confirmation du mot de passe : </label> <input
-								required name="passwordAgain" type="password"
+								type="password" class="form-control inputpass" maxlength="16"
+								placeholder="Saisir le mot de passe" id="pass1" required /> <label
+								for="passwordAgain"><span class="req">* </span>
+								Confirmation du mot de passe : </label> <input required
+								name="passwordAgain" type="password"
 								class="form-control inputpass" maxlength="16"
 								placeholder="Saisir de nouveau le mot de passe" id="pass2"
 								onkeyup="checkPass(); return false;" required /> <span
@@ -122,7 +122,7 @@
 			</div>
 		</div>
 	</div>
-	<a href="<c:url value="/logout" />">Logout</a>
+	
 	<br>
 
 	<script type="text/javascript">

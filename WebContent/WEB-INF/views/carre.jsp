@@ -19,6 +19,7 @@
      <li class="nav-item">
       <a href="<c:url value="/changePasswd" />">Changer Mon Mot de passe</a>
     </li>
+    <li class="nav-item"><a href="<c:url value="/logout" />">Logout</a></li>
   </ul>
 </nav>	
 
@@ -29,7 +30,7 @@
   <img src="https://www.technal.com/globalassets/upload/ligne-graphique/carres.png" alt="Carre" width="304" height="236"></img> 
    <br>
    <br>
-  <a href="<c:url value="/logout" />">Logout</a>
+  
 </div>
 
 </body>
