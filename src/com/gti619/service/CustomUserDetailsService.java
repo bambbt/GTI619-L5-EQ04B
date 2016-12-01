@@ -48,7 +48,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			List<GrantedAuthority> authorities) {	
 		
 		return new User(user.getLogin(), 
-				user.getMdp(), true, 
+				user.getMdp(), (user.getIsLocked()==0), 
 				true, true, true, authorities);
 	}
 

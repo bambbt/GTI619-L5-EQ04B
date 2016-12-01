@@ -185,10 +185,15 @@ public class PostController {
 
 				// Si le duo usermame recovery_id est valide setter le nouveau MDP
 				userService.changePassword(username,pass);
-
-
-				//Redirection de l'utilisateur vers la page setNewPass
+				
+				
 				raison = "Cool! Votre mot de passe a ete reinitialise";
+				err="false";
+				model.setViewName("/login");
+				model.addObject("error", err);
+				model.addObject("user", username);
+				//Redirection de l'utilisateur vers la page setNewPass
+				
 			}else{
 				raison = "Ce mot de passe a déjà été utilisé";
 				err="true";
@@ -197,10 +202,7 @@ public class PostController {
 				model.addObject("user", username);
 			}
 
-			err="false";
-			model.setViewName("/login");
-			model.addObject("error", err);
-			model.addObject("user", username);
+
 		}
 		else{
 			raison = "Oups! Probleme lors de la reinitialisation";

@@ -20,6 +20,7 @@ public class User implements java.io.Serializable {
 	private String salt;
 	private Set oldPasswords = new HashSet(0);
 	private Integer recoveryid;
+	private Integer nbTentativeCo;
 	
 	public User() {
 	}
@@ -121,6 +122,14 @@ public class User implements java.io.Serializable {
 
 	public void setOldPasswords(Set oldPasswords) {
 		this.oldPasswords = oldPasswords;
+	}
+
+	public Integer getNbTentativeCo() {
+		return nbTentativeCo;
+	}
+
+	public void setNbTentativeCo(Integer nbTentativeCo) {
+		this.nbTentativeCo = nbTentativeCo;
 	}
 	
 

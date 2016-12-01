@@ -180,5 +180,9 @@ public class UserService {
 
 	}
 
+	public void attachDirty(User user) {
+		userDao.attachDirty(user);
+	}
+
 
 }

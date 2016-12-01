@@ -11,10 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.gti619.daos.UserHome;
+import com.gti619.model.User;
+import com.gti619.service.SecurityConfigService;
+import com.gti619.service.UserService;
 
 
 
@@ -24,7 +25,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 
 	@Autowired
-	private UserHome userDao;
+	private UserService userService;
+
+	@Autowired
+	private SecurityConfigService configService;
 
 	@Autowired
 	@Qualifier("customUserDetailsService")
@@ -43,7 +47,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		}
 
 		String presentedLogin = authentication.getPrincipal().toString();
-		String strSalt = userDao.findByUserName(presentedLogin).getSalt();;
+		String strSalt = userService.findBylogin(presentedLogin).getSalt();;
 		String presentedPassword = authentication.getCredentials().toString();
 
 
@@ -61,7 +65,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			System.out.println(userDetails.getPassword());
 			if (!passHash.contentEquals(userDetails.getPassword())) {
 				log.debug("Authentification raté");
-				System.out.println("Authentification raté " );
+
+				User user = userService.findBylogin(presentedLogin);
+				int nbTentativeCoMax = configService.getNbTentativeCoMax();
+				if(user.getNbTentativeCo()<nbTentativeCoMax){
+					user.setNbTentativeCo(user.getNbTentativeCo()+1);
+
+				}else{
+					user.setIsLocked(1);
+				}
+				userService.attachDirty(user);
 				return null;
 			}
 

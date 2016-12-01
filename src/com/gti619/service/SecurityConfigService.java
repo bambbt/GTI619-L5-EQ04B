@@ -14,4 +14,12 @@ public class SecurityConfigService {
 		return configDao.getConfig().getNbOldPasswordToSave();
 	}
 
+	public int getNbTentativeCoMax() {
+		return configDao.getConfig().getNbTentativesMax();
+		
+	}
+	
+	
+	
+
 }
