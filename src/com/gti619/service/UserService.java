@@ -79,6 +79,8 @@ public class UserService {
 		user.setMdp(passHash);
 		user.setSalt(strSalt);
 		user.setName(completeName);
+		user.setIsLocked(0);
+		user.setNbTentativeCo(0);
 		Role role= roleDao.findByName(strRole);
 		user.setRole(role);
 		userDao.persist(user);
@@ -98,7 +100,7 @@ public class UserService {
 		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
 
 
-		return (userDao.lookForSamePass(principal,passHash) > 0);
+		return (userDao.lookForSamePass(principal,passHash) != 0);
 	}
 
 	public void changePassword(String login, String password) { 

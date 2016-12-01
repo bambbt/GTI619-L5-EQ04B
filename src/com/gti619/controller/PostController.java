@@ -178,7 +178,7 @@ public class PostController {
 		if(userService.recoveryValide(username, recovery_id)){
 
 			//verifier si le mot de passe a pas ete utilise
-			if(userService.oldPasswordCheckUsed(username, pass)){
+			if(!userService.oldPasswordCheckUsed(username, pass)){
 
 				//Et remettre le recovery id 
 				userService.resetRecoveryId(username);
