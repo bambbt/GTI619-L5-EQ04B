@@ -177,26 +177,37 @@ public class PostController {
 		System.out.println("JE VIENS DE RECEVOIR LE FORMULAIRE "+username);
 		String notification = "Votre compte est en cours de reinitialisation. Un Pin secret a �t� envoy� sur votre @ courriel.";
 
-
-		if(username.length()<20){
-			//Valider si l'utilisateur existe
-			if(userService.userExist(username)){
-				// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
-				userService.setRecoveryId(username);
-				//Redirection de l'utilisateur vers la page setNewPass
-				model.addObject("notif", notification);
-				model.addObject("user", username);
-				model.setViewName("/setNewPass");
+		if(!userService.isUserLocked(username)){
+			if(username.length()<20){
+				//Valider si l'utilisateur existe
+				if(userService.userExist(username)){
+					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
+					userService.setRecoveryId(username);
+					//Redirection de l'utilisateur vers la page setNewPass
+					model.addObject("notif", notification);
+					model.addObject("user", username);
+					model.setViewName("/setNewPass");
+				}
 			}
-		}
-		else{
-			raison = "Oups! Le compte utilisateur n'existe pas";
+			else{
+				raison = "Oups! Le compte utilisateur n'existe pas";
+				err="true";
+				model.setViewName("/forgetPass");
+				model.addObject("error", err);
+				model.addObject("user", username);
+				model.addObject("explain", "Votre compte utilisateur est en cours de reinitialisation. Un Pin secret a �t� envoy� sur votre adresse courriel. ");
+				model.addObject("raison", raison);
+
+			}
+		}else{
+			raison = "Votre compte est bloquée , veuillez contacter l'administrateur !";
 			err="true";
 			model.setViewName("/forgetPass");
 			model.addObject("error", err);
+			model.addObject("error", err);
 			model.addObject("user", username);
-			model.addObject("explain", "Votre compte utilisateur est en cours de reinitialisation. Un Pin secret a �t� envoy� sur votre adresse courriel. ");
-
+			model.addObject("raison", raison);
+			model.addObject("explain", "Un trop grand nombre de tentatives éronnées. ");
 		}
 		return model;
 	}
@@ -248,11 +259,13 @@ public class PostController {
 					model.setViewName("/login");
 					model.addObject("error", err);
 					model.addObject("user", username);
+					model.addObject("raison", raison);
 					//Redirection de l'utilisateur vers la page setNewPass
 
 				}else{
 					raison = "Ce mot de passe a déjà été utilisé";
 					err="true";
+					model.addObject("raison", raison);
 					model.setViewName("/setNewPass");
 					model.addObject("error", err);
 					model.addObject("user", username);
@@ -263,6 +276,7 @@ public class PostController {
 			else{
 				raison = "Oups! Probleme lors de la reinitialisation";
 				err="true";
+				model.addObject("raison", raison);
 				model.setViewName("/setNewPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
@@ -270,6 +284,7 @@ public class PostController {
 		}else{
 			raison = "Politique de mot de passe non respecté.";
 			err="true";
+			model.addObject("raison", raison);
 			model.setViewName("/setNewPass");
 			model.addObject("error", err);
 			model.addObject("user", username);
@@ -306,6 +321,7 @@ public class PostController {
 			userService.savePolitiquePassword(regex);
 			err="false";
 			raison="Politique des mots de passe modifié.";
+
 
 		}else{
 

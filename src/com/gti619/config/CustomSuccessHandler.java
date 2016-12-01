@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.gti619.service.SecurityConfigService;
+import com.gti619.service.UserService;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -26,6 +27,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	@Autowired
 	@Qualifier("securityConfigService")
 	private SecurityConfigService configService;
+	
+	@Autowired
+	@Qualifier("userService")
+	private UserService userService;
 	
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -38,6 +43,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			System.out.println("Can't redirect");
 			return;
 		}
+		
 		request.getSession().setMaxInactiveInterval(configService.getTimeoutInactiveSession());
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}

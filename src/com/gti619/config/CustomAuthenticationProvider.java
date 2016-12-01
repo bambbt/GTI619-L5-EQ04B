@@ -70,10 +70,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		String passHash;
 		try {
 			passHash = PasswordEncoder.MD5encrypt(mixedPass);
-			
+			User user = userService.findBylogin(presentedLogin);
 			if (!passHash.contentEquals(userDetails.getPassword())) {
 
-				User user = userService.findBylogin(presentedLogin);
+				
 				int nbTentativeCoMax = configService.getNbTentativeCoMax();
 				if(user.getNbTentativeCo()<nbTentativeCoMax){
 					user.setNbTentativeCo(user.getNbTentativeCo()+1);
@@ -85,6 +85,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 				userService.attachDirty(user);
 				return null;
 			}
+			user.setNbTentativeCo(0);
+			userService.attachDirty(user);
+			
 			log.debug(new Date()+"=> L'utilisateur "+presentedLogin+" est connecté avec succés.");
 			return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword(),userDetails.getAuthorities());			
 		} catch (Exception e) {

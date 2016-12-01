@@ -25,7 +25,7 @@ public class UserService {
 	@Autowired
 	@Qualifier("oldPasswordService")
 	private OldPasswordService oldPassService;
-	
+
 	@Autowired
 	@Qualifier("securityConfigService")
 	private SecurityConfigService configService;
@@ -193,24 +193,29 @@ public class UserService {
 
 	public void savePolitiquePassword(String regex) {
 		configService.setPolitiquePassword(regex);
-		
+
 	}
 
 	public void setTentativeCoMax(int nbtentative) {
 		configService.setTentativeCoMax(nbtentative);
-		
+
 	}
 
 	public void reactiveAccount(String login) {
-			User user = userDao.findByUserName(login);
-			user.setIsLocked(0);
-			user.setNbTentativeCo(0);
-			userDao.attachDirty(user);
+		User user = userDao.findByUserName(login);
+		user.setIsLocked(0);
+		user.setNbTentativeCo(0);
+		userDao.attachDirty(user);
 	}
 
 	public ArrayList<User> getUsersDisabled() {
 		ArrayList<User> users =  userDao.getUsersDisabled();
 		return users;
+	}
+
+	public boolean isUserLocked(String username) {
+		User user = userDao.findByUserName(username);
+		return (user.getIduser()==1);
 	}
 
 }
