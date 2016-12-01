@@ -39,16 +39,8 @@
 	<br>
 	<br>
 	<p class="bg-primary">Affichage des logs de connexion</p>
-	<textarea name="consoleC" id="consoleC" class="form-control" rows="10">${log_connexion}</textarea>
-	<br>
-	<p class="bg-danger">Affichage des logs de sécurité</p>
-	<textarea name="consoleS" id="consoleS" class="form-control" rows="10"
-		>${log_securite}</textarea>
+	<textarea name="consoleC" id="consoleC" class="form-control" rows="100">${log_connexion}</textarea>
 	<br>
 	<a href="<c:url value="/logout" />">Logout</a>
-	<script type="text/javascript">
-		//document.getElementById("consoleC").value = "";
-		//document.getElementById("consoleS").value = "Console Sécurité";
-	</script>
 </body>
 </html>

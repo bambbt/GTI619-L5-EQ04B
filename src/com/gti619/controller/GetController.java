@@ -61,7 +61,13 @@ public class GetController {
 	
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
+		RequestContextHolder.currentRequestAttributes().setAttribute("mon test", "test", 1);
+		System.out.println(RequestContextHolder.currentRequestAttributes().getAttribute("mon test", 1));
+		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
+		RequestContextHolder.currentRequestAttributes().toString();
 		model.addAttribute("user", getPrincipal());
+		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
+		
 		return "homeAdmin";
 	}
 	
@@ -219,19 +225,38 @@ public class GetController {
 			return "adminLog";
 		}
 	
-	
+		//GET
+				@RequestMapping(value = "/myHome", method = RequestMethod.GET)
+				public String getmyHome() {
+					System.out.println("myHome");	
+					String url = "";
+					String userRole = getAuthorities().get(0);
+					System.out.println(userRole);	
+					if (userRole.equals("ROLE_CERCLE")) {
+						url= "/homeCercle";
+					} 
+					else if (userRole.equals("ROLE_CARRE")) {
+						url = "/homeCarre";
+					}
+					else if (userRole.equals("ROLE_ADMIN")) {
+						url = "/homeAdmin";
+					}
+					return url;
+				}
+			 
 		
 		
 	
 
-	/**
-	 * Permet de retourner le nom de l'utilisateur en question
-	 * @return
-	 */
-	private String getPrincipal(){		
-		UserDetails principal = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
-		return principal.getUsername();
-	}
+
+		/*	
+		 * Permet de retourner le nom de l'utilisateur en question
+		 * @return
+		 */
+		private String getPrincipal(){
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
+			return principal.toString();
+		}
 	
 	
 	/**
@@ -247,24 +272,6 @@ public class GetController {
 		return roles;
 	}
 	
-	//GET
-		@RequestMapping(value = "/myHome", method = RequestMethod.GET)
-		public String getmyHome() {
-			System.out.println("myHome");	
-			String url = "";
-			String userRole = getAuthorities().get(0);
-			System.out.println(userRole);	
-			if (userRole.equals("ROLE_CERCLE")) {
-				url= "/homeCercle";
-			} 
-			else if (userRole.equals("ROLE_CARRE")) {
-				url = "/homeCarre";
-			}
-			else if (userRole.equals("ROLE_ADMIN")) {
-				url = "/homeAdmin";
-			}
-			return url;
-		}
-	 
+	
 	
 }

@@ -70,7 +70,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 		
 		http.sessionManagement()
-	    .invalidSessionUrl("/logout");
+	    .invalidSessionUrl("/login");
 		
 		// protection contre certaines attaques
 		//
