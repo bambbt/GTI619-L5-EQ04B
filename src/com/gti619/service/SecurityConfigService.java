@@ -36,8 +36,11 @@ public class SecurityConfigService {
 		
 		return configDao.getConfig().getPassRegex();
 	}
-	
-	
+
+	public int getTimeoutInactiveSession() {
+		return configDao.getConfig().getAuthenticationTimeout();
+	}
+		
 	
 
 }

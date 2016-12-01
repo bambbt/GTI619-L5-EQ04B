@@ -33,61 +33,54 @@ import com.gti619.service.UserService;
 @Controller
 @SessionAttributes
 public class GetController {
-	
+
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
 
-	
-		
-	
+
+
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getloginPage() {
 		return "login";
 	}
-	
+
 	@RequestMapping(value = "/forgetPass", method = RequestMethod.GET)
 	public String getforgetPass(ModelMap model) {
 		model.addAttribute("error", false);
 		return "forgetPass";
 	}
-	
+
 	@RequestMapping(value = "/setNewPass", method = RequestMethod.GET)
 	public String getSetNewPAss() {
 		return "setNewPass";
 	}
-	
-	
-	
+
+
+
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
-		RequestContextHolder.currentRequestAttributes().setAttribute("mon test", "test", 1);
-		System.out.println(RequestContextHolder.currentRequestAttributes().getAttribute("mon test", 1));
-		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
-		RequestContextHolder.currentRequestAttributes().toString();
+		initSession();
 		model.addAttribute("user", getPrincipal());
-		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
-		
+
+
 		return "homeAdmin";
 	}
-	
+
 	@RequestMapping(value = "/homeCarre", method = RequestMethod.GET)
 	public String getHomeCarre(ModelMap model) {
+
+
+		initSession();
 		model.addAttribute("user", getPrincipal());
-		
-		RequestContextHolder.currentRequestAttributes().setAttribute("mon test", "test", 1);
-		System.out.println(RequestContextHolder.currentRequestAttributes().getAttributeNames(1));
-		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
-		model.addAttribute("user", getPrincipal());
-		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
-		
-		model.addAttribute("user", getPrincipal());
-		model.addAttribute("idSession", RequestContextHolder.currentRequestAttributes().getSessionId());
+
 		return "homeCarre";
 	}
-	
+
 	@RequestMapping(value = "/homeCercle", method = RequestMethod.GET)
 	public String getHomeCercle(ModelMap model) {
+		initSession();
 		model.addAttribute("user", getPrincipal());
 		return "homeCercle";
 	}
@@ -99,12 +92,12 @@ public class GetController {
 	}
 
 
-	
+
 	@RequestMapping(value = "/carre", method = RequestMethod.GET)
 	public String getcarre(ModelMap model) {
 		String url = "";
 		List<String> userRoles = this.getAuthorities();
-		
+
 		if (userRoles.contains("ROLE_CARRE")) {
 			url= "/carre";
 		} 
@@ -113,12 +106,12 @@ public class GetController {
 		}
 		return url;
 	}
-	
+
 	@RequestMapping(value = "/cercle", method = RequestMethod.GET)
 	public String getcercle(ModelMap model) {
 		String url = "";
 		List<String> userRoles = this.getAuthorities();
-		
+
 		if (userRoles.contains("ROLE_CERCLE")) {
 			url= "/cercle";
 		} 
@@ -127,7 +120,7 @@ public class GetController {
 		}
 		return url;
 	}
-	
+
 	//GET
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
 	public String getAdministration(ModelMap model) {
@@ -136,36 +129,36 @@ public class GetController {
 		System.out.println("Administration");
 		return "administration";
 	}
-	
-	//GET
-		@RequestMapping(value = "/regexPass", method = RequestMethod.GET)
-		public String getRegexPass(ModelMap model) {
-			System.out.println("regexPass");
 
-			model.addAttribute("error", "");
-			return "regexPass";
-		}
-		
-		//GET
-		@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.GET)
-		public String getAdminTentativeMax(ModelMap model) {
-			System.out.println("getAdminTentativeMax");
-			model.addAttribute("error", "");
-			return "adminTentativeMax";
-		}
-		
-		
-		//GET
-				@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
-				public String getReactiveAccount(ModelMap model) {
-					ArrayList<User> userList = userService.getUsersDisabled();
-				
-					System.out.println("getReactiveAccount");
-					System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
-					model.addAttribute("error", "");
-					model.addAttribute("userList", userList);
-					return "reactiveAccount";
-				}
+	//GET
+	@RequestMapping(value = "/regexPass", method = RequestMethod.GET)
+	public String getRegexPass(ModelMap model) {
+		System.out.println("regexPass");
+
+		model.addAttribute("error", "");
+		return "regexPass";
+	}
+
+	//GET
+	@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.GET)
+	public String getAdminTentativeMax(ModelMap model) {
+		System.out.println("getAdminTentativeMax");
+		model.addAttribute("error", "");
+		return "adminTentativeMax";
+	}
+
+
+	//GET
+	@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
+	public String getReactiveAccount(ModelMap model) {
+		ArrayList<User> userList = userService.getUsersDisabled();
+
+		System.out.println("getReactiveAccount");
+		System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
+		model.addAttribute("error", "");
+		model.addAttribute("userList", userList);
+		return "reactiveAccount";
+	}
 
 
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -177,7 +170,7 @@ public class GetController {
 		SecurityContextHolder.clearContext();
 		return "redirect:/login?logout";
 	}
-	
+
 	//GET
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
@@ -185,80 +178,80 @@ public class GetController {
 		model.addAttribute("username", getPrincipal());
 		return "changePasswd";
 	}
-	
-	
-	
-	//GET
-		@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
-		public String getAdminLog(ModelMap model) {
-			System.out.println("adminLog");	
-			
-			// Create a stream to hold the output
-			BufferedReader br = null;
-			String everything = null;
-			try {
-				br = new BufferedReader(new FileReader("/tmp/logCo.log"));
-			    StringBuilder sb = new StringBuilder();
-			    String line = br.readLine();
 
-			    while (line != null) {
-			        sb.append(line);
-			        sb.append(System.lineSeparator());
-			        line = br.readLine();
-			    }
-			    everything = sb.toString();
+
+
+	//GET
+	@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
+	public String getAdminLog(ModelMap model) {
+		System.out.println("adminLog");	
+
+		// Create a stream to hold the output
+		BufferedReader br = null;
+		String everything = null;
+		try {
+			br = new BufferedReader(new FileReader("/tmp/logCo.log"));
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				sb.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			everything = sb.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			try {
+				br.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-			    
-					try {
-						br.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
 			}
-			model.addAttribute("log_connexion",everything);
-			model.addAttribute("log_securite", "Console");
-			return "adminLog";
+
 		}
-	
-		//GET
-				@RequestMapping(value = "/myHome", method = RequestMethod.GET)
-				public String getmyHome() {
-					System.out.println("myHome");	
-					String url = "";
-					String userRole = getAuthorities().get(0);
-					System.out.println(userRole);	
-					if (userRole.equals("ROLE_CERCLE")) {
-						url= "/homeCercle";
-					} 
-					else if (userRole.equals("ROLE_CARRE")) {
-						url = "/homeCarre";
-					}
-					else if (userRole.equals("ROLE_ADMIN")) {
-						url = "/homeAdmin";
-					}
-					return url;
-				}
-			 
-		
-		
-	
+		model.addAttribute("log_connexion",everything);
+		model.addAttribute("log_securite", "Console");
+		return "adminLog";
+	}
+
+	//GET
+	@RequestMapping(value = "/myHome", method = RequestMethod.GET)
+	public String getmyHome() {
+		System.out.println("myHome");	
+		String url = "";
+		String userRole = getAuthorities().get(0);
+		System.out.println(userRole);	
+		if (userRole.equals("ROLE_CERCLE")) {
+			url= "/homeCercle";
+		} 
+		else if (userRole.equals("ROLE_CARRE")) {
+			url = "/homeCarre";
+		}
+		else if (userRole.equals("ROLE_ADMIN")) {
+			url = "/homeAdmin";
+		}
+		return url;
+	}
 
 
-		/*	
-		 * Permet de retourner le nom de l'utilisateur en question
-		 * @return
-		 */
-		private String getPrincipal(){
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
-			return principal.toString();
-		}
-	
-	
+
+
+
+
+	/*	
+	 * Permet de retourner le nom de l'utilisateur en question
+	 * @return
+	 */
+	private String getPrincipal(){
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
+		return principal.toString();
+	}
+
+
 	/**
 	 * Permet de retourner la liste des roles de l'utilisateur en question			
 	 * @return
@@ -271,7 +264,19 @@ public class GetController {
 		}		
 		return roles;
 	}
-	
-	
-	
+
+	public void initSession(){
+
+		String  [] attrs  = RequestContextHolder.currentRequestAttributes().getAttributeNames(1);
+		System.out.println("Session ID: "+ RequestContextHolder.currentRequestAttributes().getSessionId());
+
+		for (String attr : attrs) {
+			System.out.println(attr +" : "+ RequestContextHolder.currentRequestAttributes().getAttribute(attr, 1));
+		}
+
+
+	}
+
+
+
 }

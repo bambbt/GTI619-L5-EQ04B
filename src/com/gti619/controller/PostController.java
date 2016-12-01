@@ -346,7 +346,7 @@ public class PostController {
 			int nbTentativeMax = Integer.parseInt(nbtentative);
 			userService.setTentativeCoMax(nbTentativeMax);
 			err="false";
-			raison="Politique de tentatives modifié.";
+			raison="Politique de connexions modifié.";
 
 		}else{
 
