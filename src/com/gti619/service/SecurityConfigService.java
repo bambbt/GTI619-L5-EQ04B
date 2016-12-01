@@ -31,6 +31,11 @@ public class SecurityConfigService {
 		config.setNbTentativesMax(nbtentative);
 		configDao.attachDirty(config);		
 	}
+
+	public String getPasswordPolitique() {
+		
+		return configDao.getConfig().getPassRegex();
+	}
 	
 	
 	

@@ -235,14 +235,12 @@ public class GetController {
 		return roles;
 	}
 	
-	/*
-	 * 
-	 * //GET
+	//GET
 		@RequestMapping(value = "/myHome", method = RequestMethod.GET)
 		public String getmyHome() {
 			System.out.println("myHome");	
 			String url = "";
-			String userRole = getRole();
+			String userRole = getAuthorities().get(0);
 			System.out.println(userRole);	
 			if (userRole.equals("ROLE_CERCLE")) {
 				url= "/homeCercle";
@@ -255,6 +253,6 @@ public class GetController {
 			}
 			return url;
 		}
-	 */
+	 
 	
 }

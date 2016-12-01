@@ -45,11 +45,19 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
-			log.debug(new Date()+" => Tentative de connexxion avec un utilisateur inexistant.");			
-			throw new BadCredentialsException("Bad credentials");
+			log.debug(new Date()+" => Tentative de connexion avec un utilisateur inexistant.");			
+			return null;
 		}
+		
+		
 
 		String presentedLogin = authentication.getPrincipal().toString();
+		
+		UserDetails userDetails = userDetailsService.loadUserByUsername(presentedLogin);
+		
+		if(!userDetails.isEnabled())
+			return null;
+		
 		String strSalt = userService.findBylogin(presentedLogin).getSalt();;
 		String presentedPassword = authentication.getCredentials().toString();
 
@@ -58,7 +66,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 
 		//encodage du password
-		UserDetails userDetails = userDetailsService.loadUserByUsername(presentedLogin);
+		
 		String passHash;
 		try {
 			passHash = PasswordEncoder.MD5encrypt(mixedPass);

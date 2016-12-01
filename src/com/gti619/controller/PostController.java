@@ -1,11 +1,12 @@
 package com.gti619.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,10 @@ public class PostController {
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
+	
+	@Autowired
+	@Qualifier("securityConfigService")
+	private SecurityConfigService configService;
 
 	//POST
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
@@ -80,12 +85,13 @@ public class PostController {
 		System.out.println("Voici les elements : "+getPrincipal()+" "+oldPass+" "+password );
 		//Validation du formulaire
 
-
-
-
+		String regexPassword = configService.getPasswordPolitique();
+		Pattern pattern = Pattern.compile(regexPassword);
+		Matcher matcher = pattern.matcher(password);
+		
 
 		// Si valide on proc�de � la mise a jour du mdp
-
+		if(matcher.matches()){
 		//1 V�rifier si l'ancien mot de passe concorde
 		if(userService.validatePasswd(getPrincipal(), oldPass)){
 			// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
@@ -102,6 +108,10 @@ public class PostController {
 		else{
 			raison = " Votre mot de passe est eronne";
 			err="true";
+		}}
+		else{
+			raison = "Politique de mots de passe non respecté.";
+			err="true";			
 		}
 
 

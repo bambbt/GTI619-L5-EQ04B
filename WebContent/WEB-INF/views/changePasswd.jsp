@@ -6,9 +6,12 @@
 <head>
 <title>Passwd</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="<c:url value='/ressources/js/toastr/build/toastr.css' />"
 	rel="stylesheet" />
 <script src="<c:url value="/ressources/js/addUser.js" />"></script>
@@ -19,8 +22,7 @@
 </head>
 <nav class="navbar navbar-light bg-faded">
 	<ul class="nav navbar-nav">
-		<li class="nav-item active"><a onClick="document.location.href = document.referrer">Home</a>
-		</li>
+		<li class="nav-item"><a href="<c:url value="/myHome" />">Home</a></li>
 	</ul>
 </nav>
 
@@ -80,21 +82,19 @@
 	<a href="<c:url value="/logout" />">Logout</a>
 
 	<script type="text/javascript">
-function pop(){
-	
-	var erreur = document.getElementById("error").value
-	var raison = document.getElementById("raison").value
-	
-	if(erreur ==""){
-		toastr.info("Espace de'administration");
-	}
-	else if(erreur== "false"){
-		toastr.success("Succes : "+raison)
-	}
-	else if(erreur=="true"){
-		toastr.error('Erreur: '+raison);
-	}
-}
-</script>
+		function pop() {
+
+			var erreur = document.getElementById("error").value
+			var raison = document.getElementById("raison").value
+
+			if (erreur == "") {
+				toastr.info("Espace de'administration");
+			} else if (erreur == "false") {
+				toastr.success("Succes : " + raison)
+			} else if (erreur == "true") {
+				toastr.error('Erreur: ' + raison);
+			}
+		}
+	</script>
 </body>
 </html>
