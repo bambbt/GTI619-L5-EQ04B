@@ -1,5 +1,6 @@
 package com.gti619.controller;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gti619.model.User;
 import com.gti619.service.SecurityConfigService;
 import com.gti619.service.UserService;
 
@@ -23,10 +25,17 @@ public class PostController {
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
-	
+
 	@Autowired
 	@Qualifier("securityConfigService")
 	private SecurityConfigService configService;
+
+	private static final String EMAIL_PATTERN ="^[A-Za-z0-9]*[@][A-Za-z]*[\\.][a-z]{2,3}$";
+
+
+	private static final String NAME_PATTERN = "^[a-zA-Z\\s]*$" ;
+
+	private static final String LOGIN_PATTERN = "^[a-zA-Z0-9]*$" ;
 
 	//POST
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
@@ -47,20 +56,47 @@ public class PostController {
 		System.out.println("I am "+getPrincipal());
 		System.out.println("Voici les elements : "+role +"" +login +" "+completeName+" "+mail+" "+password+" "+adminPass );
 
-		//Validation du formulaire
 
-		//1 valider le mot de passe de l'administrateur
-		if(userService.validatePasswd(getPrincipal(), adminPass)){
-			// Si valide, proceder a l'ajout de l'utilisateur
-			userService.addUser(role,login,completeName,mail,password);
-			err="false";
-			raison = login +" est ajoute";
-		}
-		else{
-			raison = " Authentification Admin, mauvais mot de passe.";
+		Pattern mailpattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher mailMatcher = mailpattern.matcher(mail);
+
+		Pattern loginpattern = Pattern.compile(LOGIN_PATTERN);
+		Matcher loginMatcher = loginpattern.matcher(login);
+
+		Pattern completeNamepattern = Pattern.compile(NAME_PATTERN);
+		Matcher completeNameMatcher = completeNamepattern.matcher(completeName);
+
+
+		if(mailMatcher.matches() && loginMatcher.matches() && completeNameMatcher.matches()){
+			//Validation du formulaire
+			String regexPassword = configService.getPasswordPolitique();
+			Pattern pattern = Pattern.compile(regexPassword);
+			Matcher matcher = pattern.matcher(password);
+
+
+			// Si valide on proc�de � la mise a jour du mdp
+			if(matcher.matches()){
+				//1 valider le mot de passe de l'administrateur
+				if(userService.validatePasswd(getPrincipal(), adminPass)){
+					// Si valide, proceder a l'ajout de l'utilisateur
+					userService.addUser(role,login,completeName,mail,password);
+					err="false";
+					raison = login +" est ajoute";
+				}
+				else{
+					raison = " Authentification Admin, mauvais mot de passe.";
+					err="true";
+				}
+
+			}else{
+				raison = "Veuillez les politiques de sécurité de password.";
+				err="true";
+			}
+
+		}else{
+			raison = "Corriger l'une des valeurs suivantes: "+ login+" ou "+completeName+" ou "+mail;
 			err="true";
 		}
-
 
 		model.setViewName("/administration");
 		model.addObject("error",err);
@@ -88,27 +124,27 @@ public class PostController {
 		String regexPassword = configService.getPasswordPolitique();
 		Pattern pattern = Pattern.compile(regexPassword);
 		Matcher matcher = pattern.matcher(password);
-		
+
 
 		// Si valide on proc�de � la mise a jour du mdp
 		if(matcher.matches()){
-		//1 V�rifier si l'ancien mot de passe concorde
-		if(userService.validatePasswd(getPrincipal(), oldPass)){
-			// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
+			//1 V�rifier si l'ancien mot de passe concorde
+			if(userService.validatePasswd(getPrincipal(), oldPass)){
+				// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
 
-			if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
-				userService.changePassword(getPrincipal(),password);
-				err="false";
-				raison = " Mot de passe change";
-			}else{
-				err="true";
-				raison = " Mot de passe deja� utilise";
+				if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
+					userService.changePassword(getPrincipal(),password);
+					err="false";
+					raison = " Mot de passe change";
+				}else{
+					err="true";
+					raison = " Mot de passe deja� utilise";
+				}
 			}
-		}
-		else{
-			raison = " Votre mot de passe est eronne";
-			err="true";
-		}}
+			else{
+				raison = " Votre mot de passe est eronne";
+				err="true";
+			}}
 		else{
 			raison = "Politique de mots de passe non respecté.";
 			err="true";			
@@ -186,38 +222,53 @@ public class PostController {
 		System.out.println("Reception du form de setNewPass en post");
 		System.out.println("Voici les elements : " + username +" "+recovery_id+" "+pass);
 
-		//Valider si l'utilisateur existe
-		if(userService.recoveryValide(username, recovery_id)){
-
-			//verifier si le mot de passe a pas ete utilise
-			if(!userService.oldPasswordCheckUsed(username, pass)){
-
-				//Et remettre le recovery id 
-				userService.resetRecoveryId(username);
-
-				// Si le duo usermame recovery_id est valide setter le nouveau MDP
-				userService.changePassword(username,pass);
+		String regexPassword = configService.getPasswordPolitique();
+		Pattern pattern = Pattern.compile(regexPassword);
+		Matcher matcher = pattern.matcher(pass);
 
 
-				raison = "Cool! Votre mot de passe a ete reinitialise";
-				err="false";
-				model.setViewName("/login");
-				model.addObject("error", err);
-				model.addObject("user", username);
-				//Redirection de l'utilisateur vers la page setNewPass
+		// Si valide on proc�de � la mise a jour du mdp
+		if(matcher.matches()){
 
-			}else{
-				raison = "Ce mot de passe a déjà été utilisé";
+			//Valider si l'utilisateur existe
+			if(userService.recoveryValide(username, recovery_id)){
+
+				//verifier si le mot de passe a pas ete utilise
+				if(!userService.oldPasswordCheckUsed(username, pass)){
+
+					//Et remettre le recovery id 
+					userService.resetRecoveryId(username);
+
+					// Si le duo usermame recovery_id est valide setter le nouveau MDP
+					userService.changePassword(username,pass);
+
+
+					raison = "Cool! Votre mot de passe a ete reinitialise";
+					err="false";
+					model.setViewName("/login");
+					model.addObject("error", err);
+					model.addObject("user", username);
+					//Redirection de l'utilisateur vers la page setNewPass
+
+				}else{
+					raison = "Ce mot de passe a déjà été utilisé";
+					err="true";
+					model.setViewName("/setNewPass");
+					model.addObject("error", err);
+					model.addObject("user", username);
+				}
+
+
+			}
+			else{
+				raison = "Oups! Probleme lors de la reinitialisation";
 				err="true";
 				model.setViewName("/setNewPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
 			}
-
-
-		}
-		else{
-			raison = "Oups! Probleme lors de la reinitialisation";
+		}else{
+			raison = "Politique de mot de passe non respecté.";
 			err="true";
 			model.setViewName("/setNewPass");
 			model.addObject("error", err);
@@ -328,27 +379,42 @@ public class PostController {
 		String raison = "true";
 		String err="true";
 
-		//Validation du mdp administreur
-		if(userService.validatePasswd(getPrincipal(), adminPass)){
-			//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
-			if(userService.oldPasswordCheckUsed(login, newPass)){
 
-				// Reactive le compte, Mettre a jour le mdp, nb tentative = 0 (attention si un compte est bloqu�, on ne peut utiliser Mot de passe perdu)
-				userService.reactiveAccount(login);
-				
-				userService.changePassword(login, newPass);
-				// raison = feedBack positif
-				err="false";
-				raison="Compte "+login+ "réactivé";
+		String regexPassword = configService.getPasswordPolitique();
+		Pattern pattern = Pattern.compile(regexPassword);
+		Matcher matcher = pattern.matcher(newPass);
+
+
+		// Si valide on proc�de � la mise a jour du mdp
+		if(matcher.matches()){
+			//Validation du mdp administreur
+			if(userService.validatePasswd(getPrincipal(), adminPass)){
+				//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
+				if(!userService.oldPasswordCheckUsed(login, newPass)){
+
+					// Reactive le compte, Mettre a jour le mdp, nb tentative = 0 (attention si un compte est bloqu�, on ne peut utiliser Mot de passe perdu)
+					userService.reactiveAccount(login);
+
+					userService.changePassword(login, newPass);
+					// raison = feedBack positif
+					err="false";
+					raison="Compte "+login+ " réactivé";
+				}else{
+					err="true";
+					raison="Mot de passe dèjà utilisé";
+				}
 			}else{
+				//Si non valide, inialiser la raison
 				err="true";
-				raison="Mot de passe dèjà utilisé";
+				raison="Mot de passe invalide";
 			}
 		}else{
-			//Si non valide, inialiser la raison
 			err="true";
-			raison="Mot de passe invalider";
+			raison="Polique de mot de passe non respecté";
 		}
+
+		ArrayList<User> userList = userService.getUsersDisabled();
+		model.addObject("userList", userList);
 		model.addObject("error", err);
 		model.addObject("raison", raison);
 		return model;

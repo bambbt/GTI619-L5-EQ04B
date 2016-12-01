@@ -24,29 +24,33 @@ import com.gti619.model.Role;
 
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-	
+
 	@Autowired
 	private UserHome userDao ;
 
-	
+
 	@Override
 	public UserDetails loadUserByUsername(final String username) 
 			throws UsernameNotFoundException {
 
 		com.gti619.model.User user = userDao.findByUserName(username);
-				
-		List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+
+		if(user!=null){
+
+			List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
+
+			return buildUserForAuthentication(user, authorities);
+		}
+		else
+			throw new UsernameNotFoundException("Username not found");
 		
-		return buildUserForAuthentication(user, authorities);
-
-
 	}
 
 	// Converts com.gti619.model.User user to
 	// org.springframework.security.core.userdetails.User
 	private User buildUserForAuthentication(com.gti619.model.User user, 
 			List<GrantedAuthority> authorities) {	
-		
+
 		return new User(user.getLogin(), 
 				user.getMdp(), (user.getIsLocked()==0), 
 				true, true, true, authorities);

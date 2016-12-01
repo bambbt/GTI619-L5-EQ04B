@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +26,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.gti619.config.CustomAuthenticationProvider;
 import com.gti619.model.User;
+import com.gti619.service.UserService;
 
 @Controller
 @SessionAttributes
 public class GetController {
 	
-	private Log logDeConnexion = LogFactory.getLog(CustomAuthenticationProvider.class);
+	@Autowired
+	@Qualifier("userService")
+	private UserService userService;
+
 	
 		
 	
@@ -135,12 +141,7 @@ public class GetController {
 		//GET
 				@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
 				public String getReactiveAccount(ModelMap model) {
-					ArrayList<User> userList = new ArrayList<User>();
-					User user = new User();
-					user.setIduser(1000);
-					user.setLogin("Test en dur");
-					user.setIsLocked(1);
-					userList.add(user);
+					ArrayList<User> userList = userService.getUsersDisabled();
 				
 					System.out.println("getReactiveAccount");
 					System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");

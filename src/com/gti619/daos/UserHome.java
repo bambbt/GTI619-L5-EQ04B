@@ -191,5 +191,13 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 			return false;
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<User> getUsersDisabled() {
+		ArrayList<User> users = new ArrayList<User>();
+		users = (ArrayList<User>) getSession().createQuery("from User u where u.isLocked = 1").list();
+		
+		return users;
+	}
 	
 }

@@ -1,6 +1,7 @@
 package com.gti619.service;	
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,6 +206,11 @@ public class UserService {
 			user.setIsLocked(0);
 			user.setNbTentativeCo(0);
 			userDao.attachDirty(user);
+	}
+
+	public ArrayList<User> getUsersDisabled() {
+		ArrayList<User> users =  userDao.getUsersDisabled();
+		return users;
 	}
 
 
