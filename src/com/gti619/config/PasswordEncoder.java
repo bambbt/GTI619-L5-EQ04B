@@ -10,7 +10,7 @@ public class PasswordEncoder {
 
 
 
-	public static String MD5encrypt(String plainText) throws Exception {
+	public static String MD5encrypt(String plainText) {
 
 		byte byteData[] = plainText.getBytes();
 

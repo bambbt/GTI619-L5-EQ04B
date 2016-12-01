@@ -24,7 +24,7 @@ public class UserService {
 	@Autowired
 	@Qualifier("oldPasswordService")
 	private OldPasswordService oldPassService;
-	
+
 
 	public boolean validatePasswd(String username, String userPass) {
 
@@ -87,7 +87,7 @@ public class UserService {
 		oldPassService.saveOldPass(user);
 	}
 
-	public boolean oldPasswordCheckUsed(String principal, String password) throws Exception {
+	public boolean oldPasswordCheckUsed(String principal, String password){
 
 		String strSalt = userDao.findByUserName(principal).getSalt();
 
@@ -101,7 +101,7 @@ public class UserService {
 		return (userDao.lookForSamePass(principal,passHash) > 0);
 	}
 
-	public void changePassword(String login, String password) throws Exception {
+	public void changePassword(String login, String password) { 
 
 		//
 		String strSalt = userDao.findByUserName(login).getSalt();
@@ -113,12 +113,12 @@ public class UserService {
 		String passHash = PasswordEncoder.MD5encrypt(mixedPass);
 
 		User user = userDao.findByUserName(login);
-		
-		
-		
+
+
+
 		oldPassService.saveOldPass(user);		
 		user.setMdp(passHash);
-		
+
 		oldPassService.saveOldPass(user);
 
 		userDao.attachDirty(user);
@@ -129,9 +129,9 @@ public class UserService {
 	public User findBylogin (String login){
 		return userDao.findByUserName(login);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Permet de v�rifier si un utilisateur est pr�sent dans la base de donn�e
 	 * lors de la demande de recovery mdp
@@ -143,8 +143,8 @@ public class UserService {
 
 		return (userDao.checkIfUsernameExist(login));
 	}
-	
-	
+
+
 
 	/**
 	 * Permet de g�n�rer un id recovery aleatoire et au compte utilisateur
@@ -153,13 +153,31 @@ public class UserService {
 	 * @throws Exception
 	 */
 	public void setRecoveryId(String login) {
-		
+
 		User user = userDao.findByUserName(login);
-		
+
 		user.setRecoveryid(new SecureRandom().nextInt(999999999));
-		
+
 		userDao.attachDirty(user);
-		
+
+	}
+
+	public boolean recoveryValide(String username, String recoveryValide) {
+
+		User user = userDao.findByUserName(username);
+
+		return (user.getRecoveryid().toString().contentEquals(recoveryValide));
+
+	}
+
+	public void resetRecoveryId(String username) {
+		User user = userDao.findByUserName(username);
+
+		user.setRecoveryid(0);
+
+		userDao.attachDirty(user);
+
+
 	}
 
 
