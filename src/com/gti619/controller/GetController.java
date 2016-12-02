@@ -190,7 +190,7 @@ public class GetController {
 		BufferedReader br = null;
 		String everything = null;
 		try {
-			br = new BufferedReader(new FileReader("/tmp/logCo.log"));
+			br = new BufferedReader(new FileReader("./logCo.log"));
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
