@@ -199,5 +199,29 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 		
 		return users;
 	}
+
+	public boolean checkIfUsernameAndMailExist(String login, String mail) {
+		try{
+			boolean b;
+			List<Object[]> users = new ArrayList<Object[]>();
+			users = getSession().createQuery("from User  where login=? and email=?")
+					.setParameter(0,login).setParameter(1, mail).list();
+			if(users.size()==0){
+				System.out.println("Erreur = Tentive incorrect de recovery de mot de passe avec l'utilisateur");
+				log.debug(" Erreur = Tentive incorrect de recovery de mot de passe avec l'utilisateur : "+login);
+			 b=false;
+			}
+			else{
+				System.out.println("Succes = Recovery de mot de passe avec l'utilisateur");
+				log.debug("Succes = Recovery de mot de passe avec l'utilisateur : "+login);
+				 b=true;
+			}
+			return b;
+		}
+		catch(Exception e){
+			log.debug("Methode checkIfUsernameExist (UserHome) Exception : "+e.toString());
+			return false;
+		}
+	}
 	
 }

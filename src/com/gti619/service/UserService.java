@@ -218,4 +218,8 @@ public class UserService {
 		return (user.getIsLocked()==1);
 	}
 
+	public boolean userExist(String login, String mail) {
+		return (userDao.checkIfUsernameAndMailExist(login,mail));
+	}
+
 }

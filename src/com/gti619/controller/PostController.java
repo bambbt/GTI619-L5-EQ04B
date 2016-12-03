@@ -34,8 +34,8 @@ public class PostController {
 	private static final String NAME_PATTERN = "^[a-zA-Z\\s]*$" ;
 	private static final String LOGIN_PATTERN = "^[a-zA-Z0-9]*$" ;
 
-	
-	
+
+
 	/**
 	 * Methode qui permet de valider le formulaire d'ajout d'utilisateur
 	 * @param role
@@ -87,9 +87,14 @@ public class PostController {
 				//1 valider le mot de passe de l'administrateur
 				if(userService.validatePasswd(gerUserName(), adminPass)){
 					// Si valide, proceder a l'ajout de l'utilisateur
-					userService.addUser(role,login,completeName,mail,password);
-					err="false";
-					raison = login +" est ajoute";
+					if(!userService.userExist(login,mail)){
+						userService.addUser(role,login,completeName,mail,password);
+						err="false";
+						raison = login +" est ajoute";
+					}else{
+						raison = " Login ou adresse mail d√©j√† existante";
+						err="true";
+					}
 				}
 				else{
 					raison = " Authentification Admin, mauvais mot de passe.";
@@ -186,17 +191,17 @@ public class PostController {
 		String raison = "Ok";
 		String err="true";
 		System.out.println("JE VIENS DE RECEVOIR LE FORMULAIRE "+username);
-		
+
 		//Valider si l'utilisateur existe
 		if(username.length()<20 && userService.userExist(username)){
 			if(!userService.isUserLocked(username)){
-					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
-					userService.setRecoveryId(username);
-					//Redirection de l'utilisateur vers la page setNewPass
-					model.addObject("notif", "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.");
-					model.addObject("user", username);
-					model.setViewName("/setNewPass");
-				}
+				// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
+				userService.setRecoveryId(username);
+				//Redirection de l'utilisateur vers la page setNewPass
+				model.addObject("notif", "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.");
+				model.addObject("user", username);
+				model.setViewName("/setNewPass");
+			}
 			else{
 				raison = "Votre compte est bloque , veuillez contacter l'administrateur pour plus d'information !";
 				err="true";
@@ -251,23 +256,23 @@ public class PostController {
 			if(matcher.matches()){
 				//verifier si le mot de passe a pas ete utilise
 				if(!userService.oldPasswordCheckUsed(username, pass)){
-	
-				//Et remettre le recovery id 
+
+					//Et remettre le recovery id 
 					userService.resetRecoveryId(username);
 
-				// Si le duo usermame recovery_id est valide setter le nouveau MDP
-				userService.changePassword(username,pass);
-	
-				raison = "Cool! Votre mot de passe a ete reinitialise";
-				err="false";
-				model.setViewName("/login");
-				model.addObject("error", err);
-				model.addObject("user", username);
-				model.addObject("raison", raison);
-				//Redirection de l'utilisateur vers la page setNewPass
+					// Si le duo usermame recovery_id est valide setter le nouveau MDP
+					userService.changePassword(username,pass);
+
+					raison = "Cool! Votre mot de passe a ete reinitialise";
+					err="false";
+					model.setViewName("/login");
+					model.addObject("error", err);
+					model.addObject("user", username);
+					model.addObject("raison", raison);
+					//Redirection de l'utilisateur vers la page setNewPass
 
 				}else{
-					raison = "Ce mot de passe a deja† ete utilise";
+					raison = "Ce mot de passe a dejaÔøΩ ete utilise";
 					err="true";
 					model.addObject("raison", raison);
 					model.setViewName("/setNewPass");
@@ -416,7 +421,7 @@ public class PostController {
 					raison="Compte "+login+ " reactive";
 				}else{
 					err="true";
-					raison="Mot de passe deja† utilise";
+					raison="Mot de passe dejaÔøΩ utilise";
 				}
 			}else{
 				//Si non valide, inialiser la raison
