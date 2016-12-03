@@ -215,7 +215,7 @@ public class UserService {
 
 	public boolean isUserLocked(String username) {
 		User user = userDao.findByUserName(username);
-		return (user.getIduser()==1);
+		return (user.getIsLocked()==1);
 	}
 
 }

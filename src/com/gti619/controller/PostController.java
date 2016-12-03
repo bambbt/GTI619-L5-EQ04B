@@ -189,8 +189,7 @@ public class PostController {
 		
 		//Valider si l'utilisateur existe
 		if(username.length()<20 && userService.userExist(username)){
-			if( !userService.isUserLocked(username)){
-
+			if(!userService.isUserLocked(username)){
 					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
 					userService.setRecoveryId(username);
 					//Redirection de l'utilisateur vers la page setNewPass
