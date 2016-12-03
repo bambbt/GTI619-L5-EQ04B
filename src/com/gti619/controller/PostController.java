@@ -31,13 +31,21 @@ public class PostController {
 	private SecurityConfigService configService;
 
 	private static final String EMAIL_PATTERN ="^[A-Za-z0-9]*[@][A-Za-z]*[\\.][a-z]{2,3}$";
-
-
 	private static final String NAME_PATTERN = "^[a-zA-Z\\s]*$" ;
-
 	private static final String LOGIN_PATTERN = "^[a-zA-Z0-9]*$" ;
 
-	//POST
+	
+	
+	/**
+	 * Methode qui permet de valider le formulaire d'ajout d'utilisateur
+	 * @param role
+	 * @param login
+	 * @param completeName
+	 * @param mail
+	 * @param password
+	 * @param adminPass
+	 * @return
+	 */
 	@RequestMapping(value = "/adduser", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView postAddUser(
@@ -53,7 +61,7 @@ public class PostController {
 		String err = "true";
 
 		System.out.println("Reception du form en poste");
-		System.out.println("I am "+getPrincipal());
+		System.out.println("I am "+gerUserName());
 		System.out.println("Voici les elements : "+role +"" +login +" "+completeName+" "+mail+" "+password+" "+adminPass );
 
 
@@ -77,7 +85,7 @@ public class PostController {
 			// Si valide on proc�de � la mise a jour du mdp
 			if(matcher.matches()){
 				//1 valider le mot de passe de l'administrateur
-				if(userService.validatePasswd(getPrincipal(), adminPass)){
+				if(userService.validatePasswd(gerUserName(), adminPass)){
 					// Si valide, proceder a l'ajout de l'utilisateur
 					userService.addUser(role,login,completeName,mail,password);
 					err="false";
@@ -89,7 +97,7 @@ public class PostController {
 				}
 
 			}else{
-				raison = "Veuillez les politiques de sécurité de password.";
+				raison = "Veuillez respecter les politiques de securite de password.";
 				err="true";
 			}
 
@@ -106,7 +114,12 @@ public class PostController {
 
 
 
-	//POST
+	/**
+	 * Methode qui permet de valider le formulaire de modification de mot de passe
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView postChangePasswd(
@@ -118,7 +131,7 @@ public class PostController {
 
 
 		System.out.println("Reception du form en poste");
-		System.out.println("Voici les elements : "+getPrincipal()+" "+oldPass+" "+password );
+		System.out.println("Voici les elements : "+gerUserName()+" "+oldPass+" "+password );
 		//Validation du formulaire
 
 		String regexPassword = configService.getPasswordPolitique();
@@ -129,16 +142,16 @@ public class PostController {
 		// Si valide on proc�de � la mise a jour du mdp
 		if(matcher.matches()){
 			//1 V�rifier si l'ancien mot de passe concorde
-			if(userService.validatePasswd(getPrincipal(), oldPass)){
+			if(userService.validatePasswd(gerUserName(), oldPass)){
 				// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
 
-				if(!userService.oldPasswordCheckUsed(getPrincipal(),password)){
-					userService.changePassword(getPrincipal(),password);
+				if(!userService.oldPasswordCheckUsed(gerUserName(),password)){
+					userService.changePassword(gerUserName(),password);
 					err="false";
 					raison = " Mot de passe change";
 				}else{
 					err="true";
-					raison = " Mot de passe deja� utilise";
+					raison = " Mot de passe deja utilise";
 				}
 			}
 			else{
@@ -146,11 +159,9 @@ public class PostController {
 				err="true";
 			}}
 		else{
-			raison = "Politique de mots de passe non respecté.";
+			raison = "Politique de mots de passe non respectee.";
 			err="true";			
 		}
-
-
 		model.setViewName("/changePasswd");
 		model.addObject("error", err);
 		model.addObject("raison", raison);
@@ -175,7 +186,7 @@ public class PostController {
 		String raison = "Ok";
 		String err="true";
 		System.out.println("JE VIENS DE RECEVOIR LE FORMULAIRE "+username);
-		String notification = "Votre compte est en cours de reinitialisation. Un Pin secret a �t� envoy� sur votre @ courriel.";
+		String notification = "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.";
 
 		if(!userService.isUserLocked(username)){
 			if(username.length()<20){
@@ -195,19 +206,18 @@ public class PostController {
 				model.setViewName("/forgetPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
-				model.addObject("explain", "Votre compte utilisateur est en cours de reinitialisation. Un Pin secret a �t� envoy� sur votre adresse courriel. ");
+				model.addObject("explain", "Oups! Le compte utilisateur n'existe pas. ");
 				model.addObject("raison", raison);
-
 			}
 		}else{
-			raison = "Votre compte est bloquée , veuillez contacter l'administrateur !";
+			raison = "Votre compte est bloque , veuillez contacter l'administrateur !";
 			err="true";
 			model.setViewName("/forgetPass");
 			model.addObject("error", err);
 			model.addObject("error", err);
 			model.addObject("user", username);
 			model.addObject("raison", raison);
-			model.addObject("explain", "Un trop grand nombre de tentatives éronnées. ");
+			model.addObject("explain", "Un trop grand nombre de tentatives eronnees. ");
 		}
 		return model;
 	}
@@ -263,7 +273,7 @@ public class PostController {
 					//Redirection de l'utilisateur vers la page setNewPass
 
 				}else{
-					raison = "Ce mot de passe a déjà été utilisé";
+					raison = "Ce mot de passe a deja� ete utilise";
 					err="true";
 					model.addObject("raison", raison);
 					model.setViewName("/setNewPass");
@@ -282,7 +292,7 @@ public class PostController {
 				model.addObject("user", username);
 			}
 		}else{
-			raison = "Politique de mot de passe non respecté.";
+			raison = "Politique de mot de passe non respectee.";
 			err="true";
 			model.addObject("raison", raison);
 			model.setViewName("/setNewPass");
@@ -314,20 +324,16 @@ public class PostController {
 
 		//Validation du mdp administreur
 
-		if(userService.validatePasswd(getPrincipal(), adminPass)){
-
+		if(userService.validatePasswd(gerUserName(), adminPass)){
 			//Si valide, mettre en place le regex dans la base de donnee
 			// raison = feedBack positif
 			userService.savePolitiquePassword(regex);
 			err="false";
-			raison="Politique des mots de passe modifié.";
-
-
+			raison="Politique des mots de passe modifiee.";
 		}else{
-
 			//Si non valide, inialiser la raison
 			err="true";
-			raison = "Mot de passe non valide";
+			raison = "Politique de mot de passe non valide";
 
 		}
 		model.addObject("error", err);
@@ -355,14 +361,14 @@ public class PostController {
 
 		//Validation du mdp administreur
 
-		if(userService.validatePasswd(getPrincipal(), adminPass)){
+		if(userService.validatePasswd(gerUserName(), adminPass)){
 
 			//Si valide, mettre en place le regex dans la base de donnee
 			// raison = feedBack positif
 			int nbTentativeMax = Integer.parseInt(nbtentative);
 			userService.setTentativeCoMax(nbTentativeMax);
 			err="false";
-			raison="Politique de connexions modifié.";
+			raison="Politique de connexions modifiee.";
 
 		}else{
 
@@ -404,7 +410,7 @@ public class PostController {
 		// Si valide on proc�de � la mise a jour du mdp
 		if(matcher.matches()){
 			//Validation du mdp administreur
-			if(userService.validatePasswd(getPrincipal(), adminPass)){
+			if(userService.validatePasswd(gerUserName(), adminPass)){
 				//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
 				if(!userService.oldPasswordCheckUsed(login, newPass)){
 
@@ -414,10 +420,10 @@ public class PostController {
 					userService.changePassword(login, newPass);
 					// raison = feedBack positif
 					err="false";
-					raison="Compte "+login+ " réactivé";
+					raison="Compte "+login+ " reactive";
 				}else{
 					err="true";
-					raison="Mot de passe dèjà utilisé";
+					raison="Mot de passe deja� utilise";
 				}
 			}else{
 				//Si non valide, inialiser la raison
@@ -426,7 +432,7 @@ public class PostController {
 			}
 		}else{
 			err="true";
-			raison="Polique de mot de passe non respecté";
+			raison="Polique de mot de passe non respectee";
 		}
 
 		ArrayList<User> userList = userService.getUsersDisabled();
@@ -437,11 +443,11 @@ public class PostController {
 	};
 
 
-	/*	
+	/**	
 	 * Permet de retourner le nom de l'utilisateur en question
-	 * @return
+	 * @return (String) username
 	 */
-	private String getPrincipal(){
+	private String gerUserName(){
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
