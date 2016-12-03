@@ -54,7 +54,7 @@
 								id="roleCercle" value="CERCLE"> ROLE CERCLE
 							</label> <label class="form-check-inline"> <input
 								class="form-check-input" type="radio" name="role" id="roleAdmin"
-								value="ADMIN"> ROLE AMNISTRATEUR
+								value="ADMIN"> ROLE ADMNISTRATEUR
 							</label>
 							<div>
 								<span id="userBoxMessage" class="confirmMessage"></span>
