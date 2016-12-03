@@ -89,7 +89,7 @@
 			var raison = document.getElementById("raison").value
 
 			if (erreur == "") {
-				toastr.info("Espace de'administration");
+				toastr.warning("Attention, sur cette page vous pouvez modifier votre mot de passe");
 			} else if (erreur == "false") {
 				toastr.success("Succes : " + raison)
 			} else if (erreur == "true") {

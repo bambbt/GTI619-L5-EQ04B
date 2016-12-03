@@ -13,11 +13,10 @@ function popInfo2(){
 
 
 
-function validationMDP()
+function validerMDP()
 {
     var pass1 = document.getElementById('pass1');
     var pass2 = document.getElementById('pass2');
-    
     var message = document.getElementById('confirmMessage');
     var vert = "#66cc66";
     var rouge = "#ff6666";

@@ -252,7 +252,7 @@ public class PostController {
 		if(matcher.matches()){
 
 			//Valider si l'utilisateur existe
-			if(userService.recoveryValide(username, recovery_id)){
+			if(userService.recoveryValide(username, recovery_id) && !userService.isUserLocked(username)){
 
 				//verifier si le mot de passe a pas ete utilise
 				if(!userService.oldPasswordCheckUsed(username, pass)){

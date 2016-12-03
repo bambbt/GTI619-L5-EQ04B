@@ -44,7 +44,7 @@
 		<div class="form-group row">
 		  <label for="example-text-input" class="col-xs-2 col-form-label">PIN utilisateur</label>
 		  <div class="col-xs-10">
-		   		<input type="number" id="recovery" step="1" value="0" min="0" max="9999999999" placeholder="Saisir le PIN reçu par mail" required> 
+		   		<input type="text" id="recovery" name="recovery" step="1" value="0" min="0" max="9999999999" placeholder="Saisir le PIN reçu par mail" required /> 
 		  </div>
 		</div>
 		
@@ -57,7 +57,7 @@
 		<div class="form-group row">
 		  <label for="example-password-input" class="col-xs-2 col-form-label">Confirmation</label>
 		  <div class="col-xs-10">
-		    <input type="password" class="form-control" id="pass2" name="passwordAgain" maxlength="16" placeholder="Confirner le mot de passe" required>
+		    <input type="password" onkeyup="ValiderMDP()" class="form-control" id="pass2" name="passwordAgain" maxlength="16" placeholder="Confirner le mot de passe" required>
 		  </div>
 		  <span id="confirmMessage" class="confirmMessage"></span>
 		</div>
