@@ -94,6 +94,7 @@ public class UserSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/regexPass/**").access("hasRole('ADMIN')")
 		.antMatchers("/adminTentativeMax/**").access("hasRole('ADMIN')")
 		.antMatchers("/reactiveAccount/**").access("hasRole('ADMIN')")
+		.antMatchers("/changePasswd/**").access("hasRole('CARRE') or hasRole('CERCLE') or hasRole('ADMIN')")
 		.and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
 		.usernameParameter("ssoId").passwordParameter("password")
 		.and().csrf()
