@@ -248,7 +248,7 @@ public class PostController {
 		Matcher matcher = pattern.matcher(pass);
 
 
-		// Si valide on proc�de � la mise a jour du mdp
+		// Si valide on procede a la mise a jour du mdp
 		if(matcher.matches()){
 
 			//Valider si l'utilisateur existe
