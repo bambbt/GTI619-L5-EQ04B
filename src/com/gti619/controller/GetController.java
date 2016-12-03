@@ -40,63 +40,95 @@ public class GetController {
 
 
 
-
+	/**
+	 * Methode permettant de retourner la page de connexion (login)
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String getloginPage() {
 		return "login";
 	}
 
+	/**
+	 * Methode permettant de retourner la page forgetPAss
+	 * @return
+	 */
 	@RequestMapping(value = "/forgetPass", method = RequestMethod.GET)
 	public String getforgetPass(ModelMap model) {
 		model.addAttribute("error", false);
 		return "forgetPass";
 	}
 
+	
+	/**
+	 * Methode permettant de retourner la page setNewPass
+	 * @return
+	 */
 	@RequestMapping(value = "/setNewPass", method = RequestMethod.GET)
 	public String getSetNewPAss() {
 		return "setNewPass";
 	}
 
 
-
+	/**
+	 * Methode permettant de retourner la page home admin
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
 		initSession();
-		model.addAttribute("user", getPrincipal());
-
-
+		model.addAttribute("user", getUserName());
 		return "homeAdmin";
 	}
 
+	/**
+	 * Methode permettatn de retourner le home carre
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/homeCarre", method = RequestMethod.GET)
 	public String getHomeCarre(ModelMap model) {
-
-
 		initSession();
-		model.addAttribute("user", getPrincipal());
-
+		model.addAttribute("user", getUserName());
 		return "homeCarre";
 	}
 
+	/**
+	 * Methode permettant de retourner le home cercle
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/homeCercle", method = RequestMethod.GET)
 	public String getHomeCercle(ModelMap model) {
 		initSession();
-		model.addAttribute("user", getPrincipal());
+		model.addAttribute("user", getUserName());
 		return "homeCercle";
 	}
 
+	
+	/**
+	 * Methode permettant de retourner la page de acces interdit
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/Denied", method = RequestMethod.GET)
 	public String getaccessDeniedPage(ModelMap model) {
-		model.addAttribute("user", getPrincipal());
+		model.addAttribute("user", getUserName());
 		return "denied";
 	}
 
 
 
+	/**
+	 * Methode qui permet de retourner la page carre selon le role
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/carre", method = RequestMethod.GET)
 	public String getcarre(ModelMap model) {
 		String url = "";
-		List<String> userRoles = this.getAuthorities();
+		List<String> userRoles = this.getRole();
 
 		if (userRoles.contains("ROLE_CARRE")) {
 			url= "/carre";
@@ -107,10 +139,15 @@ public class GetController {
 		return url;
 	}
 
+	/**
+	 * Methode qui permet de retourner la page cercle selon le role
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/cercle", method = RequestMethod.GET)
 	public String getcercle(ModelMap model) {
 		String url = "";
-		List<String> userRoles = this.getAuthorities();
+		List<String> userRoles = this.getRole();
 
 		if (userRoles.contains("ROLE_CERCLE")) {
 			url= "/cercle";
@@ -121,16 +158,27 @@ public class GetController {
 		return url;
 	}
 
-	//GET
+
+	/**
+	 * Admin, methode qui permet de retourner la page d'administration
+	 * d'ajout d'un compte utilisateur
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
 	public String getAdministration(ModelMap model) {
 		model.addAttribute("error", "");
-
 		System.out.println("Administration");
 		return "administration";
 	}
 
-	//GET
+
+	/**
+	 * Admin, methode qui permet de retourner la page d'administration
+	 * de modification de la politique de complexite des mdp
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/regexPass", method = RequestMethod.GET)
 	public String getRegexPass(ModelMap model) {
 		System.out.println("regexPass");
@@ -139,7 +187,12 @@ public class GetController {
 		return "regexPass";
 	}
 
-	//GET
+	/**
+	 * Admin, methode qui permet de retourner la page d'administration
+	 * de modification du nombre de tentative maximal avant blocage d'un compte
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.GET)
 	public String getAdminTentativeMax(ModelMap model) {
 		System.out.println("getAdminTentativeMax");
@@ -148,7 +201,12 @@ public class GetController {
 	}
 
 
-	//GET
+	/**
+	 * Admin, methode qui permet de retourner la page d'administration
+	 * de reactiver une compte utilisateur
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
 	public String getReactiveAccount(ModelMap model) {
 		ArrayList<User> userList = userService.getUsersDisabled();
@@ -161,6 +219,12 @@ public class GetController {
 	}
 
 
+	/**
+	 * Methode qui permet de retourner la page logout
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -171,17 +235,24 @@ public class GetController {
 		return "redirect:/login?logout";
 	}
 
-	//GET
+	/**
+	 * Methode qui permet de retourner la page changePass
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
 		System.out.println("changePasswd");	
-		model.addAttribute("username", getPrincipal());
+		model.addAttribute("username", getUserName());
 		return "changePasswd";
 	}
 
 
-
-	//GET
+	/**
+	 * Admin, methode qui permet de retourner la page d'administration des logs de securtie
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 	public String getAdminLog(ModelMap model) {
 		System.out.println("adminLog");	
@@ -218,12 +289,15 @@ public class GetController {
 		return "adminLog";
 	}
 
-	//GET
+	/**
+	 * Methode qui permet de retourner le bon home selon le role utilisateur
+	 * @return
+	 */
 	@RequestMapping(value = "/myHome", method = RequestMethod.GET)
 	public String getmyHome() {
 		System.out.println("myHome");	
 		String url = "";
-		String userRole = getAuthorities().get(0);
+		String userRole = getRole().get(0);
 		System.out.println(userRole);	
 		if (userRole.equals("ROLE_CERCLE")) {
 			url= "/homeCercle";
@@ -238,15 +312,11 @@ public class GetController {
 	}
 
 
-
-
-
-
-	/*	
+	/**	
 	 * Permet de retourner le nom de l'utilisateur en question
 	 * @return
 	 */
-	private String getPrincipal(){
+	private String getUserName(){
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
 		return principal.toString();
 	}
@@ -256,25 +326,25 @@ public class GetController {
 	 * Permet de retourner la liste des roles de l'utilisateur en question			
 	 * @return
 	 */
-	public List<String> getAuthorities(){
-		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();	
+	public List<String> getRole(){
+		Collection<? extends GrantedAuthority> role = SecurityContextHolder.getContext().getAuthentication().getAuthorities();	
 		List<String> roles = new ArrayList<String>();
-		for (GrantedAuthority a : authorities) {
+		for (GrantedAuthority a : role) {
 			roles.add(a.getAuthority());
 		}		
 		return roles;
 	}
 
+	
+	/**
+	 * Procedure affichant les elements presents dans la session utilisateur
+	 */
 	public void initSession(){
-
 		String  [] attrs  = RequestContextHolder.currentRequestAttributes().getAttributeNames(1);
 		System.out.println("Session ID: "+ RequestContextHolder.currentRequestAttributes().getSessionId());
-
 		for (String attr : attrs) {
 			System.out.println(attr +" : "+ RequestContextHolder.currentRequestAttributes().getAttribute(attr, 1));
 		}
-
-
 	}
 
 
