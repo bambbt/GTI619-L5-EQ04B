@@ -3,17 +3,20 @@ function popInfo1(){
 }
 
 function popInfo2(){
-	
 	var explain = document.getElementById("exp").value
-	
 	if(explain != ""){
 		toastr.info("Notification : " +explain);
 	}
 }
 
+function validerMDPphase1()
+{
+    var message = document.getElementById('confirmMessage');   
+    message.innerHTML = "N'oubliez de confirmer votre mot de passe de l'utilisateur"
+}
 
 
-function validerMDP()
+function validerMDPphase2()
 {
     var pass1 = document.getElementById('pass1');
     var pass2 = document.getElementById('pass2');

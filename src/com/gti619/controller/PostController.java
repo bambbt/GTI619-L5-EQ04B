@@ -186,38 +186,35 @@ public class PostController {
 		String raison = "Ok";
 		String err="true";
 		System.out.println("JE VIENS DE RECEVOIR LE FORMULAIRE "+username);
-		String notification = "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.";
+		
+		//Valider si l'utilisateur existe
+		if(username.length()<20 && userService.userExist(username)){
+			if( !userService.isUserLocked(username)){
 
-		if(!userService.isUserLocked(username)){
-			if(username.length()<20){
-				//Valider si l'utilisateur existe
-				if(userService.userExist(username)){
 					// generer un id de recovery aleatoire et le stocker dans la bd temporairement le temps que l'utilisateur puisse faire son recovery
 					userService.setRecoveryId(username);
 					//Redirection de l'utilisateur vers la page setNewPass
-					model.addObject("notif", notification);
+					model.addObject("notif", "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.");
 					model.addObject("user", username);
 					model.setViewName("/setNewPass");
 				}
-			}
 			else{
-				raison = "Oups! Le compte utilisateur n'existe pas";
+				raison = "Votre compte est bloque , veuillez contacter l'administrateur pour plus d'information !";
 				err="true";
 				model.setViewName("/forgetPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
-				model.addObject("explain", "Oups! Le compte utilisateur n'existe pas. ");
-				model.addObject("raison", raison);
+				model.addObject("raison", "Compte bloque");
+				model.addObject("explain", "Un trop grand nombre de tentatives eronnees. ");
 			}
 		}else{
-			raison = "Votre compte est bloque , veuillez contacter l'administrateur !";
+			raison = "Oups! Le compte utilisateur n'existe pas";
 			err="true";
 			model.setViewName("/forgetPass");
 			model.addObject("error", err);
-			model.addObject("error", err);
 			model.addObject("user", username);
-			model.addObject("raison", raison);
-			model.addObject("explain", "Un trop grand nombre de tentatives eronnees. ");
+			model.addObject("explain", "Oups! Le compte utilisateur n'existe pas. ");
+			model.addObject("raison", "Oups! Le compte utilisateur n'existe pas. ");
 		}
 		return model;
 	}
@@ -248,29 +245,27 @@ public class PostController {
 		Matcher matcher = pattern.matcher(pass);
 
 
-		// Si valide on procede a la mise a jour du mdp
-		if(matcher.matches()){
+		//Valider si l'utilisateur existe
+		if(userService.recoveryValide(username, recovery_id) && !userService.isUserLocked(username)){
 
-			//Valider si l'utilisateur existe
-			if(userService.recoveryValide(username, recovery_id) && !userService.isUserLocked(username)){
-
+			// Si valide on procede a la mise a jour du mdp
+			if(matcher.matches()){
 				//verifier si le mot de passe a pas ete utilise
 				if(!userService.oldPasswordCheckUsed(username, pass)){
-
-					//Et remettre le recovery id 
+	
+				//Et remettre le recovery id 
 					userService.resetRecoveryId(username);
 
-					// Si le duo usermame recovery_id est valide setter le nouveau MDP
-					userService.changePassword(username,pass);
-
-
-					raison = "Cool! Votre mot de passe a ete reinitialise";
-					err="false";
-					model.setViewName("/login");
-					model.addObject("error", err);
-					model.addObject("user", username);
-					model.addObject("raison", raison);
-					//Redirection de l'utilisateur vers la page setNewPass
+				// Si le duo usermame recovery_id est valide setter le nouveau MDP
+				userService.changePassword(username,pass);
+	
+				raison = "Cool! Votre mot de passe a ete reinitialise";
+				err="false";
+				model.setViewName("/login");
+				model.addObject("error", err);
+				model.addObject("user", username);
+				model.addObject("raison", raison);
+				//Redirection de l'utilisateur vers la page setNewPass
 
 				}else{
 					raison = "Ce mot de passe a deja  ete utilise";
@@ -284,7 +279,7 @@ public class PostController {
 
 			}
 			else{
-				raison = "Oups! Probleme lors de la reinitialisation";
+				raison = "Politique de mot de passe non respectee.";
 				err="true";
 				model.addObject("raison", raison);
 				model.setViewName("/setNewPass");
@@ -292,14 +287,13 @@ public class PostController {
 				model.addObject("user", username);
 			}
 		}else{
-			raison = "Politique de mot de passe non respectee.";
+			raison = "Oups! Probleme lors de la reinitialisation. Verifier le PiN ou le nom d'utilisateur";
 			err="true";
 			model.addObject("raison", raison);
 			model.setViewName("/setNewPass");
 			model.addObject("error", err);
 			model.addObject("user", username);
 		}
-
 		return model;
 	}
 
