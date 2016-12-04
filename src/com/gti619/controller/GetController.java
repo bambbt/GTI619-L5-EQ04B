@@ -261,12 +261,17 @@ public class GetController {
 		System.out.println("adminLog");	
 		String OS =System.getProperty("os.name");
 		// Create a stream to hold the output
+		
 		BufferedReader br = null;
 		String everything = null;
 		try {
-			System.out.println(System.getProperty("catalina.home").toString()+"\\logs\\gti619.log");
+			System.out.println(OS);
+			String filePath = "\\logs\\gti619.log";
+			if(OS.contentEquals("Linux"))
+				filePath = "/logs/gti619.log";
+			System.out.println(System.getProperty("catalina.home").toString()+filePath);
 			System.out.println(System.getProperty("catalina.base"));
-			br = new BufferedReader(new FileReader(System.getProperty("catalina.home")+"\\logs\\gti619.log"));
+			br = new BufferedReader(new FileReader(System.getProperty("catalina.home")+filePath));	
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
