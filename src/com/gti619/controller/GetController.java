@@ -1,5 +1,6 @@
 package com.gti619.controller;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.chainsaw.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -256,12 +259,14 @@ public class GetController {
 	@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 	public String getAdminLog(ModelMap model) {
 		System.out.println("adminLog");	
-
+		String OS =System.getProperty("os.name");
 		// Create a stream to hold the output
 		BufferedReader br = null;
 		String everything = null;
 		try {
-			br = new BufferedReader(new FileReader("./logCo.log"));
+			System.out.println(System.getProperty("catalina.home").toString()+"\\logs\\gti619.log");
+			System.out.println(System.getProperty("catalina.base"));
+			br = new BufferedReader(new FileReader(System.getProperty("catalina.home")+"\\logs\\gti619.log"));
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
@@ -282,7 +287,6 @@ public class GetController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 		model.addAttribute("log_connexion",everything);
 		model.addAttribute("log_securite", "Console");
@@ -335,7 +339,6 @@ public class GetController {
 		return roles;
 	}
 
-	
 	/**
 	 * Procedure affichant les elements presents dans la session utilisateur
 	 */

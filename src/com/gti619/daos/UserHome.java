@@ -29,6 +29,7 @@ public class UserHome extends SessionFactoryHibernateDAOSupport{
 
 
 	public void persist(User transientInstance) {
+		
 		log.debug("persisting User instance");
 		try {
 			getSession().persist(transientInstance);

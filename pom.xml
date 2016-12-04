@@ -12,6 +12,9 @@
 		<springframework.version>4.2.5.RELEASE</springframework.version>
 		<springsecurity.version>4.0.4.RELEASE</springsecurity.version>
 		<log4j.version>1.2.17</log4j.version>
+  		<catalina.home>${env.catalina.home}</catalina.home>
+  		<main.basedir>${project.basedir}</main.basedir>
+  		<log.home>src</log.home>
 	</properties>
 
 	<dependencies>
