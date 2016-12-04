@@ -25,89 +25,86 @@ import com.gti619.model.SecurityConfig;
 @Transactional
 public class SecurityConfigHome extends SessionFactoryHibernateDAOSupport{
 
-	private static final Log log = LogFactory.getLog(SecurityConfigHome.class);
+	
 
 	public void persist(SecurityConfig transientInstance) {
-		log.debug("persisting SecurityConfig instance");
+	
 		try {
 			getSession().persist(transientInstance);
-			log.debug("persist successful");
+	
 		} catch (RuntimeException re) {
-			log.error("persist failed", re);
+	
 			throw re;
 		}
 	}
 
 	public void attachDirty(SecurityConfig instance) {
-		log.debug("attaching dirty SecurityConfig instance");
+		
 		try {
 			getSession().saveOrUpdate(instance);
-			log.debug("attach successful");
 		} catch (RuntimeException re) {
-			log.error("attach failed", re);
 			throw re;
 		}
 	}
 
 	public void attachClean(SecurityConfig instance) {
-		log.debug("attaching clean SecurityConfig instance");
 		try {
 			getSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
+			
 		} catch (RuntimeException re) {
-			log.error("attach failed", re);
+			
 			throw re;
 		}
 	}
 
 	public void delete(SecurityConfig persistentInstance) {
-		log.debug("deleting SecurityConfig instance");
+		
 		try {
 			getSession().delete(persistentInstance);
-			log.debug("delete successful");
+		
 		} catch (RuntimeException re) {
-			log.error("delete failed", re);
+		
 			throw re;
 		}
 	}
 
 	public SecurityConfig merge(SecurityConfig detachedInstance) {
-		log.debug("merging SecurityConfig instance");
+		
 		try {
 			SecurityConfig result = (SecurityConfig) getSession().merge(detachedInstance);
-			log.debug("merge successful");
+		
 			return result;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
+		
 			throw re;
 		}
 	}
 
 	public SecurityConfig findById(java.lang.Integer id) {
-		log.debug("getting SecurityConfig instance with id: " + id);
+		
 		try {
 			SecurityConfig instance = (SecurityConfig) getSession().get("SecurityConfig", id);
 			if (instance == null) {
-				log.debug("get successful, no instance found");
+		
 			} else {
-				log.debug("get successful, instance found");
+		
 			}
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
+		
 			throw re;
 		}
 	}
 
 	public List findByExample(SecurityConfig instance) {
-		log.debug("finding SecurityConfig instance by example");
+		
 		try {
 			List results = getSession().createCriteria("SecurityConfig")
 					.add(Example.create(instance)).list();
-			log.debug("find by example successful, result size: " + results.size());
+		
 			return results;
 		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
+		
 			throw re;
 		}
 	}
