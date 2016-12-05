@@ -43,7 +43,14 @@ public class HibernateConfiguration {
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+        String dbpass = null;
+		try {
+			dbpass = PasswordEncoder.AESdecrypt(environment.getRequiredProperty("jdbc.password"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        dataSource.setPassword(dbpass);
         return dataSource;
     }
      
