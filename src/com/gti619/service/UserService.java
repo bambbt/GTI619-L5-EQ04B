@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.gti619.config.PasswordEncoder;
+import com.gti619.daos.MatriceUserHome;
 import com.gti619.daos.RoleHome;
 import com.gti619.daos.UserHome;
+import com.gti619.model.MatriceUser;
 import com.gti619.model.OldPassword;
 import com.gti619.model.Role;
 import com.gti619.model.User;
@@ -18,8 +20,12 @@ import com.gti619.model.User;
 @Service("userService")
 public class UserService {
 
+	private static final int NBVALEUR_MATRICE = 25;
+	private static final int VALEUR_MATRICE_MAX = 100;
 	@Autowired
 	private UserHome userDao;
+	@Autowired
+	private MatriceUserHome matriceDao;
 	@Autowired
 	private RoleHome roleDao;
 	@Autowired
@@ -89,8 +95,24 @@ public class UserService {
 		Role role= roleDao.findByName(strRole);
 		user.setRole(role);
 		userDao.persist(user);
+		
+		
+		MatriceUser matrice = null;
+		if(user.getRole().toString().contentEquals("ADMIN")){
+			matrice = new MatriceUser();
+			matrice.setUser(user);
+			String strMatrice = "";
+			SecureRandom rand = new SecureRandom();
+			for (int i = 0; i < NBVALEUR_MATRICE; i++) {
+				int value = rand.nextInt(VALEUR_MATRICE_MAX);
+				strMatrice +=  String.valueOf(value)+",";
+				
+			}
+			matrice.setValue(strMatrice);	
+			matriceDao.persist(matrice);
+		}
 
-
+		
 		oldPassService.saveOldPass(user);
 	}
 
