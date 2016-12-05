@@ -255,7 +255,7 @@ public class UserService {
 			}				
 		}
 		matrice.setCurrentCheckSuccess(1);
-		matriceDao.persist(matrice);
+		matriceDao.attachDirty(matrice);
 		return true;
 	}
 
