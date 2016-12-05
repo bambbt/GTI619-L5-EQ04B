@@ -130,6 +130,6 @@ public class MatriceUserHome extends SessionFactoryHibernateDAOSupport{
 		m = getMatrice(login);
 		
 		m.setCurrentCheckSuccess(0);
-		persist(m);
+		attachDirty(m);
 	}
 }
