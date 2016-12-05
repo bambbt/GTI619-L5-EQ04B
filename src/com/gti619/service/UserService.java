@@ -258,4 +258,13 @@ public class UserService {
 		return true;
 	}
 
+	public boolean isDefiReussi(String userName) {
+		return matriceDao.defiReussi(userName);
+	}
+
+	public void ResetDefiSuccesCheck(String userName) {
+		matriceDao.resetdefiSuccessCheck(userName);
+		
+	}
+
 }

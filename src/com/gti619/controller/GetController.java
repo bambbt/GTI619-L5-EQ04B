@@ -303,6 +303,7 @@ public class GetController {
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 		if(getRole().get(0).equals("ADMIN")){
 			//Remettre defi a zero
+			userService.ResetDefiSuccesCheck(getUserName());
 		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){    
@@ -456,7 +457,8 @@ public class GetController {
 
 	private boolean defiAdminOk(){
 		boolean ok = false;
-		
+			if(userService.isDefiReussi(getUserName()))
+					ok=true;
 		return ok;
 	}
 
