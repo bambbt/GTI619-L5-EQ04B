@@ -42,26 +42,26 @@ public class GetController {
 	public String getloginPage() {
 		return "login";
 	}
-	
+
 	/**
 	 * Methode permettant de retourner la page de connexion (login)
 	 * @return
 	 */
 	@RequestMapping(value = "/loginFort", method = RequestMethod.GET)
 	public String getLoginFort(ModelMap model) {
-		
+
 		//Execution de la requete	
 		for (int i = 1; i < NBVALUE_DEFI; i++) {
 			int defi = new SecureRandom().nextInt(UserService.NBVALEUR_MATRICE)+1;
 			RequestContextHolder.currentRequestAttributes().setAttribute("idcell"+i, defi, 1);
 			model.addAttribute("defi"+i, defi);
 		}
-		
+
 		//Set les valeurs dans le model
 		model.addAttribute("user", getUserName());		
 		return "loginFort";
 	}
-	
+
 
 	/**
 	 * Methode permettant de retourner la page forgetPAss
@@ -73,7 +73,7 @@ public class GetController {
 		return "forgetPass";
 	}
 
-	
+
 	/**
 	 * Methode permettant de retourner la page setNewPass
 	 * @return
@@ -99,7 +99,7 @@ public class GetController {
 		else{
 			return "logout";
 		}
-	
+
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class GetController {
 		}
 	}
 
-	
+
 	/**
 	 * Methode permettant de retourner la page de acces interdit
 	 * @param model
@@ -184,7 +184,7 @@ public class GetController {
 			else{
 				url = "logout";
 			}
-		
+
 		}
 		return url;
 	}
@@ -249,7 +249,7 @@ public class GetController {
 		else{
 			return "logout";
 		}
-	
+
 	}
 
 	/**
@@ -279,17 +279,17 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
 	public String getReactiveAccount(ModelMap model) {
-			if(defiAdminOk()){
-				ArrayList<User> userList = userService.getUsersDisabled();
-				System.out.println("getReactiveAccount");
-				System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
-				model.addAttribute("error", "");
-				model.addAttribute("userList", userList);
-				return "reactiveAccount";
-			}
-			else{
-				return "logout";
-			}
+		if(defiAdminOk()){
+			ArrayList<User> userList = userService.getUsersDisabled();
+			System.out.println("getReactiveAccount");
+			System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
+			model.addAttribute("error", "");
+			model.addAttribute("userList", userList);
+			return "reactiveAccount";
+		}
+		else{
+			return "logout";
+		}
 	}
 
 
@@ -313,7 +313,7 @@ public class GetController {
 		return "redirect:/login?logout";
 	}
 
-	
+
 	/**
 	 * Methode qui permet de retourner la page changePass
 	 * @param model
@@ -322,17 +322,17 @@ public class GetController {
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
 		String url = "";
-		if(getRole().get(0).equals("ADMIN")){
+		if(getRole().get(0).contains("ADMIN")){
 			if(defiAdminOk()){
 				System.out.println("changePasswd");	
 				model.addAttribute("username", getUserName());
 				url = "changePasswd";
 			}
 			else {
-				url = "logout";
+				url = "redirect:/logout";
 			}
 		}
-		else if(!getRole().get(0).equals("ADMIN")){
+		else if(!getRole().get(0).contains("ADMIN")){
 			System.out.println("changePasswd");	
 			model.addAttribute("username", getUserName());
 			url = "changePasswd";
@@ -349,44 +349,44 @@ public class GetController {
 	@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 	public String getAdminLog(ModelMap model) {
 		if(defiAdminOk()){
-		System.out.println("adminLog");	
-		String OS =System.getProperty("os.name");
-		// Create a stream to hold the output
-		
-		BufferedReader br = null;
-		String everything = null;
-		try {
-			System.out.println(OS);
-			String filePath = "\\logs\\gti619.log";
-			if(OS.contentEquals("Linux"))
-				filePath = "/logs/gti619.log";
-			System.out.println(System.getProperty("catalina.home").toString()+filePath);
-			System.out.println(System.getProperty("catalina.base"));
-			br = new BufferedReader(new FileReader(System.getProperty("catalina.home")+filePath));	
-			StringBuilder sb = new StringBuilder();
-			String line = br.readLine();
+			System.out.println("adminLog");	
+			String OS =System.getProperty("os.name");
+			// Create a stream to hold the output
 
-			while (line != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-				line = br.readLine();
-			}
-			everything = sb.toString();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-
+			BufferedReader br = null;
+			String everything = null;
 			try {
-				br.close();
+				System.out.println(OS);
+				String filePath = "\\logs\\gti619.log";
+				if(OS.contentEquals("Linux"))
+					filePath = "/logs/gti619.log";
+				System.out.println(System.getProperty("catalina.home").toString()+filePath);
+				System.out.println(System.getProperty("catalina.base"));
+				br = new BufferedReader(new FileReader(System.getProperty("catalina.home")+filePath));	
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+
+				while (line != null) {
+					sb.append(line);
+					sb.append(System.lineSeparator());
+					line = br.readLine();
+				}
+				everything = sb.toString();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		model.addAttribute("log_connexion",everything);
-		model.addAttribute("log_securite", "Console");
-		return "adminLog";
+			model.addAttribute("log_connexion",everything);
+			model.addAttribute("log_securite", "Console");
+			return "adminLog";
 		}
 		else{
 			return "logout";
@@ -457,8 +457,8 @@ public class GetController {
 
 	private boolean defiAdminOk(){
 		boolean ok = false;
-			if(userService.isDefiReussi(getUserName()))
-					ok=true;
+		if(userService.isDefiReussi(getUserName()))
+			ok=true;
 		return ok;
 	}
 
