@@ -97,7 +97,7 @@ public class GetController {
 			return "homeAdmin";
 		}
 		else{
-			return "denied";
+			return "logout";
 		}
 	
 	}
@@ -116,7 +116,7 @@ public class GetController {
 				return "homeCarre";
 			}
 			else{
-				return "denied";
+				return "logout";
 			}
 		}
 		else{
@@ -140,7 +140,7 @@ public class GetController {
 				return "homeCercle";
 			}
 			else{
-				return "denied";
+				return "logout";
 			}
 		}
 		else{
@@ -182,7 +182,7 @@ public class GetController {
 				url = "carreA";
 			}
 			else{
-				url = "denied";
+				url = "logout";
 			}
 		
 		}
@@ -207,7 +207,7 @@ public class GetController {
 				url = "cercleA";
 			}
 			else{
-				url = "denied";
+				url = "logout";
 			}	
 		}
 		return url;
@@ -228,7 +228,7 @@ public class GetController {
 			return "administration";
 		}
 		else{
-			return "denied";
+			return "logout";
 		}
 	}
 
@@ -247,7 +247,7 @@ public class GetController {
 			return "regexPass";
 		}
 		else{
-			return "denied";
+			return "logout";
 		}
 	
 	}
@@ -266,7 +266,7 @@ public class GetController {
 			return "adminTentativeMax";
 		}
 		else{
-			return "denied";
+			return "logout";
 		}
 	}
 
@@ -288,7 +288,7 @@ public class GetController {
 				return "reactiveAccount";
 			}
 			else{
-				return "denied";
+				return "logout";
 			}
 	}
 
@@ -329,7 +329,7 @@ public class GetController {
 				url = "changePasswd";
 			}
 			else {
-				url = "denied";
+				url = "logout";
 			}
 		}
 		else if(!getRole().get(0).equals("ADMIN")){
@@ -389,7 +389,7 @@ public class GetController {
 		return "adminLog";
 		}
 		else{
-			return "denied";
+			return "logout";
 		}
 	}
 
@@ -414,7 +414,7 @@ public class GetController {
 				url = "homeAdmin";
 			}
 			else{
-				url="denied";
+				url="logout";
 			}
 		}
 		return url;
