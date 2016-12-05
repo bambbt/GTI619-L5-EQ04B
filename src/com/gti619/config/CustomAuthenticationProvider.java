@@ -26,8 +26,6 @@ import com.gti619.service.UserService;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider{
 
-
-
 	@Autowired
 	private UserService userService;
 
