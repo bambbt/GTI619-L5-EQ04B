@@ -248,8 +248,8 @@ public class UserService {
 		
 		String [] valuesDb = matrice.getValue().split(",");
 		for (int i = 0; i < adresses.size(); i++) {
-			Integer valuedb =Integer.parseInt(valuesDb[adresses.get(i)]); 
-			
+			Integer valuedb =Integer.parseInt(valuesDb[adresses.get(i)-1]); 
+			System.out.println("valeur db : "+ valuedb + " valeur user : "+values.get(i));
 			if(valuedb != values.get(i) ){
 				return false;
 			}				

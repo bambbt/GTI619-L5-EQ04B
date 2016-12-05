@@ -456,7 +456,7 @@ public class GetController {
 	}
 
 	private boolean defiAdminOk(){
-		boolean ok = false;
+		boolean ok = true;
 			if(userService.isDefiReussi(getUserName()))
 					ok=true;
 		return ok;

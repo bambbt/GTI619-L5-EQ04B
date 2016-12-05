@@ -122,7 +122,6 @@ public class MatriceUserHome extends SessionFactoryHibernateDAOSupport{
 	public boolean defiReussi(String login) {
 		MatriceUser m = null;
 		m = (MatriceUser) getSession().createQuery("from MatriceUser m where m.user.login = ? ").setParameter(0, login).list().get(0);
-		
 		return (m.getCurrentCheckSuccess()==1);
 	}
 

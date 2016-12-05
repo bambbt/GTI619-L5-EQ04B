@@ -486,8 +486,9 @@ public class PostController {
 			raison = "Les donnees sont mauvaises.";
 			err="true";
 			model.setViewName("redirect:/logout");
-		}else {		
+		}else {	
 			model.setViewName("homeAdmin");
+			model.addObject("user", getUserName());
 		}
 		return model;
 	
