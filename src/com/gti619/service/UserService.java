@@ -254,7 +254,7 @@ public class UserService {
 				return false;
 			}				
 		}
-		
+		matrice.setCurrentCheckSuccess(1);
 		return true;
 	}
 
