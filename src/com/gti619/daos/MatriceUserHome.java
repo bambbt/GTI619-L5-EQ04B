@@ -110,4 +110,12 @@ public class MatriceUserHome extends SessionFactoryHibernateDAOSupport{
 			throw re;
 		}
 	}
+
+	public MatriceUser getMatrice(String login) {
+		
+		MatriceUser m = null;
+		m = (MatriceUser) getSession().createQuery("from MatriceUser where login =?").setParameter(0, login).list().get(0);
+		
+		return m;
+	}
 }

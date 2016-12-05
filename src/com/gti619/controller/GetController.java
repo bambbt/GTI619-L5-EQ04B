@@ -1,34 +1,27 @@
 package com.gti619.controller;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.chainsaw.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import com.gti619.config.CustomAuthenticationProvider;
 import com.gti619.model.User;
 import com.gti619.service.UserService;
 
@@ -36,6 +29,7 @@ import com.gti619.service.UserService;
 @SessionAttributes
 public class GetController {
 
+	public static final int NBVALUE_DEFI = 5;
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
@@ -56,23 +50,15 @@ public class GetController {
 	@RequestMapping(value = "/loginFort", method = RequestMethod.GET)
 	public String getLoginFort(ModelMap model) {
 		
-		//Execution de la requete
-		int defi1 = new SecureRandom().nextInt(25)+1;
-		int defi2 = new SecureRandom().nextInt(25)+1;
-		int defi3 = new SecureRandom().nextInt(25)+1;
-		int defi4 = new SecureRandom().nextInt(25)+1;
-		
-		RequestContextHolder.currentRequestAttributes().setAttribute("idcell1", defi1, 1);
-		RequestContextHolder.currentRequestAttributes().setAttribute("idcell2", defi2, 1);
-		RequestContextHolder.currentRequestAttributes().setAttribute("idcell3", defi3, 1);
-		RequestContextHolder.currentRequestAttributes().setAttribute("idcell4", defi4, 1);
+		//Execution de la requete	
+		for (int i = 1; i < NBVALUE_DEFI; i++) {
+			int defi = new SecureRandom().nextInt(UserService.NBVALEUR_MATRICE)+1;
+			RequestContextHolder.currentRequestAttributes().setAttribute("idcell"+i, defi, 1);
+			model.addAttribute("defi"+1, defi);
+		}
 		
 		//Set les valeurs dans le model
-		model.addAttribute("user", getUserName());
-		model.addAttribute("defi1", defi1);
-		model.addAttribute("defi2", defi2);
-		model.addAttribute("defi3", defi3);
-		model.addAttribute("defi4", defi4);
+		model.addAttribute("user", getUserName());		
 		return "loginFort";
 	}
 	

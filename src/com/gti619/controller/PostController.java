@@ -1,5 +1,6 @@
 package com.gti619.controller;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class PostController {
 		String err = "true";
 
 		System.out.println("Reception du form en poste");
-		System.out.println("I am "+gerUserName());
+		System.out.println("I am "+getUserName());
 		System.out.println("Voici les elements : "+role +"" +login +" "+completeName+" "+mail+" "+password+" "+adminPass );
 
 
@@ -86,7 +87,7 @@ public class PostController {
 			// Si valide on proc�de � la mise a jour du mdp
 			if(matcher.matches()){
 				//1 valider le mot de passe de l'administrateur
-				if(userService.validatePasswd(gerUserName(), adminPass)){
+				if(userService.validatePasswd(getUserName(), adminPass)){
 					// Si valide, proceder a l'ajout de l'utilisateur
 					if(!userService.userExist(login,mail)){
 						userService.addUser(role,login,completeName,mail,password);
@@ -137,7 +138,7 @@ public class PostController {
 
 
 		System.out.println("Reception du form en poste");
-		System.out.println("Voici les elements : "+gerUserName()+" "+oldPass+" "+password );
+		System.out.println("Voici les elements : "+getUserName()+" "+oldPass+" "+password );
 		//Validation du formulaire
 
 		String regexPassword = configService.getPasswordPolitique();
@@ -148,11 +149,11 @@ public class PostController {
 		// Si valide on proc�de � la mise a jour du mdp
 		if(matcher.matches()){
 			//1 V�rifier si l'ancien mot de passe concorde
-			if(userService.validatePasswd(gerUserName(), oldPass)){
+			if(userService.validatePasswd(getUserName(), oldPass)){
 				// Si valide, v�rifier que le nouveau mdp n'a pas d�ja �t� utiliser	// Si valide, proceder � l'ajout de l'utilisateur
 
-				if(!userService.oldPasswordCheckUsed(gerUserName(),password)){
-					userService.changePassword(gerUserName(),password);
+				if(!userService.oldPasswordCheckUsed(getUserName(),password)){
+					userService.changePassword(getUserName(),password);
 					err="false";
 					raison = " Mot de passe change";
 				}else{
@@ -323,7 +324,7 @@ public class PostController {
 
 		//Validation du mdp administreur
 
-		if(userService.validatePasswd(gerUserName(), adminPass)){
+		if(userService.validatePasswd(getUserName(), adminPass)){
 			//Si valide, mettre en place le regex dans la base de donnee
 			// raison = feedBack positif
 			userService.savePolitiquePassword(regex);
@@ -360,7 +361,7 @@ public class PostController {
 
 		//Validation du mdp administreur
 
-		if(userService.validatePasswd(gerUserName(), adminPass)){
+		if(userService.validatePasswd(getUserName(), adminPass)){
 
 			//Si valide, mettre en place le regex dans la base de donnee
 			// raison = feedBack positif
@@ -410,7 +411,7 @@ public class PostController {
 		// Si valide on proc�de � la mise a jour du mdp
 		if(matcher.matches()){
 			//Validation du mdp administreur
-			if(userService.validatePasswd(gerUserName(), adminPass)){
+			if(userService.validatePasswd(getUserName(), adminPass)){
 				//Si valide, verifier si le mot de passe n'a pas ete utiliser (reflechir si c utile?)
 				if(!userService.oldPasswordCheckUsed(login, newPass)){
 
@@ -468,6 +469,26 @@ public class PostController {
 		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell2", 2));
 		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell3", 3));
 		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell4", 4));
+		
+		ArrayList<Integer> adresses = new ArrayList<>();
+		for (int i = 1; i < GetController.NBVALUE_DEFI; i++) {			
+			int adresse = (int) RequestContextHolder.currentRequestAttributes().getAttribute("idcell"+i, 1);
+			adresses.add(adresse);
+		}
+		ArrayList<Integer> values = new ArrayList<>();
+		values.add(Integer.parseInt(valueCell1));
+		values.add(Integer.parseInt(valueCell2));
+		values.add(Integer.parseInt(valueCell3));
+		values.add(Integer.parseInt(valueCell4));
+		
+		
+		if(!userService.ckeckDefi(getUserName(),values, adresses)){
+			raison = "Les données sont mauvaises.";
+			err="true";
+			model.setViewName("/logout");
+		}else {		
+			model.setViewName("/homeAdmin");
+		}
 		return model;
 	
 	};
@@ -476,7 +497,7 @@ public class PostController {
 	 * Permet de retourner le nom de l'utilisateur en question
 	 * @return (String) username
 	 */
-	private String gerUserName(){
+	private String getUserName(){
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

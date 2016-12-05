@@ -2,8 +2,7 @@ package com.gti619.service;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,15 +12,14 @@ import com.gti619.daos.MatriceUserHome;
 import com.gti619.daos.RoleHome;
 import com.gti619.daos.UserHome;
 import com.gti619.model.MatriceUser;
-import com.gti619.model.OldPassword;
 import com.gti619.model.Role;
 import com.gti619.model.User;
 
 @Service("userService")
 public class UserService {
 
-	private static final int NBVALEUR_MATRICE = 25;
-	private static final int VALEUR_MATRICE_MAX = 100;
+	public static final int NBVALEUR_MATRICE = 25;
+	public static final int VALEUR_MATRICE_MAX = 100;
 	@Autowired
 	private UserHome userDao;
 	@Autowired
@@ -98,7 +96,7 @@ public class UserService {
 		
 		
 		MatriceUser matrice = null;
-		if(user.getRole().toString().contentEquals("ADMIN")){
+		if(user.getRole().getNom().toString().contentEquals("ADMIN")){
 			matrice = new MatriceUser();
 			matrice.setUser(user);
 			String strMatrice = "";
@@ -242,6 +240,22 @@ public class UserService {
 
 	public boolean userExist(String login, String mail) {
 		return (userDao.checkIfUsernameAndMailExist(login,mail));
+	}
+
+	public boolean ckeckDefi(String login, ArrayList<Integer> values, ArrayList<Integer> adresses) {
+		MatriceUser matrice = matriceDao.getMatrice(login);
+		
+		
+		String [] valuesDb = matrice.getValue().split(",");
+		for (int i = 0; i < adresses.size(); i++) {
+			Integer valuedb =Integer.parseInt(valuesDb[adresses.get(i)]); 
+			
+			if(!(valuedb.compareTo(values.get(adresses.get(i))) == 0 )){
+				return false;
+			}				
+		}
+		
+		return true;
 	}
 
 }
