@@ -91,9 +91,15 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/homeAdmin", method = RequestMethod.GET)
 	public String getadminPage(ModelMap model) {
-		initSession();
-		model.addAttribute("user", getUserName());
-		return "homeAdmin";
+		if(defiAdminOk()){
+			initSession();
+			model.addAttribute("user", getUserName());
+			return "homeAdmin";
+		}
+		else{
+			return "denied";
+		}
+	
 	}
 
 	/**
@@ -103,9 +109,21 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/homeCarre", method = RequestMethod.GET)
 	public String getHomeCarre(ModelMap model) {
-		initSession();
-		model.addAttribute("user", getUserName());
-		return "homeCarre";
+		if(getRole().get(0).equals("ADMIN")){
+			if(defiAdminOk()){
+				initSession();
+				model.addAttribute("user", getUserName());
+				return "homeCarre";
+			}
+			else{
+				return "denied";
+			}
+		}
+		else{
+			initSession();
+			model.addAttribute("user", getUserName());
+			return "homeCarre";
+		}
 	}
 
 	/**
@@ -115,9 +133,21 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/homeCercle", method = RequestMethod.GET)
 	public String getHomeCercle(ModelMap model) {
-		initSession();
-		model.addAttribute("user", getUserName());
-		return "homeCercle";
+		if(getRole().get(0).equals("ADMIN")){
+			if(defiAdminOk()){
+				initSession();
+				model.addAttribute("user", getUserName());
+				return "homeCercle";
+			}
+			else{
+				return "denied";
+			}
+		}
+		else{
+			initSession();
+			model.addAttribute("user", getUserName());
+			return "homeCercle";
+		}
 	}
 
 	
@@ -145,10 +175,16 @@ public class GetController {
 		List<String> userRoles = this.getRole();
 
 		if (userRoles.contains("ROLE_CARRE")) {
-			url= "/carre";
+			url= "carre";
 		} 
 		else if (userRoles.contains("ROLE_ADMIN")) {
-			url = "/carreA";
+			if(defiAdminOk()){
+				url = "carreA";
+			}
+			else{
+				url = "denied";
+			}
+		
 		}
 		return url;
 	}
@@ -164,10 +200,15 @@ public class GetController {
 		List<String> userRoles = this.getRole();
 
 		if (userRoles.contains("ROLE_CERCLE")) {
-			url= "/cercle";
+			url= "cercle";
 		} 
 		else if (userRoles.contains("ROLE_ADMIN")) {
-			url = "/cercleA";
+			if(defiAdminOk()){
+				url = "cercleA";
+			}
+			else{
+				url = "denied";
+			}	
 		}
 		return url;
 	}
@@ -181,9 +222,14 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/administration", method = RequestMethod.GET)
 	public String getAdministration(ModelMap model) {
-		model.addAttribute("error", "");
 		System.out.println("Administration");
-		return "administration";
+		if(defiAdminOk()){
+			model.addAttribute("error", "");
+			return "administration";
+		}
+		else{
+			return "denied";
+		}
 	}
 
 
@@ -196,9 +242,14 @@ public class GetController {
 	@RequestMapping(value = "/regexPass", method = RequestMethod.GET)
 	public String getRegexPass(ModelMap model) {
 		System.out.println("regexPass");
-
-		model.addAttribute("error", "");
-		return "regexPass";
+		if(defiAdminOk()){
+			model.addAttribute("error", "");
+			return "regexPass";
+		}
+		else{
+			return "denied";
+		}
+	
 	}
 
 	/**
@@ -209,9 +260,14 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/adminTentativeMax", method = RequestMethod.GET)
 	public String getAdminTentativeMax(ModelMap model) {
-		System.out.println("getAdminTentativeMax");
-		model.addAttribute("error", "");
-		return "adminTentativeMax";
+		if(defiAdminOk()){
+			System.out.println("getAdminTentativeMax");
+			model.addAttribute("error", "");
+			return "adminTentativeMax";
+		}
+		else{
+			return "denied";
+		}
 	}
 
 
@@ -223,13 +279,17 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/reactiveAccount", method = RequestMethod.GET)
 	public String getReactiveAccount(ModelMap model) {
-		ArrayList<User> userList = userService.getUsersDisabled();
-
-		System.out.println("getReactiveAccount");
-		System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
-		model.addAttribute("error", "");
-		model.addAttribute("userList", userList);
-		return "reactiveAccount";
+			if(defiAdminOk()){
+				ArrayList<User> userList = userService.getUsersDisabled();
+				System.out.println("getReactiveAccount");
+				System.out.println("Attention, il faut r�cup�rer la liste des utilisateurs");
+				model.addAttribute("error", "");
+				model.addAttribute("userList", userList);
+				return "reactiveAccount";
+			}
+			else{
+				return "denied";
+			}
 	}
 
 
@@ -241,6 +301,9 @@ public class GetController {
 	 */
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+		if(getRole().get(0).equals("ADMIN")){
+			//Remettre defi a zero
+		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){    
 			new SecurityContextLogoutHandler().logout(request, response, auth);
@@ -249,6 +312,7 @@ public class GetController {
 		return "redirect:/login?logout";
 	}
 
+	
 	/**
 	 * Methode qui permet de retourner la page changePass
 	 * @param model
@@ -256,9 +320,23 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/changePasswd", method = RequestMethod.GET)
 	public String getChangePasswd(ModelMap model) {
-		System.out.println("changePasswd");	
-		model.addAttribute("username", getUserName());
-		return "changePasswd";
+		String url = "";
+		if(getRole().get(0).equals("ADMIN")){
+			if(defiAdminOk()){
+				System.out.println("changePasswd");	
+				model.addAttribute("username", getUserName());
+				url = "changePasswd";
+			}
+			else {
+				url = "denied";
+			}
+		}
+		else if(!getRole().get(0).equals("ADMIN")){
+			System.out.println("changePasswd");	
+			model.addAttribute("username", getUserName());
+			url = "changePasswd";
+		}
+		return url;
 	}
 
 
@@ -269,6 +347,7 @@ public class GetController {
 	 */
 	@RequestMapping(value = "/adminLog", method = RequestMethod.GET)
 	public String getAdminLog(ModelMap model) {
+		if(defiAdminOk()){
 		System.out.println("adminLog");	
 		String OS =System.getProperty("os.name");
 		// Create a stream to hold the output
@@ -307,6 +386,10 @@ public class GetController {
 		model.addAttribute("log_connexion",everything);
 		model.addAttribute("log_securite", "Console");
 		return "adminLog";
+		}
+		else{
+			return "denied";
+		}
 	}
 
 	/**
@@ -320,13 +403,18 @@ public class GetController {
 		String userRole = getRole().get(0);
 		System.out.println(userRole);	
 		if (userRole.equals("ROLE_CERCLE")) {
-			url= "/homeCercle";
+			url= "homeCercle";
 		} 
 		else if (userRole.equals("ROLE_CARRE")) {
-			url = "/homeCarre";
+			url = "homeCarre";
 		}
 		else if (userRole.equals("ROLE_ADMIN")) {
-			url = "/homeAdmin";
+			if(defiAdminOk()){
+				url = "homeAdmin";
+			}
+			else{
+				url="denied";
+			}
 		}
 		return url;
 	}
@@ -366,6 +454,11 @@ public class GetController {
 		}
 	}
 
+	private boolean defiAdminOk(){
+		boolean ok = false;
+		
+		return ok;
+	}
 
 
 }
