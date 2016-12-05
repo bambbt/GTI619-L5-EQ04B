@@ -250,7 +250,7 @@ public class UserService {
 		for (int i = 0; i < adresses.size(); i++) {
 			Integer valuedb =Integer.parseInt(valuesDb[adresses.get(i)]); 
 			
-			if(!(valuedb.compareTo(values.get(adresses.get(i))) == 0 )){
+			if(valuedb != values.get(i) ){
 				return false;
 			}				
 		}

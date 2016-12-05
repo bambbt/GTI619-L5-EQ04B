@@ -485,9 +485,9 @@ public class PostController {
 		if(!userService.ckeckDefi(getUserName(),values, adresses)){
 			raison = "Les données sont mauvaises.";
 			err="true";
-			model.setViewName("/logout");
+			model.setViewName("logout");
 		}else {		
-			model.setViewName("/homeAdmin");
+			model.setViewName("homeAdmin");
 		}
 		return model;
 	
