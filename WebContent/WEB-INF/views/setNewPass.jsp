@@ -44,7 +44,7 @@
 		<div class="form-group row">
 		  <label for="example-text-input" class="col-xs-2 col-form-label">PIN utilisateur</label>
 		  <div class="col-xs-10">
-		   		<input type="text" id="recovery" name="recovery" step="1" value="0" min="0" max="9999999999" placeholder="Saisir le PIN reçu par mail" required /> 
+		  		<input type="number" class="form-control" id="recovery" name="recovery" step="1" min="0" max="9999999999" placeholder="Saisir le PIN reçu par mail" required /> 
 		  </div>
 		</div>
 		
