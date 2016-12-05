@@ -54,7 +54,7 @@ public class GetController {
 		for (int i = 1; i < NBVALUE_DEFI; i++) {
 			int defi = new SecureRandom().nextInt(UserService.NBVALEUR_MATRICE)+1;
 			RequestContextHolder.currentRequestAttributes().setAttribute("idcell"+i, defi, 1);
-			model.addAttribute("defi"+1, defi);
+			model.addAttribute("defi"+i, defi);
 		}
 		
 		//Set les valeurs dans le model
