@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Nov 28, 2016 4:33:27 PM by Hibernate Tools 5.1.0.Beta1 -->
+<!-- Generated Dec 4, 2016 7:41:08 PM by Hibernate Tools 5.1.0.Beta1 -->
 <hibernate-mapping>
     <class name="com.gti619.model.Role" table="role" catalog="mydb" optimistic-lock="version">
         <id name="idrole" type="java.lang.Integer">

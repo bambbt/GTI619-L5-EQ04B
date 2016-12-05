@@ -74,9 +74,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 				
 				int nbTentativeCoMax = configService.getNbTentativeCoMax();
-				if(user.getNbTentativeCo()<nbTentativeCoMax){
-					user.setNbTentativeCo(user.getNbTentativeCo()+1);
-					log.debug(new Date()+"=> "+user.getNbTentativeCo()+" tentative(s) de l'utilisateur "+presentedLogin+" avec un mauvais mot de passe.");
+				if(user.getNbTentativesConn()<nbTentativeCoMax){
+					user.setNbTentativesConn(user.getNbTentativesConn()+1);
+					log.debug(new Date()+"=> "+user.getNbTentativesConn()+" tentative(s) de l'utilisateur "+presentedLogin+" avec un mauvais mot de passe.");
 				}else{
 					user.setIsLocked(1);
 					log.debug(new Date()+"=> Suite à "+nbTentativeCoMax+" tentatives sans succès de l'utilisateur "+presentedLogin+", le compte est bloqué.");
@@ -84,7 +84,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 				userService.attachDirty(user);
 				return null;
 			}
-			user.setNbTentativeCo(0);
+			user.setNbTentativesConn(0);
 			userService.attachDirty(user);
 			
 			log.debug(new Date()+"=> L'utilisateur "+presentedLogin+" est connecté avec succés.");

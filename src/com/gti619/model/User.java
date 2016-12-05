@@ -1,6 +1,6 @@
 package com.gti619.model;
 // default package
-// Generated Nov 28, 2016 4:33:27 PM by Hibernate Tools 5.1.0.Beta1
+// Generated Dec 4, 2016 7:41:08 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,19 +18,21 @@ public class User implements java.io.Serializable {
 	private String login;
 	private Integer isLocked;
 	private String salt;
+	private String recoveryId;
+	private int nbTentativesConn;
 	private Set oldPasswords = new HashSet(0);
-	private Integer recoveryid;
-	private Integer nbTentativeCo;
-	
+	private Set matriceUsers = new HashSet(0);
+
 	public User() {
 	}
 
-	public User(Role role) {
+	public User(Role role, int nbTentativesConn) {
 		this.role = role;
+		this.nbTentativesConn = nbTentativesConn;
 	}
 
 	public User(Role role, String email, String mdp, String name, String login, Integer isLocked, String salt,
-			Set oldPasswords) {
+			String recoveryId, int nbTentativesConn, Set oldPasswords, Set matriceUsers) {
 		this.role = role;
 		this.email = email;
 		this.mdp = mdp;
@@ -38,8 +40,10 @@ public class User implements java.io.Serializable {
 		this.login = login;
 		this.isLocked = isLocked;
 		this.salt = salt;
+		this.recoveryId = recoveryId;
+		this.nbTentativesConn = nbTentativesConn;
 		this.oldPasswords = oldPasswords;
-		this.recoveryid=0;
+		this.matriceUsers = matriceUsers;
 	}
 
 	public Integer getIduser() {
@@ -78,16 +82,6 @@ public class User implements java.io.Serializable {
 		return this.name;
 	}
 
-
-	
-	public Integer getRecoveryid() {
-		return recoveryid;
-	}
-
-	public void setRecoveryid(Integer recoveryid) {
-		this.recoveryid = recoveryid;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -116,6 +110,22 @@ public class User implements java.io.Serializable {
 		this.salt = salt;
 	}
 
+	public String getRecoveryId() {
+		return this.recoveryId;
+	}
+
+	public void setRecoveryId(String recoveryId) {
+		this.recoveryId = recoveryId;
+	}
+
+	public int getNbTentativesConn() {
+		return this.nbTentativesConn;
+	}
+
+	public void setNbTentativesConn(int nbTentativesConn) {
+		this.nbTentativesConn = nbTentativesConn;
+	}
+
 	public Set getOldPasswords() {
 		return this.oldPasswords;
 	}
@@ -124,14 +134,12 @@ public class User implements java.io.Serializable {
 		this.oldPasswords = oldPasswords;
 	}
 
-	public Integer getNbTentativeCo() {
-		return nbTentativeCo;
+	public Set getMatriceUsers() {
+		return this.matriceUsers;
 	}
 
-	public void setNbTentativeCo(Integer nbTentativeCo) {
-		this.nbTentativeCo = nbTentativeCo;
+	public void setMatriceUsers(Set matriceUsers) {
+		this.matriceUsers = matriceUsers;
 	}
-	
-
 
 }

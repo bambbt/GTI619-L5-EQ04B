@@ -1,50 +1,53 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Nov 28, 2016 4:33:27 PM by Hibernate Tools 5.1.0.Beta1 -->
+<!-- Generated Dec 4, 2016 7:41:08 PM by Hibernate Tools 5.1.0.Beta1 -->
 <hibernate-mapping>
-	<class name="com.gti619.model.User" table="user" catalog="mydb"
-		optimistic-lock="version">
-		<id name="iduser" type="java.lang.Integer">
-			<column name="iduser" />
-			<generator class="identity" />
-		</id>
-		<many-to-one name="role" class="com.gti619.model.Role"
-			fetch="select">
-			<column name="role_idrole" not-null="true" />
-		</many-to-one>
-		<property name="email" type="string">
-			<column name="email" length="45" unique="true" />
-		</property>
-		<property name="mdp" type="string">
-			<column name="mdp" length="100" />
-		</property>
-		<property name="name" type="string">
-			<column name="name" length="45" />
-		</property>
-		<property name="login" type="string">
-			<column name="login" length="45" unique="true" />
-		</property>
-		<property name="isLocked" type="java.lang.Integer">
-			<column name="isLocked">
-				<comment>0 FALSE 1 TRUE</comment>
-			</column>
-		</property>
-		<property name="salt" type="string">
-			<column name="salt" length="100" />
-		</property>
-		<property name="recoveryid" type="int">
-			<column name="recovery_id" length="10" />
-		</property>
-		<property name="nbTentativeCo" type="int">
-			<column name="nb_tentatives_conn" length="10" />
-		</property>
-		<set name="oldPasswords" table="old_password" inverse="true" lazy="true"
-			fetch="select">
-			<key>
-				<column name="user_iduser" />
-			</key>
-			<one-to-many class="com.gti619.model.OldPassword" />
-		</set>
-	</class>
+    <class name="com.gti619.model.User" table="user" catalog="mydb" optimistic-lock="version">
+        <id name="iduser" type="java.lang.Integer">
+            <column name="iduser" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="role" class="com.gti619.model.Role" fetch="select">
+            <column name="role_idrole" not-null="true" />
+        </many-to-one>
+        <property name="email" type="string">
+            <column name="email" length="45" unique="true" />
+        </property>
+        <property name="mdp" type="string">
+            <column name="mdp" length="100" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="45" />
+        </property>
+        <property name="login" type="string">
+            <column name="login" length="45" unique="true" />
+        </property>
+        <property name="isLocked" type="java.lang.Integer">
+            <column name="isLocked">
+                <comment>0 FALSE 1 TRUE</comment>
+            </column>
+        </property>
+        <property name="salt" type="string">
+            <column name="salt" length="100" />
+        </property>
+        <property name="recoveryId" type="string">
+            <column name="recovery_id" length="45" />
+        </property>
+        <property name="nbTentativesConn" type="int">
+            <column name="nb_tentatives_conn" not-null="true" />
+        </property>
+        <set name="oldPasswords" table="old_password" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_iduser" />
+            </key>
+            <one-to-many class="com.gti619.model.OldPassword" />
+        </set>
+        <set name="matriceUsers" table="matriceUser" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_iduser" unique="true" />
+            </key>
+            <one-to-many class="com.gti619.model.MatriceUser" />
+        </set>
+    </class>
 </hibernate-mapping>

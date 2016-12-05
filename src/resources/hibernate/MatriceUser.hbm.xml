@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2016 7:41:08 PM by Hibernate Tools 5.1.0.Beta1 -->
+<hibernate-mapping>
+    <class name="com.gti619.model.MatriceUser" table="matriceUser" catalog="mydb" optimistic-lock="version">
+        <id name="idmatriceUser" type="java.lang.Integer">
+            <column name="idmatrice_user" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.gti619.model.User" fetch="select">
+            <column name="user_iduser" unique="true" />
+        </many-to-one>
+        <property name="value" type="string">
+            <column name="value" length="150" />
+        </property>
+        <property name="currentCheckSuccess" type="java.lang.Integer">
+            <column name="current_check_success" />
+        </property>
+    </class>
+</hibernate-mapping>

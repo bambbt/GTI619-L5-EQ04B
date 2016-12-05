@@ -85,7 +85,7 @@ public class UserService {
 		user.setSalt(strSalt);
 		user.setName(completeName);
 		user.setIsLocked(0);
-		user.setNbTentativeCo(0);
+		user.setNbTentativesConn(0);
 		Role role= roleDao.findByName(strRole);
 		user.setRole(role);
 		userDao.persist(user);
@@ -162,8 +162,8 @@ public class UserService {
 	public void setRecoveryId(String login) {
 
 		User user = userDao.findByUserName(login);
-
-		user.setRecoveryid(new SecureRandom().nextInt(999999999));
+		int value  = new SecureRandom().nextInt(999999999);
+		user.setRecoveryId(String.valueOf(value));
 
 		userDao.attachDirty(user);
 
@@ -173,14 +173,14 @@ public class UserService {
 
 		User user = userDao.findByUserName(username);
 
-		return (user.getRecoveryid().toString().contentEquals(recoveryValide));
+		return (user.getRecoveryId().toString().contentEquals(recoveryValide));
 
 	}
 
 	public void resetRecoveryId(String username) {
 		User user = userDao.findByUserName(username);
 
-		user.setRecoveryid(0);
+		user.setRecoveryId(new String("0"));
 
 		userDao.attachDirty(user);
 
@@ -204,7 +204,7 @@ public class UserService {
 	public void reactiveAccount(String login) {
 		User user = userDao.findByUserName(login);
 		user.setIsLocked(0);
-		user.setNbTentativeCo(0);
+		user.setNbTentativesConn(0);
 		userDao.attachDirty(user);
 	}
 
