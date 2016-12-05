@@ -69,7 +69,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		else if (isCercle(roles)) {
 			url = "/homeCercle";	
 		}else if (isAdmin(roles)) {
-			url = "/homeAdmin";
+			url = "/loginFort";
 		} else {
 			url = "/Denied";
 		}

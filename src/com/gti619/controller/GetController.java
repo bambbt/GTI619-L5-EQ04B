@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.chainsaw.Main;
@@ -41,8 +40,6 @@ public class GetController {
 	@Qualifier("userService")
 	private UserService userService;
 
-
-
 	/**
 	 * Methode permettant de retourner la page de connexion (login)
 	 * @return
@@ -51,6 +48,34 @@ public class GetController {
 	public String getloginPage() {
 		return "login";
 	}
+	
+	/**
+	 * Methode permettant de retourner la page de connexion (login)
+	 * @return
+	 */
+	@RequestMapping(value = "/loginFort", method = RequestMethod.GET)
+	public String getLoginFort(ModelMap model) {
+		
+		//Execution de la requete
+		int defi1 = new SecureRandom().nextInt(25)+1;
+		int defi2 = new SecureRandom().nextInt(25)+1;
+		int defi3 = new SecureRandom().nextInt(25)+1;
+		int defi4 = new SecureRandom().nextInt(25)+1;
+		
+		RequestContextHolder.currentRequestAttributes().setAttribute("idcell1", defi1, 1);
+		RequestContextHolder.currentRequestAttributes().setAttribute("idcell2", defi2, 1);
+		RequestContextHolder.currentRequestAttributes().setAttribute("idcell3", defi3, 1);
+		RequestContextHolder.currentRequestAttributes().setAttribute("idcell4", defi4, 1);
+		
+		//Set les valeurs dans le model
+		model.addAttribute("user", getUserName());
+		model.addAttribute("defi1", defi1);
+		model.addAttribute("defi2", defi2);
+		model.addAttribute("defi3", defi3);
+		model.addAttribute("defi4", defi4);
+		return "loginFort";
+	}
+	
 
 	/**
 	 * Methode permettant de retourner la page forgetPAss

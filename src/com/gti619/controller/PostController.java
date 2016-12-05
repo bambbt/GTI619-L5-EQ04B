@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gti619.model.User;
@@ -381,6 +382,7 @@ public class PostController {
 		return model;
 	};
 
+	
 
 	/**
 	 * Permet de verifier le formulaire permettant de r�active un compte
@@ -440,6 +442,35 @@ public class PostController {
 		return model;
 	};
 
+	
+	/**
+	 * Permet de verifier le formulaire d'authentification forte Admin
+	 * @param oldPass
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/loginFort", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView postLoginFort(
+			@RequestParam("valueCell1") String valueCell1,
+			@RequestParam("valueCell2") String valueCell2,
+			@RequestParam("valueCell3") String valueCell3,
+			@RequestParam("valueCell4") String valueCell4){
+
+		ModelAndView model = new ModelAndView();
+		String raison = "Ok";
+		String err="true";
+		System.out.println(valueCell1);
+		System.out.println(valueCell2);
+		System.out.println(valueCell3);
+		System.out.println(valueCell4);
+		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell1", 1));
+		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell2", 2));
+		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell3", 3));
+		System.out.println(RequestContextHolder.getRequestAttributes().getAttribute("idcell4", 4));
+		return model;
+	
+	};
 
 	/**	
 	 * Permet de retourner le nom de l'utilisateur en question
