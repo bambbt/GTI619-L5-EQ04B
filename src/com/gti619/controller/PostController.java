@@ -1,6 +1,5 @@
 package com.gti619.controller;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -99,23 +98,23 @@ public class PostController {
 						userService.addUser(role,login,completeName,mail,password);
 						err="false";
 						raison = login +" est ajoute";
-						log.info("Création de  l'utilisateur "+login+ " par "+ getUserName() + "("+getRole()+")");
+						log.info("OPERATION : Création de  l'utilisateur "+login+ " par "+ getUserName() + "("+getRole()+")");
 					}else{
 						raison = " Login ou adresse mail déjà existante";
 						err="true";
-						log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mail ou un login déjà existant de passe.");
+						log.info("ATTENTION !!! Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mail ou un login déjà existant de passe.");
 					}
 				}
 				else{
 					raison = " Authentification Admin, mauvais mot de passe.";
 					err="true";
-					log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mauvais mot de passe.");
+					log.info("ATTENTION !!! Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mauvais mot de passe.");
 				}
 
 			}else{
 				raison = "Veuillez respecter les politiques de securite de password.";
 				err="true";
-				log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") sans respect de la politique de sécurité de mot de passes.");
+				log.info("ATTENTION !!! Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") sans respect de la politique de sécurité de mot de passes.");
 			}
 
 		}else{
@@ -166,22 +165,22 @@ public class PostController {
 					userService.changePassword(getUserName(),password);
 					err="false";
 					raison = " Mot de passe change";
-					log.info("Changement de mot de passe par "+ getUserName() + "("+getRole()+").");
+					log.info(" OPERATION :Changement de mot de passe par "+ getUserName() + "("+getRole()+").");
 				}else{
 					err="true";
 					raison = " Mot de passe deja utilise";
-					log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+")  avec un mot de passe déjà existant");
+					log.info("ATTENTION !!! Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+")  avec un mot de passe déjà existant");
 				}
 			}
 			else{
 				raison = " Votre mot de passe est eronne";
 				err="true";
-				log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") avec un mot de passe erroné");
+				log.info("ATTENTION !!! Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") avec un mot de passe erroné");
 			}}
 		else{
 			raison = "Politique de mots de passe non respectee.";
 			err="true";
-			log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") sans respect pour la politique de sécurité.");
+			log.info("ATTENTION !!! Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") sans respect pour la politique de sécurité.");
 		}
 		model.setViewName("/changePasswd");
 		model.addObject("error", err);
@@ -217,7 +216,7 @@ public class PostController {
 				model.addObject("notif", "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.");
 				model.addObject("user", username);
 				model.setViewName("/setNewPass");
-				log.info("Demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
+				log.info("OPERATION :Demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
 			}
 			else{
 				raison = "Votre compte est bloque , veuillez contacter l'administrateur pour plus d'information !";
@@ -227,7 +226,7 @@ public class PostController {
 				model.addObject("user", username);
 				model.addObject("raison", "Compte bloque");
 				model.addObject("explain", "Un trop grand nombre de tentatives eronnees. ");
-				log.info("Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur un compte bloqué.");
+				log.info("ATTENTION !!! Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur un compte bloqué.");
 			}
 		}else{
 			raison = "Oups! Le compte utilisateur n'existe pas";
@@ -237,7 +236,7 @@ public class PostController {
 			model.addObject("user", username);
 			model.addObject("explain", "Oups! Le compte utilisateur n'existe pas. ");
 			model.addObject("raison", "Oups! Le compte utilisateur n'existe pas. ");
-			log.info("Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur en utilisant le login d'un compte inexistant \""+username+"\". ");
+			log.info("ATTENTION !!! Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur en utilisant le login d'un compte inexistant \""+username+"\". ");
 		}
 		return model;
 	}
@@ -289,7 +288,7 @@ public class PostController {
 					model.addObject("user", username);
 					model.addObject("raison", raison);
 					//Redirection de l'utilisateur vers la page setNewPass
-					log.info("Changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
+					log.info("OPERATION :Changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
 
 
 				}else{
@@ -299,7 +298,7 @@ public class PostController {
 					model.setViewName("/setNewPass");
 					model.addObject("error", err);
 					model.addObject("user", username);
-					log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un mot de passe deja utilise");
+					log.info("ATTENTION !!! Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un mot de passe deja utilise");
 
 				}
 
@@ -312,7 +311,7 @@ public class PostController {
 				model.setViewName("/setNewPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
-				log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sans respect de la politique mot de passe");
+				log.info("ATTENTION !!!  Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sans respect de la politique mot de passe");
 
 			}
 		}else{
@@ -322,7 +321,7 @@ public class PostController {
 			model.setViewName("/setNewPass");
 			model.addObject("error", err);
 			model.addObject("user", username);
-			log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un PIN ou un login errone");
+			log.info("ATTENTION !!!  Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un PIN ou un login errone");
 
 		}
 		return model;
@@ -355,10 +354,13 @@ public class PostController {
 			userService.savePolitiquePassword(regex);
 			err="false";
 			raison="Politique des mots de passe modifiee.";
+			log.info("OPERATION : Changement de politique de mot de passe par "+ getUserName() + "("+getRole()+") .");
+
 		}else{
 			//Si non valide, inialiser la raison
 			err="true";
 			raison = "Politique de mot de passe non valide";
+			log.info("ATTENTION !!!  Tentative de changement de politique de mot de passe par "+ getUserName() + "("+getRole()+") avec un mot de passe errone.");
 
 		}
 		model.addObject("error", err);
@@ -394,12 +396,13 @@ public class PostController {
 			userService.setTentativeCoMax(nbTentativeMax);
 			err="false";
 			raison="Politique de connexions modifiee.";
-
+			log.info("OPERATION : Changement du nombre de tentative d authentification errone avant blocage du compte par "+ getUserName() + "("+getRole()+")");
 		}else{
 
 			//Si non valide, inialiser la raison
 			err="true";
 			raison = "Mot de passe non valide";
+			log.info("ATTENTION !!!  Tentative de changement du nombre de tentative d authentification errone avant blocage du compte par "+ getUserName() + "("+getRole()+") avec mot de passe errone");
 
 		}
 
@@ -447,18 +450,22 @@ public class PostController {
 					// raison = feedBack positif
 					err="false";
 					raison="Compte "+login+ " reactive";
+					log.info("OPERATION :Reactivation du compte "+login+ " par "+ getUserName() + "("+getRole()+") avec un nouveau mot de passe");
 				}else{
 					err="true";
 					raison="Mot de passe deja� utilise";
+					log.info("ATTENTION !!! Tentative de reactivation du compte "+login+ " par "+ getUserName() + "("+getRole()+") avec un mot de passe deja utilise.");
 				}
 			}else{
 				//Si non valide, inialiser la raison
 				err="true";
 				raison="Mot de passe invalide";
+				log.info("ATTENTION !!! Tentative de reactivation du compte "+login+ " par "+ getUserName() + "("+getRole()+") avec un  mot de passe errone.");
 			}
 		}else{
 			err="true";
 			raison="Polique de mot de passe non respectee";
+			log.info("ATTENTION !!!  Tentative de reactivation du compte "+login+ " par "+ getUserName() + "("+getRole()+") sans respect de la politique de mot de passe.");
 		}
 
 		ArrayList<User> userList = userService.getUsersDisabled();
@@ -511,9 +518,11 @@ public class PostController {
 			raison = "Les donnees sont mauvaises.";
 			err="true";
 			model.setViewName("redirect:/logout");
+			log.info("ATTENTION !!! Tentative d Authentification de "+ getUserName() + "("+getRole()+") par le systeme d authentification forte.");
 		}else {	
 			model.setViewName("homeAdmin");
 			model.addObject("user", getUserName());
+			log.info("OPERATION :Authentification de "+ getUserName() + "("+getRole()+") par le systeme d authentification forte.");
 		}
 		return model;
 	

@@ -367,7 +367,7 @@ public class GetController {
 				String line = br.readLine();
 
 				while (line != null) {
-					if(line.contains("CustomAuthenticationProvider")){
+					if(line.contains("AUTH") || line.contains("OPERATION") || line.contains("ATTENTION")){
 						sb.insert(0,line);
 						sb.insert(0,System.lineSeparator());
 					}

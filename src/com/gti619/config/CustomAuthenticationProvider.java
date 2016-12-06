@@ -42,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
-			log.info(new Date()+" => Tentative de connexion avec un utilisateur inexistant.");			
+			log.info("AUTH => Tentative de connexion avec un utilisateur inexistant.");			
 			return null;
 		}
 		
@@ -83,9 +83,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 				return null;
 			}
 			user.setNbTentativesConn(0);
+			if(user.getRole().getNom().contains("ADMIN"))
+				log.info("AUTH => L'utilisateur "+presentedLogin+" est authentifie au niveau 1.");
+			else
+				log.info("AUTH => L'utilisateur "+presentedLogin+" est authentifie.");
 			userService.attachDirty(user);
 			
-			log.info("AUTH => L'utilisateur "+presentedLogin+" est connecté avec succés.");
 			return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword(),userDetails.getAuthorities());			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
