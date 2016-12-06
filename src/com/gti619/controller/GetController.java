@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,7 @@ public class GetController {
 	@Qualifier("userService")
 	private UserService userService;
 
+	private static final Logger log = Logger.getLogger(GetController.class);
 	/**
 	 * Methode permettant de retourner la page de connexion (login)
 	 * @return
@@ -310,6 +313,7 @@ public class GetController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		SecurityContextHolder.clearContext();
+		log.info("AUTH L'utilisateur : "+getUserName()+" s'est deconnecte (logout)");
 		return "redirect:/login?logout";
 	}
 
