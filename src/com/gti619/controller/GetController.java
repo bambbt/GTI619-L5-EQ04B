@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -427,13 +428,20 @@ public class GetController {
 	}
 
 
+
 	/**	
 	 * Permet de retourner le nom de l'utilisateur en question
-	 * @return
+	 * @return (String) username
 	 */
 	private String getUserName(){
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
-		return principal.toString();
+		String userName = null;
+
+		try{
+			String name = SecurityContextHolder.getContext().getAuthentication().getName();
+			return name;
+		}catch(Exception e){
+			return "name";
+		}
 	}
 
 
