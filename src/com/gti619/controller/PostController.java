@@ -2,11 +2,15 @@ package com.gti619.controller;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -31,6 +35,8 @@ public class PostController {
 	@Autowired
 	@Qualifier("securityConfigService")
 	private SecurityConfigService configService;
+	
+	private static final Logger log = Logger.getLogger(PostController.class);
 
 	private static final String EMAIL_PATTERN ="^[A-Za-z0-9]*[@][A-Za-z]*[\\.][a-z]{2,3}$";
 	private static final String NAME_PATTERN = "^[a-zA-Z\\s]*$" ;
@@ -93,19 +99,23 @@ public class PostController {
 						userService.addUser(role,login,completeName,mail,password);
 						err="false";
 						raison = login +" est ajoute";
+						log.info("Création de  l'utilisateur "+login+ " par "+ getUserName() + "("+getRole()+")");
 					}else{
 						raison = " Login ou adresse mail déjà existante";
 						err="true";
+						log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mail ou un login déjà existant de passe.");
 					}
 				}
 				else{
 					raison = " Authentification Admin, mauvais mot de passe.";
 					err="true";
+					log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") avec un mauvais mot de passe.");
 				}
 
 			}else{
 				raison = "Veuillez respecter les politiques de securite de password.";
 				err="true";
+				log.info("Tentative de création utilisateur par "+ getUserName() + "("+getRole()+") sans respect de la politique de sécurité de mot de passes.");
 			}
 
 		}else{
@@ -156,18 +166,22 @@ public class PostController {
 					userService.changePassword(getUserName(),password);
 					err="false";
 					raison = " Mot de passe change";
+					log.info("Changement de mot de passe par "+ getUserName() + "("+getRole()+").");
 				}else{
 					err="true";
 					raison = " Mot de passe deja utilise";
+					log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+")  avec un mot de passe déjà existant");
 				}
 			}
 			else{
 				raison = " Votre mot de passe est eronne";
 				err="true";
+				log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") avec un mot de passe erroné");
 			}}
 		else{
 			raison = "Politique de mots de passe non respectee.";
-			err="true";			
+			err="true";
+			log.info("Tentative de changement de mot de passe par "+ getUserName() + "("+getRole()+") sans respect pour la politique de sécurité.");
 		}
 		model.setViewName("/changePasswd");
 		model.addObject("error", err);
@@ -203,6 +217,7 @@ public class PostController {
 				model.addObject("notif", "Votre compte est en cours de reinitialisation. Un Pin secret a ete envoye sur votre @ courriel.");
 				model.addObject("user", username);
 				model.setViewName("/setNewPass");
+				log.info("Demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
 			}
 			else{
 				raison = "Votre compte est bloque , veuillez contacter l'administrateur pour plus d'information !";
@@ -212,6 +227,7 @@ public class PostController {
 				model.addObject("user", username);
 				model.addObject("raison", "Compte bloque");
 				model.addObject("explain", "Un trop grand nombre de tentatives eronnees. ");
+				log.info("Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur un compte bloqué.");
 			}
 		}else{
 			raison = "Oups! Le compte utilisateur n'existe pas";
@@ -221,6 +237,7 @@ public class PostController {
 			model.addObject("user", username);
 			model.addObject("explain", "Oups! Le compte utilisateur n'existe pas. ");
 			model.addObject("raison", "Oups! Le compte utilisateur n'existe pas. ");
+			log.info("Tentative de demande de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sur en utilisant le login d'un compte inexistant \""+username+"\". ");
 		}
 		return model;
 	}
@@ -272,6 +289,8 @@ public class PostController {
 					model.addObject("user", username);
 					model.addObject("raison", raison);
 					//Redirection de l'utilisateur vers la page setNewPass
+					log.info("Changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+")");
+
 
 				}else{
 					raison = "Ce mot de passe a deja� ete utilise";
@@ -280,6 +299,8 @@ public class PostController {
 					model.setViewName("/setNewPass");
 					model.addObject("error", err);
 					model.addObject("user", username);
+					log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un mot de passe deja utilise");
+
 				}
 
 
@@ -291,6 +312,8 @@ public class PostController {
 				model.setViewName("/setNewPass");
 				model.addObject("error", err);
 				model.addObject("user", username);
+				log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") sans respect de la politique mot de passe");
+
 			}
 		}else{
 			raison = "Oups! Probleme lors de la reinitialisation. Verifier le PiN ou le nom d'utilisateur";
@@ -299,6 +322,8 @@ public class PostController {
 			model.setViewName("/setNewPass");
 			model.addObject("error", err);
 			model.addObject("user", username);
+			log.info("Tentative de changement de mot de passe avec PIN par "+ getUserName() + "("+getRole()+") avec un PIN ou un login errone");
+
 		}
 		return model;
 	}
@@ -508,6 +533,19 @@ public class PostController {
 			userName = principal.toString();
 		}
 		return userName;
+	}
+	
+	/**
+	 * Permet de retourner la liste des roles de l'utilisateur en question			
+	 * @return
+	 */
+	public List<String> getRole(){
+		Collection<? extends GrantedAuthority> role = SecurityContextHolder.getContext().getAuthentication().getAuthorities();	
+		List<String> roles = new ArrayList<String>();
+		for (GrantedAuthority a : role) {
+			roles.add(a.getAuthority());
+		}		
+		return roles;
 	}
 
 

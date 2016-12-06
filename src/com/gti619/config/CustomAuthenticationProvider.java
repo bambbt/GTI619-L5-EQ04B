@@ -42,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (authentication.getCredentials() == null) {
-			log.debug(new Date()+" => Tentative de connexion avec un utilisateur inexistant.");			
+			log.info(new Date()+" => Tentative de connexion avec un utilisateur inexistant.");			
 			return null;
 		}
 		
@@ -74,10 +74,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 				int nbTentativeCoMax = configService.getNbTentativeCoMax();
 				if(user.getNbTentativesConn()<nbTentativeCoMax){
 					user.setNbTentativesConn(user.getNbTentativesConn()+1);
-					log.debug(new Date()+"=> "+user.getNbTentativesConn()+" tentative(s) de l'utilisateur "+presentedLogin+" avec un mauvais mot de passe.");
+					log.info("AUTH =>"+user.getNbTentativesConn()+" tentative(s) de l'utilisateur "+presentedLogin+" avec un mauvais mot de passe.");
 				}else{
 					user.setIsLocked(1);
-					log.debug(new Date()+"=> Suite à "+nbTentativeCoMax+" tentatives sans succès de l'utilisateur "+presentedLogin+", le compte est bloqué.");
+					log.info("AUTH => Suite à "+nbTentativeCoMax+" tentatives sans succès de l'utilisateur "+presentedLogin+", le compte est bloqué.");
 				}
 				userService.attachDirty(user);
 				return null;
@@ -85,7 +85,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 			user.setNbTentativesConn(0);
 			userService.attachDirty(user);
 			
-			log.debug(new Date()+"=> L'utilisateur "+presentedLogin+" est connecté avec succés.");
+			log.info("AUTH => L'utilisateur "+presentedLogin+" est connecté avec succés.");
 			return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword(),userDetails.getAuthorities());			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

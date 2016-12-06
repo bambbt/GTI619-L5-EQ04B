@@ -367,8 +367,10 @@ public class GetController {
 				String line = br.readLine();
 
 				while (line != null) {
-					sb.append(line);
-					sb.append(System.lineSeparator());
+					if(line.contains("CustomAuthenticationProvider")){
+						sb.insert(0,line);
+						sb.insert(0,System.lineSeparator());
+					}
 					line = br.readLine();
 				}
 				everything = sb.toString();
